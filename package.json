@@ -7,10 +7,11 @@
     "start": "ts-node-dev --respawn --transpile-only src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:check": "eslint --ignore-path .eslintignore --ext .js,.ts .",
-    "lint:fix": "eslint --fix",
+    "lint:fix": "eslint . --fix",
     "prettier:check": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
-    "lint:prettier": "npm run prettier:check && npm run lint:check",
-    "lint:staged": "npm run lint:prettier",
+    "prettier:fix": "prettier --write .",
+    "lint-prettier": "npm run prettier:check && npm run lint:check ",
+    "lint:staged": "lint-staged",
     "prepare": "husky install"
   },
   "keywords": [
@@ -20,6 +21,9 @@
   ],
   "author": "Md Emran Sheikh",
   "license": "ISC",
+  "lint-staged": {
+    "src/**/*.ts": "npm run lint-prettier"
+  },
   "devDependencies": {
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.19",
