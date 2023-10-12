@@ -1,0 +1,35 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "G:\\StaySolutionsBD\\Stay Solution Bd\\StaySolutionBD-backend\\logs\\winston\\errors\\.fc5215562895cbcb331392de9edbec1669db33ed-audit.json",
+    "files": [
+        {
+            "date": 1697114968807,
+            "name": "G:\\StaySolutionsBD\\Stay Solution Bd\\StaySolutionBD-backend\\logs\\winston\\errors\\staySolutionBd-2023-12-10-18-error.log",
+            "hash": "b23a9541964bcd71e279ddf4aa64044bf7d1aeac00a192800a74b34194dc39f2"
+        },
+        {
+            "date": 1697122149649,
+            "name": "G:\\StaySolutionsBD\\Stay Solution Bd\\StaySolutionBD-backend\\logs\\winston\\errors\\staySolutionBd-2023-12-10-20-error.log",
+            "hash": "4c077b3713e90732c2ec1aa0a51243cdc2e9390924efbabb041c9e99a7bb58bc"
+        },
+        {
+            "date": 1697122862877,
+            "name": "G:\\StaySolutionsBD\\Stay Solution Bd\\StaySolutionBD-backend\\logs\\winston\\errors\\staySolutionBd-2023-12-10-21-error.log",
+            "hash": "4a17d4b03822494af94a9bf116c0c19b6295d018078320ac4f6f0620f268afa9"
+        },
+        {
+            "date": 1697126414788,
+            "name": "G:\\StaySolutionsBD\\Stay Solution Bd\\StaySolutionBD-backend\\logs\\winston\\errors\\staySolutionBd-2023-12-10-22-error.log",
+            "hash": "b2218df4a762151ff1dc87914abe03663568ca633e4aee3663ea2b96e15446ca"
+        },
+        {
+            "date": 1697130046539,
+            "name": "G:\\StaySolutionsBD\\Stay Solution Bd\\StaySolutionBD-backend\\logs\\winston\\errors\\staySolutionBd-2023-12-10-23-error.log",
+            "hash": "7a4b5f90a4aa37c294f0187eb1c2c150bea287dcf82ecc4811ac128eb4012136"
+        }
+    ],
+    "hashType": "sha256"
+}
