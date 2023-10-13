@@ -1,0 +1,503 @@
+Fri Oct 13 2023 12:6:11 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:6:14 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USERs",
+          ~~~~~~~
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe12@example.com",
+    password: "123456"
+  }
+}
+
+Invalid value for argument `role`. Expected ROLE.
+Fri Oct 13 2023 12:6:25 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstNames: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe12@example.com",
+    password: "123456",
++   firstName: String
+  }
+}
+
+Argument `firstName` is missing.
+Fri Oct 13 2023 12:7:44 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:8:2 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstNames: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe12@example.com",
+    password: "123456",
++   firstName: String
+  }
+}
+
+Argument `firstName` is missing.
+Fri Oct 13 2023 12:8:39 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:8:42 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstNames: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe12@example.com",
+    password: "123456",
++   firstName: String
+  }
+}
+
+Argument `firstName` is missing.
+Fri Oct 13 2023 12:9:1 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:10:15 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstNames: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe123@example.com",
+    password: "123456",
++   firstName: String
+  }
+}
+
+Argument `firstName` is missing.
+Fri Oct 13 2023 12:10:26 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USERs",
+          ~~~~~~~
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe123@example.com",
+    password: "123456"
+  }
+}
+
+Invalid value for argument `role`. Expected ROLE.
+Fri Oct 13 2023 12:11:40 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:12:26 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:12:30 } [StaySolutionBD] info: 
+Fri Oct 13 2023 12:12:46 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:13:1 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:13:8 } [StaySolutionBD] info: 
+Fri Oct 13 2023 12:13:29 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:14:35 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:14:39 } [StaySolutionBD] info: 
+Fri Oct 13 2023 12:14:45 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstNames: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456",
++   firstName: String
+  }
+}
+
+Argument `firstName` is missing.
+Fri Oct 13 2023 12:14:57 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USERs",
+          ~~~~~~~
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Invalid value for argument `role`. Expected ROLE.
+Fri Oct 13 2023 12:16:13 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstNames: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USERs",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456",
++   firstName: String
+  }
+}
+
+Argument `firstName` is missing.
+Fri Oct 13 2023 12:16:29 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USERs",
+          ~~~~~~~
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Invalid value for argument `role`. Expected ROLE.
+Fri Oct 13 2023 12:18:31 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstNames: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USERs",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456",
++   firstName: String
+  }
+}
+
+Argument `firstName` is missing.
+Fri Oct 13 2023 12:19:56 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:21:10 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:21:56 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:22:0 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstNames: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USERs",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456",
++   firstName: String
+  }
+}
+
+Argument `firstName` is missing.
+Fri Oct 13 2023 12:23:18 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:23:21 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstNames: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USERs",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456",
++   firstName: String
+  }
+}
+
+Argument `firstName` is missing.
+Fri Oct 13 2023 12:23:31 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USERs",
+          ~~~~~~~
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Invalid value for argument `role`. Expected ROLE.
+Fri Oct 13 2023 12:24:0 } [StaySolutionBD] info: 
+Fri Oct 13 2023 12:29:42 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:30:7 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+
+Unique constraint failed on the fields: (`email`)
+Fri Oct 13 2023 12:30:27 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstNames: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456",
++   firstName: String
+  }
+}
+
+Argument `firstName` is missing.
+Fri Oct 13 2023 12:30:35 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USERs",
+          ~~~~~~~
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Invalid value for argument `role`. Expected ROLE.
+Fri Oct 13 2023 12:30:42 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+
+Unique constraint failed on the fields: (`email`)
+Fri Oct 13 2023 12:30:51 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: 1234564,
+               ~~~~~~~
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Argument `firstName`: Invalid value provided. Expected String, provided Int.
+Fri Oct 13 2023 12:31:18 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:32:7 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:32:41 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:33:6 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:33:12 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: 1234564,
+               ~~~~~~~
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Argument `firstName`: Invalid value provided. Expected String, provided Int.
+Fri Oct 13 2023 12:33:52 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:33:54 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: 1234564,
+               ~~~~~~~
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Argument `firstName`: Invalid value provided. Expected String, provided Int.
+Fri Oct 13 2023 12:34:19 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:34:21 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: 1234564,
+               ~~~~~~~
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Argument `firstName`: Invalid value provided. Expected String, provided Int.
+Fri Oct 13 2023 12:34:39 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:34:43 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: 1234564,
+               ~~~~~~~
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Argument `firstName`: Invalid value provided. Expected String, provided Int.
+Fri Oct 13 2023 12:34:57 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:37:31 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: 1234564,
+               ~~~~~~~
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Argument `firstName`: Invalid value provided. Expected String, provided Int.
+Fri Oct 13 2023 12:38:1 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:38:3 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: 1234564,
+               ~~~~~~~
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Argument `firstName`: Invalid value provided. Expected String, provided Int.
+Fri Oct 13 2023 12:38:18 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:38:19 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: 1234564,
+               ~~~~~~~
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Argument `firstName`: Invalid value provided. Expected String, provided Int.
+Fri Oct 13 2023 12:39:5 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:39:14 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:39:47 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:39:49 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: 1234564,
+               ~~~~~~~
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Argument `firstName`: Invalid value provided. Expected String, provided Int.
+Fri Oct 13 2023 12:40:3 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:40:4 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: 1234564,
+               ~~~~~~~
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Argument `firstName`: Invalid value provided. Expected String, provided Int.
+Fri Oct 13 2023 12:40:34 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 12:40:37 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    firstName: 1234564,
+               ~~~~~~~
+    middleName: "Doe",
+    lastName: "Smith",
+    role: "USER",
+    address: "123 Main St, Anytown, USA",
+    email: "john.doe134@example.com",
+    password: "123456"
+  }
+}
+
+Argument `firstName`: Invalid value provided. Expected String, provided Int.

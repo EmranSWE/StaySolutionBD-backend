@@ -11,13 +11,13 @@ import { userFilterableFields } from './user.contant'
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const userData = req.body
+    const result = await UserService.createUser(userData)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'User created',
+      message: 'User created successfully ! YAY',
       data: userData,
     })
-    next()
   },
 )
 const getUsers = catchAsync(

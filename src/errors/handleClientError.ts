@@ -1,38 +1,44 @@
 import { Prisma } from '@prisma/client'
 import { IGenericErrorMessage } from '../interface/error'
+import { logger } from '../shared/logger'
 
 const handleClientError = (error: Prisma.PrismaClientKnownRequestError) => {
-  let errors: IGenericErrorMessage[] = []
-  let message = ''
-  const statusCode = 400
+  const errors: IGenericErrorMessage[] = []
+  logger.info(error)
+  let message = 'An unexpected error occurred.'
 
   if (error.code === 'P2025') {
     message = (error.meta?.cause as string) || 'Record not found!'
-    errors = [
-      {
-        path: '',
-        message,
-      },
-    ]
+    errors.push({
+      path: '',
+      message,
+    })
+  } else if (error.code === 'P2002') {
+    // Handling unique constraint violations
+    const uniqueConstraintMatch = error.message.match(
+      /Unique constraint failed on the fields: \(`(.*?)`\)/,
+    )
+    const fieldName = uniqueConstraintMatch ? uniqueConstraintMatch[1] : 'field'
+    message = `The value for ${fieldName} already exists. Please use a different value.`
+    errors.push({
+      path: fieldName,
+      message,
+    })
   } else if (error.code === 'P2003') {
     if (error.message.includes('delete()` invocation:')) {
-      message = 'Delete failed'
-      errors = [
-        {
-          path: '',
-          message,
-        },
-      ]
+      message = 'Delete failed due to referenced records.'
+      errors.push({
+        path: '',
+        message,
+      })
     }
   }
 
   return {
-    statusCode,
+    statusCode: 400,
     message,
     errorMessages: errors,
   }
 }
 
 export default handleClientError
-
-//"//\nInvalid `prisma.semesterRegistration.delete()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record to delete does not exist.",
