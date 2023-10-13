@@ -1,23 +1,113 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Prisma, User } from '.prisma/client'
 import prisma from '../../../shared/prisma'
 import ApiError from '../../../errors/ApiError'
+import bcrypt from 'bcrypt'
+import { Secret } from 'jsonwebtoken'
 import { IAcademicDepartmentFilterRequest } from './user.interface'
 import { IPaginationOptions } from '../../../interface/pagination'
 import { IGenericResponse } from '../../../interface/common'
 import { paginationHelpers } from '../../../helpers/paginationHelper'
 import { userRelationalFields, userSearchableFields } from './user.contant'
+import config from '../../../config'
+import { jwtHelpers } from '../../../helpers/jwtHelpers'
+import httpStatus from 'http-status'
 
-const createUser = (data: User) => {
-  const result = prisma.user.create({
-    data,
-  })
-  if (!result) {
-    throw new ApiError(400, 'Failed to create')
+const createUser = async (data: User) => {
+  if (!data?.password) {
+    throw new ApiError(400, 'Password is required')
   }
-  return result
+
+  const hashedPassword = await bcrypt.hash(
+    data.password,
+    Number(config.bcrypt_salt_rounds),
+  )
+  data.password = hashedPassword
+  try {
+    const result = await prisma.user.create({
+      data,
+    })
+
+    // Hide sensitive data
+    delete result.password
+
+    return result
+  } catch (error) {
+    throw new ApiError(500, 'Internal server error')
+  }
+}
+const loginUser = async (data: User) => {
+  if (!data?.password || !data?.email) {
+    throw new ApiError(400, 'Both username and password are required')
+  }
+  try {
+    // Find the user in the database by their username
+    const user = await prisma.user.findUnique({
+      where: { email: data.email }, // or use email if that's your unique identifier
+    })
+
+    if (!user) {
+      throw new ApiError(404, 'User not found')
+    }
+    // Compare the input password with the stored hashed password
+    const isPasswordCorrect = await bcrypt.compare(data.password, user.password)
+
+    if (!isPasswordCorrect) {
+      throw new ApiError(401, 'Invalid password')
+    }
+
+    //Access token and refresh token
+    const accessToken = jwtHelpers.createToken(
+      { email: user.email, role: user.role, id: user.id },
+      config.jwt.secret as Secret,
+      config.jwt.expires_in as string,
+    )
+
+    //refresh token and refresh token
+    const refreshToken = jwtHelpers.createToken(
+      { email: user.email, role: user.role, id: user.id },
+      config.jwt.refresh_secret as Secret,
+      config.jwt.refresh_expires_in as string,
+    )
+    const { password, ...userWithoutPassword } = user
+    return { userWithoutPassword, accessToken, refreshToken }
+  } catch (error) {
+    // For other types of errors, throw a general internal server error
+    throw new ApiError(500, 'Internal server error')
+  }
 }
 
+const refreshToken = async (token: string) => {
+  let verifiedToken = null
+  try {
+    verifiedToken = jwtHelpers.verifyToken(
+      token,
+      config.jwt.refresh_secret as Secret,
+    )
+  } catch (error) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid token')
+  }
+
+  const { email, role } = verifiedToken
+  const isUserExist = await prisma.user.findUnique({
+    where: { email: email },
+  })
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User doesn't exist")
+  }
+
+  //Access token and refresh token
+  const newAccessToken = jwtHelpers.createToken(
+    { email: email, role: role },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string,
+  )
+  return {
+    accessToken: newAccessToken,
+  }
+}
 const getUsers = async (
   filters: IAcademicDepartmentFilterRequest,
   options: IPaginationOptions,
@@ -92,4 +182,6 @@ const getUsers = async (
 export const UserService = {
   createUser,
   getUsers,
+  loginUser,
+  refreshToken,
 }

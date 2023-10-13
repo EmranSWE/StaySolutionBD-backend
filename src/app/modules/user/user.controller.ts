@@ -7,6 +7,7 @@ import sendResponse from '../../../shared/sendResponse'
 import httpStatus from 'http-status'
 import pick from '../../../shared/pick'
 import { userFilterableFields } from './user.contant'
+import config from '../../../config'
 
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -16,7 +17,47 @@ const createUser = catchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: 'User created successfully ! YAY',
-      data: userData,
+      data: result,
+    })
+  },
+)
+
+const loginUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userData = req.body
+    const result = await UserService.loginUser(userData)
+    const { refreshToken, ...others } = result
+    //set refresh token
+    const cookieOptions = {
+      secure: config.env === 'production',
+      httpOnly: true,
+    }
+    res.cookie('refreshToken', result.refreshToken, cookieOptions)
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User login successfully ! YAY',
+      data: others,
+    })
+  },
+)
+
+const refreshToken = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { refreshToken } = req.cookies
+    const result = await UserService.refreshToken(refreshToken)
+    const cookieOptions = {
+      secure: config.env === 'production',
+      httpOnly: true,
+    }
+    res.cookie('refreshToken', refreshToken, cookieOptions)
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User login successfully ! YAY',
+      data: result,
     })
   },
 )
@@ -38,4 +79,6 @@ const getUsers = catchAsync(
 export const UserController = {
   createUser,
   getUsers,
+  loginUser,
+  refreshToken,
 }

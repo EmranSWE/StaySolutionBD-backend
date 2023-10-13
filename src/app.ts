@@ -8,11 +8,13 @@ import router from './app/routes'
 const app: Application = express()
 app.use(cors())
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+
 //parser
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-
+app.use(cookieParser())
 //Application use
 app.use('/api/v1', router)
 
