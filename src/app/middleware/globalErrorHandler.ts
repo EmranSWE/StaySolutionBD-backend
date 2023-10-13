@@ -13,6 +13,7 @@ import handleValidationError from '../../errors/handleValidationError'
 import { errorLogger, logger } from '../../shared/logger'
 import { IGenericErrorMessage } from '../../interface/error'
 import handleClientError from '../../errors/handleClientError'
+import handleSyntaxError from '../../errors/handleSyntaxError'
 
 const globalErrorHandler: ErrorRequestHandler = (
   error,
@@ -21,8 +22,8 @@ const globalErrorHandler: ErrorRequestHandler = (
   next: NextFunction,
 ) => {
   config.env === 'development'
-    ? logger.log(` globalErrorHandler 💻💻💻`, { error })
-    : errorLogger.error(` globalErrorHandler `, error)
+    ? logger.log(`Please check globalErrorHandler =>`, { error })
+    : errorLogger.error(`Please check globalErrorHandler `, error)
 
   let statusCode = 500
   let message = 'Something went wrong !'
@@ -40,6 +41,11 @@ const globalErrorHandler: ErrorRequestHandler = (
     errorMessages = simplifiedError.errorMessages
   } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
     const simplifiedError = handleClientError(error)
+    statusCode = simplifiedError.statusCode
+    message = simplifiedError.message
+    errorMessages = simplifiedError.errorMessages
+  } else if (error instanceof SyntaxError) {
+    const simplifiedError = handleSyntaxError(error)
     statusCode = simplifiedError.statusCode
     message = simplifiedError.message
     errorMessages = simplifiedError.errorMessages
@@ -65,7 +71,6 @@ const globalErrorHandler: ErrorRequestHandler = (
         ]
       : []
   }
-
   res.status(statusCode).json({
     success: false,
     message,

@@ -1,10 +1,9 @@
 import { Prisma } from '@prisma/client'
 import { IGenericErrorMessage } from '../interface/error'
-import { logger } from '../shared/logger'
 
 const handleClientError = (error: Prisma.PrismaClientKnownRequestError) => {
   const errors: IGenericErrorMessage[] = []
-  logger.info(error)
+
   let message = 'An unexpected error occurred.'
 
   if (error.code === 'P2025') {

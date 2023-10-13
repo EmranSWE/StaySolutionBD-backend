@@ -7,10 +7,11 @@ import globalErrorHandler from './app/middleware/globalErrorHandler'
 import router from './app/routes'
 const app: Application = express()
 app.use(cors())
-
+import bodyParser from 'body-parser'
 //parser
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 //Application use
 app.use('/api/v1', router)

@@ -1,79 +1,58 @@
 import { Prisma } from '@prisma/client'
 import { IGenericErrorResponse } from '../interface/common'
-import { logger } from '../shared/logger'
 
-// const handleValidationError = (
-//   error: Prisma.PrismaClientValidationError,
-// ): IGenericErrorResponse => {
-//   logger.info(error)
-//   const errors = [
-//     {
-//       path: 'Dur hoooo🧑‍💻🧑‍💻🧑‍💻🧑‍💻',
-//       message: error.message,
-//     },
-//   ]
-//   const statusCode = 400
-//   return {
-//     statusCode,
-//     message: 'Validation Error',
-//     errorMessages: errors,
-//   }
-// }
+const errorPatterns: { [key: string]: RegExp } = {
+  invalidValue: /Invalid value for argument `(.*?)`. (Expected .*?\.)/,
+  missingArgument: /Argument `(.*?)` is missing./,
+  invalidArgumentValue: /Argument `(.*?)`: Invalid value provided./,
+}
 
+/**
+ * Build error detail from the matched error.
+ */
+const buildErrorDetail = (
+  errorType: string,
+  match: RegExpMatchArray,
+): { path: string; message: string } => {
+  switch (errorType) {
+    case 'invalidValue':
+    case 'missingArgument':
+      return { path: match[1], message: match[0] }
+    case 'invalidArgumentValue':
+      return {
+        path: match[1],
+        message: `You entered an invalid type value for ${match[0]}`,
+      }
+    default:
+      return { path: 'Unknown Field', message: 'An unknown error occurred' }
+  }
+}
+
+/**
+ * Extracts error details from the provided Prisma validation error.
+ * @param error - The Prisma validation error.
+ * @returns A formatted error response.
+ */
 const handleValidationError = (
   error: Prisma.PrismaClientValidationError,
 ): IGenericErrorResponse => {
-  logger.info(error)
-
-  // Extract the relevant error message for invalid values
-  const errorMessageMatch = error.message.match(
-    /Invalid value for argument `(.*?)`. (Expected .*?\.)/,
-  )
-
-  // Extract the relevant error message for missing arguments
-  const errorMessageMatchOne = error.message.match(
-    /Argument `(.*?)` is missing./,
-  )
-
-  // Extract the relevant error message for missing arguments
-  const errorMessageMatchTwo = error.message.match(
-    /Argument `(.*?)`: Invalid value provided./,
-  )
-  let errorMessage = ''
-  let errorPath = 'Unknown Field'
-
-  // Handle the case where the value is invalid
-  if (errorMessageMatch && errorMessageMatch.length >= 3) {
-    errorPath = errorMessageMatch[1]
-    errorMessage = errorMessageMatch[0] // Full match gives the entire error message
+  let errorDetail = {
+    path: 'Unknown Field',
+    message: 'An unknown error occurred',
   }
 
-  // Handle the case where the argument is missing
-  else if (errorMessageMatchOne && errorMessageMatchOne.length >= 2) {
-    errorPath = errorMessageMatchOne[1]
-    errorMessage = errorMessageMatchOne[0] // Full match gives the entire error message
+  for (const [errorType, pattern] of Object.entries(errorPatterns)) {
+    const match = error.message.match(pattern)
+    if (match) {
+      errorDetail = buildErrorDetail(errorType, match)
+      break
+    }
   }
-
-  // Handle the case where the argument is missing
-  else if (errorMessageMatchTwo && errorMessageMatchTwo.length >= 2) {
-    errorPath = errorMessageMatchTwo[1]
-    errorMessage =
-      'You entered invalid type value for ' + errorMessageMatchTwo[0] // Full match gives the entire error message
-  }
-
-  const errors = [
-    {
-      path: errorPath,
-      message: errorMessage,
-    },
-  ]
-
-  const statusCode = 400
 
   return {
-    statusCode,
+    statusCode: 400,
     message: 'Validation Error',
-    errorMessages: errors,
+    errorMessages: [errorDetail],
   }
 }
 

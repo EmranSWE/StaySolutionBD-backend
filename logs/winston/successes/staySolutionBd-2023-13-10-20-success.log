@@ -1,0 +1,39 @@
+Fri Oct 13 2023 20:2:59 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:3:6 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:3:8 } [StaySolutionBD] info: true
+Fri Oct 13 2023 20:3:47 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:4:4 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:4:8 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:6:5 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:6:10 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:6:13 } [StaySolutionBD] info: true
+Fri Oct 13 2023 20:10:12 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:11:44 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:12:12 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:34:55 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:34:59 } [StaySolutionBD] info: true
+Fri Oct 13 2023 20:35:9 } [StaySolutionBD] info: false
+Fri Oct 13 2023 20:35:9 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+
+Unique constraint failed on the fields: (`email`)
+Fri Oct 13 2023 20:35:20 } [StaySolutionBD] info: false
+Fri Oct 13 2023 20:35:27 } [StaySolutionBD] info: false
+Fri Oct 13 2023 20:35:27 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+
+Unique constraint failed on the fields: (`email`)
+Fri Oct 13 2023 20:36:4 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:36:22 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:36:40 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:37:15 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:37:24 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:40:2 } [StaySolutionBD] info: Server running on port 5000
+Fri Oct 13 2023 20:40:5 } [StaySolutionBD] info: 
+Invalid `prisma.user.create()` invocation:
+
+
+Unique constraint failed on the fields: (`email`)
+Fri Oct 13 2023 20:41:17 } [StaySolutionBD] info: Server running on port 5000
