@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import express, { Application, Request, Response } from 'express'
 import cors from 'cors'
-import { UserRoutes } from './app/modules/user/user.routes'
 import { NextFunction } from 'connect'
 import httpStatus from 'http-status'
 import globalErrorHandler from './app/middleware/globalErrorHandler'
+import router from './app/routes'
 const app: Application = express()
 app.use(cors())
 
@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 //Application use
-app.use('/api/v1/users', UserRoutes)
+app.use('/api/v1', router)
 
 //Error
 
