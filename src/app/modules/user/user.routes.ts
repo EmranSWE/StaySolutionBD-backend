@@ -16,6 +16,12 @@ router.post(
   //   validateRequest(UserValidation.CreateUserZodSchema),
   UserController.loginUser,
 )
+
+router.post(
+  '/change-password',
+  //   validateRequest(UserValidation.CreateUserZodSchema),
+  UserController.changePassword,
+)
 router.get('/get-user', auth(ENUM_USER_ROLE.USER), UserController.getUsers)
 router.get('/refresh-token', UserController.refreshToken)
 export const UserRoutes = router

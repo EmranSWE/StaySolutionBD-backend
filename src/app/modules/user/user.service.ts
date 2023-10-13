@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -108,6 +109,7 @@ const refreshToken = async (token: string) => {
     accessToken: newAccessToken,
   }
 }
+
 const getUsers = async (
   filters: IAcademicDepartmentFilterRequest,
   options: IPaginationOptions,
@@ -179,9 +181,63 @@ const getUsers = async (
   }
 }
 
+interface IChangedPassword {
+  email: string
+  oldPassword: string
+  newPassword: string
+}
+const changePassword = async (data: IChangedPassword) => {
+  const { oldPassword, newPassword, email } = data
+
+  // Validate provided data
+  if (!email || !oldPassword || !newPassword) {
+    throw new ApiError(
+      400,
+      'Email, old password, and new password are required',
+    )
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email }, // Use email as the unique identifier
+    })
+
+    if (!user) {
+      throw new ApiError(404, 'User not found')
+    }
+
+    // Compare the input password with the stored hashed password
+    const isPasswordCorrect = await bcrypt.compare(oldPassword, user.password)
+
+    if (!isPasswordCorrect) {
+      throw new ApiError(401, 'Invalid old password')
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(
+      newPassword,
+      Number(config.bcrypt_salt_rounds),
+    )
+
+    // Update password
+    await prisma.user.update({
+      where: { email },
+      data: {
+        password: hashedPassword,
+        passwordChangedAt: new Date(),
+      },
+    })
+
+    return {} // Return empty object or maybe some relevant info if needed
+  } catch (error) {
+    // Handle other unexpected errors here if needed
+    throw error
+  }
+}
 export const UserService = {
   createUser,
   getUsers,
+  changePassword,
   loginUser,
   refreshToken,
 }

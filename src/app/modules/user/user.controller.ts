@@ -43,6 +43,21 @@ const loginUser = catchAsync(
   },
 )
 
+const changePassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user
+    const passwordData = req.body
+    const result = await UserService.changePassword(passwordData, user)
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User login successfully ! YAY',
+      data: result,
+    })
+  },
+)
+
 const refreshToken = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { refreshToken } = req.cookies
@@ -81,4 +96,5 @@ export const UserController = {
   getUsers,
   loginUser,
   refreshToken,
+  changePassword,
 }
