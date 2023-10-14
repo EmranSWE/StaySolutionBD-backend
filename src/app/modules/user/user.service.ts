@@ -7,7 +7,11 @@ import prisma from '../../../shared/prisma'
 import ApiError from '../../../errors/ApiError'
 import bcrypt from 'bcrypt'
 import { Secret } from 'jsonwebtoken'
-import { IAcademicDepartmentFilterRequest } from './user.interface'
+import {
+  ChangePasswordPayload,
+  IAcademicDepartmentFilterRequest,
+  UserUpdateInput,
+} from './user.interface'
 import { IPaginationOptions } from '../../../interface/pagination'
 import { IGenericResponse } from '../../../interface/common'
 import { paginationHelpers } from '../../../helpers/paginationHelper'
@@ -25,59 +29,52 @@ const createUser = async (data: User) => {
     data.password,
     Number(config.bcrypt_salt_rounds),
   )
+
   data.password = hashedPassword
-  try {
-    const result = await prisma.user.create({
-      data,
-    })
 
-    // Hide sensitive data
-    delete result.password
+  const result = await prisma.user.create({ data })
 
-    return result
-  } catch (error) {
-    throw new ApiError(500, 'Internal server error')
-  }
+  // Hide sensitive data
+  const { password, ...userData } = result
+
+  return userData
 }
+
 const loginUser = async (data: User) => {
   if (!data?.password || !data?.email) {
     throw new ApiError(400, 'Both username and password are required')
   }
-  try {
-    // Find the user in the database by their username
-    const user = await prisma.user.findUnique({
-      where: { email: data.email }, // or use email if that's your unique identifier
-    })
 
-    if (!user) {
-      throw new ApiError(404, 'User not found')
-    }
-    // Compare the input password with the stored hashed password
-    const isPasswordCorrect = await bcrypt.compare(data.password, user.password)
+  // Find the user in the database by their username
+  const user = await prisma.user.findUnique({
+    where: { email: data.email }, // or use email if that's your unique identifier
+  })
 
-    if (!isPasswordCorrect) {
-      throw new ApiError(401, 'Invalid password')
-    }
-
-    //Access token and refresh token
-    const accessToken = jwtHelpers.createToken(
-      { email: user.email, role: user.role, id: user.id },
-      config.jwt.secret as Secret,
-      config.jwt.expires_in as string,
-    )
-
-    //refresh token and refresh token
-    const refreshToken = jwtHelpers.createToken(
-      { email: user.email, role: user.role, id: user.id },
-      config.jwt.refresh_secret as Secret,
-      config.jwt.refresh_expires_in as string,
-    )
-    const { password, ...userWithoutPassword } = user
-    return { userWithoutPassword, accessToken, refreshToken }
-  } catch (error) {
-    // For other types of errors, throw a general internal server error
-    throw new ApiError(500, 'Internal server error')
+  if (!user) {
+    throw new ApiError(404, 'User not found')
   }
+  // Compare the input password with the stored hashed password
+  const isPasswordCorrect = await bcrypt.compare(data.password, user.password)
+
+  if (!isPasswordCorrect) {
+    throw new ApiError(401, 'Invalid password')
+  }
+
+  //Access token and refresh token
+  const accessToken = jwtHelpers.createToken(
+    { email: user.email, role: user.role, id: user.id },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string,
+  )
+
+  //refresh token and refresh token
+  const refreshToken = jwtHelpers.createToken(
+    { email: user.email, role: user.role, id: user.id },
+    config.jwt.refresh_secret as Secret,
+    config.jwt.refresh_expires_in as string,
+  )
+
+  return { accessToken, refreshToken }
 }
 
 const refreshToken = async (token: string) => {
@@ -181,36 +178,51 @@ const getUsers = async (
   }
 }
 
-interface IChangedPassword {
-  email: string
-  oldPassword: string
-  newPassword: string
-}
-const changePassword = async (data: IChangedPassword) => {
-  const { oldPassword, newPassword, email } = data
-
+const changePassword = async (
+  currentUser: { email: string },
+  payload: ChangePasswordPayload,
+) => {
+  const { oldPassword, newPassword } = payload
   // Validate provided data
-  if (!email || !oldPassword || !newPassword) {
+  if (!oldPassword || !newPassword) {
     throw new ApiError(
-      400,
-      'Email, old password, and new password are required',
+      httpStatus.BAD_REQUEST,
+      'Old password and new password are required',
+    )
+  }
+  // Ensure that the password field in the database is not null or undefined
+  if (oldPassword === newPassword) {
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "You can't use old password",
     )
   }
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { email }, // Use email as the unique identifier
+    const existingUser = await prisma.user.findUnique({
+      where: { email: currentUser.email },
     })
 
-    if (!user) {
-      throw new ApiError(404, 'User not found')
+    if (!existingUser) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
     }
 
-    // Compare the input password with the stored hashed password
-    const isPasswordCorrect = await bcrypt.compare(oldPassword, user.password)
+    // Ensure that the password field in the database is not null or undefined
+    if (!existingUser.password) {
+      throw new ApiError(
+        httpStatus.INTERNAL_SERVER_ERROR,
+        'Stored password is missing',
+      )
+    }
+
+    // Compare the provided old password with the stored hashed password
+    const isPasswordCorrect = await bcrypt.compare(
+      oldPassword,
+      existingUser.password,
+    )
 
     if (!isPasswordCorrect) {
-      throw new ApiError(401, 'Invalid old password')
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid old password')
     }
 
     // Hash the new password
@@ -219,21 +231,29 @@ const changePassword = async (data: IChangedPassword) => {
       Number(config.bcrypt_salt_rounds),
     )
 
-    // Update password
+    // Update the user's password
+    const updateData: UserUpdateInput = {
+      password: hashedPassword,
+      passwordChangedAt: new Date(),
+    }
     await prisma.user.update({
-      where: { email },
-      data: {
-        password: hashedPassword,
-        passwordChangedAt: new Date(),
-      },
+      where: { email: existingUser.email },
+      data: updateData,
     })
 
-    return {} // Return empty object or maybe some relevant info if needed
+    return { message: 'Password updated successfully' }
   } catch (error) {
-    // Handle other unexpected errors here if needed
-    throw error
+    if (error instanceof ApiError) {
+      throw error
+    }
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'An unexpected error occurred',
+    )
   }
 }
+
+export default changePassword
 export const UserService = {
   createUser,
   getUsers,

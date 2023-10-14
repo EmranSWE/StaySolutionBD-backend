@@ -16,7 +16,7 @@ model User {
   firstName String 
   middleName String?
   lastName String
-  role ROLE @default(USER)
+  role ROLE @default(user)
   address String
   email String @unique
   password String
@@ -31,7 +31,7 @@ model User {
 
 
 enum ROLE {
-  USER
-  ADMIN
-  SUPER_ADMIN
+  super_admin
+  admin
+  user
 }

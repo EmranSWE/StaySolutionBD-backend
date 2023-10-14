@@ -3,7 +3,12 @@ export type IAcademicDepartmentFilterRequest = {
   academicFacultyId?: string | undefined
 }
 
-export type IChangedPassword = {
+export interface ChangePasswordPayload {
   oldPassword: string
   newPassword: string
+}
+
+export type UserUpdateInput = {
+  password: string
+  passwordChangedAt: Date
 }

@@ -7,7 +7,7 @@ import { ENUM_USER_ROLE } from '../../../enum/user'
 const router = express.Router()
 
 router.post(
-  '/create-user',
+  '/signup',
   //   validateRequest(UserValidation.CreateUserZodSchema),
   UserController.createUser,
 )
@@ -19,6 +19,7 @@ router.post(
 
 router.post(
   '/change-password',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.USER),
   //   validateRequest(UserValidation.CreateUserZodSchema),
   UserController.changePassword,
 )

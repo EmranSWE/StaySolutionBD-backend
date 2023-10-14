@@ -21,9 +21,9 @@ const globalErrorHandler: ErrorRequestHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  // config.env === 'development'
-  //   ? logger.log(`Please check globalErrorHandler =>`, { error })
-  //   : errorLogger.error(`Please check globalErrorHandler `, error)
+  config.env === 'development'
+    ? logger.log(`Please check globalErrorHandler`, { error })
+    : errorLogger.error(`Please check globalErrorHandler `, error)
 
   let statusCode = 500
   let message = 'Something went wrong !'
