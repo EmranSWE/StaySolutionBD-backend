@@ -23,13 +23,85 @@ model User {
   passwordChangedAt DateTime? @updatedAt
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  properties Property[]
+  reviews Review[]
+  bookings Booking[]
+  leases Lease[]
+    payment Payment[]
   @@map("users")
 }
 
+model Property {
+  id               String  @id @default(uuid())
+  address          String
+  numberOfRooms    Int
+  monthlyRent      Float
+  flatNo           String
+  isConditionGood  Boolean    @default(true)
+  isElectricityOkay Boolean  @default(true)
+  isSanitaryOkay   Boolean    @default(true)
+  ownerId          String
+  owner            User      @relation(fields: [ownerId], references: [id])
+
+    reviews Review[]
+     bookings Booking[]
+     leases Lease[]
+   @@map("properties")
+}
 
 
+model Review {
+  id         String   @id @default(uuid()) 
+  reviewTest String
+  rating     Int
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
+  tenant     User     @relation(fields: [tenantId], references: [id])
+  tenantId   String
 
+  @@map("reviews")
+}
+
+
+model Booking {
+  id String @id @default(uuid())
+  bookingStartDate DateTime @default(now()) 
+   bookingEndDate DateTime @default(now()) 
+   property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
+   tenant     User     @relation(fields: [tenantId], references: [id])
+  tenantId   String
+  payment Payment[]
+  @@map("bookings")
+}
+
+
+model Lease {
+  id String @id @default(uuid())
+  leaseStartDate DateTime @default(now()) 
+   leaseEndDate DateTime @default(now()) 
+   property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
+   tenant     User     @relation(fields: [tenantId], references: [id])
+  tenantId   String
+  payment Payment[]
+@@map("leases")
+}
+
+model Payment {
+  id String @id @default(uuid())
+  lease Lease @relation(fields:[leaseId], references:[id])
+  leaseId String
+  booking Booking @relation(fields:[bookingId], references:[id])
+  bookingId String
+  owner    User     @relation(fields: [ownerId], references: [id])
+  ownerId   String
+   paymentDate DateTime @default(now())
+   paymentAmount Int 
+   paymentStatus String
+   payment String
+
+}
 enum ROLE {
   super_admin
   admin

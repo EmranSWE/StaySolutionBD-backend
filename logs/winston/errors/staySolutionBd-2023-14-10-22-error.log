@@ -1,0 +1,11 @@
+Sat Oct 14 2023 22:47:16 } [StaySolutionBD] error: 
+Invalid `prisma.review.findUnique()` invocation:
+
+{
+  where: {
+    id: 123
+        ~~~
+  }
+}
+
+Argument `id`: Invalid value provided. Expected String, provided Int.

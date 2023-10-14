@@ -10,3 +10,5 @@ export const userRelationalFields: string[] = ['academicFacultyId']
 export const userRelationalFieldsMapper: { [key: string]: string } = {
   academicFacultyId: 'academicFaculty',
 }
+
+export const IReviewQueryOption = ['limit', 'page', 'sortBy', 'sortOrder']

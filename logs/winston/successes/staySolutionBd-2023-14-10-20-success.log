@@ -1,0 +1,79 @@
+Sat Oct 14 2023 20:1:55 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:2:17 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:4:33 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:5:40 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:5:42 } [StaySolutionBD] info: 
+Invalid `prisma.review.create()` invocation:
+
+
+Foreign key constraint failed on the field: `reviews_propertyId_fkey (index)`
+Sat Oct 14 2023 20:8:49 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:9:3 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:9:13 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:10:0 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:10:1 } [StaySolutionBD] info: 🧑‍💻🧑‍💻
+Sat Oct 14 2023 20:10:18 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:10:19 } [StaySolutionBD] info: 🧑‍💻🧑‍💻
+Sat Oct 14 2023 20:10:33 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:10:34 } [StaySolutionBD] info: false
+Sat Oct 14 2023 20:10:41 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:10:42 } [StaySolutionBD] info: false
+Sat Oct 14 2023 20:10:48 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:10:49 } [StaySolutionBD] info: true
+Sat Oct 14 2023 20:13:19 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:14:44 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:15:5 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:15:7 } [StaySolutionBD] info: true
+Sat Oct 14 2023 20:15:59 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:16:13 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:17:11 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:19:59 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:20:11 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:20:17 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:22:43 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:23:8 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:23:44 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:25:17 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:25:22 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:25:42 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:26:10 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:26:18 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:26:53 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:27:12 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:27:32 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:27:47 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:29:29 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:29:44 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:34:35 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:34:57 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:35:46 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:36:33 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:37:23 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:37:35 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:38:6 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:40:24 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:41:22 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:42:2 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:42:24 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:43:51 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:44:22 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:45:8 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:45:54 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:46:26 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:46:31 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:47:18 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:47:21 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:47:56 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:48:10 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:48:18 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:50:59 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:51:2 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:51:27 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:51:37 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:54:34 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:54:46 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:55:26 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:56:22 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:56:51 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:59:29 } [StaySolutionBD] info: Server running on port 5000
+Sat Oct 14 2023 20:59:36 } [StaySolutionBD] info: Server running on port 5000

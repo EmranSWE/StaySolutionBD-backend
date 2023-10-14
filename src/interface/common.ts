@@ -14,3 +14,10 @@ export type IGenericErrorResponse = {
   message: string
   errorMessages: IGenericErrorMessage[]
 }
+
+export type IQueryOptions = {
+  limit?: number
+  page?: number
+  sortBy?: string
+  sortOrder?: 'asc' | 'desc'
+}
