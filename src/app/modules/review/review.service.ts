@@ -7,7 +7,6 @@
 import { Prisma, Review } from '@prisma/client'
 import prisma from '../../../shared/prisma'
 import ApiError from '../../../errors/ApiError'
-import httpStatus from 'http-status'
 import { IReviewFilterRequest, UniqueQueryPayload } from './review.interface'
 import { IPaginationOptions } from '../../../interface/pagination'
 import { IGenericResponse } from '../../../interface/common'
@@ -16,7 +15,7 @@ import {
   reviewRelationalFields,
   reviewSearchableFields,
 } from './review.constant'
-import { getUniqueRecord, updateRecord } from '../../utils/utils'
+import { getUniqueRecord } from '../../utils/utils'
 
 const addReview = async (payload: Review) => {
   if (payload.rating > 5) {
