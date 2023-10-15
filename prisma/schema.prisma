@@ -67,6 +67,7 @@ model Booking {
   id String @id @default(uuid())
   bookingStartDate DateTime @default(now()) 
    bookingEndDate DateTime @default(now()) 
+   profileImage String?
    property   Property @relation(fields: [propertyId], references: [id])
   propertyId String
    tenant     User     @relation(fields: [tenantId], references: [id])

@@ -7,7 +7,7 @@
 import { Prisma, Review } from '@prisma/client'
 import prisma from '../../../shared/prisma'
 import ApiError from '../../../errors/ApiError'
-import { IReviewFilterRequest, UniqueQueryPayload } from './review.interface'
+import { IReviewFilterRequest } from './review.interface'
 import { IPaginationOptions } from '../../../interface/pagination'
 import { IGenericResponse } from '../../../interface/common'
 import { paginationHelpers } from '../../../helpers/paginationHelper'

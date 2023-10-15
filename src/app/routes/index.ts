@@ -2,6 +2,7 @@ import express from 'express'
 import { UserRoutes } from '../modules/user/user.routes'
 import { PropertyRoutes } from '../modules/properties/property.route'
 import { ReviewRoutes } from '../modules/review/review.route'
+import { BookingRoutes } from '../modules/booking/booking.route'
 
 const router = express.Router()
 
@@ -17,6 +18,10 @@ const moduleRoutes = [
   {
     path: '/reviews',
     route: ReviewRoutes,
+  },
+  {
+    path: '/bookings',
+    route: BookingRoutes,
   },
 ]
 
