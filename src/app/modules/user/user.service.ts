@@ -10,6 +10,8 @@ import { Secret } from 'jsonwebtoken'
 import {
   ChangePasswordPayload,
   IAcademicDepartmentFilterRequest,
+  IPayloadType,
+  UpdateUserResponse,
   UserUpdateInput,
 } from './user.interface'
 import { IPaginationOptions } from '../../../interface/pagination'
@@ -19,6 +21,8 @@ import { userRelationalFields, userSearchableFields } from './user.contant'
 import config from '../../../config'
 import { jwtHelpers } from '../../../helpers/jwtHelpers'
 import httpStatus from 'http-status'
+import { ICloudinaryResponse, IUploadFile } from '../../../interface/file'
+import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
 
 const createUser = async (data: User) => {
   if (!data?.password) {
@@ -77,6 +81,44 @@ const loginUser = async (data: User) => {
   return { accessToken, refreshToken }
 }
 
+const updateUser = async (payload: any): Promise<UpdateUserResponse> => {
+  if (!payload?.file || !payload.params?.id || !payload.user?.id) {
+    return { success: false, error: 'Invalid input or file is missing' }
+  }
+  const { file, params, user, body } = payload
+  const { id: paramsId } = params
+  const { id: userId } = user
+  if (paramsId !== userId) {
+    return {
+      success: false,
+      error: 'Unauthorized: You cannot update this user',
+    }
+  }
+
+  if (body.email) {
+    return { success: false, error: 'You cannot update primary email' }
+  }
+
+  const uploadedImage: ICloudinaryResponse =
+    await FileUploadHelper.uploadToCloudinary(file as IUploadFile)
+
+  if (!uploadedImage?.secure_url) {
+    return { success: false, error: 'Failed to upload image' }
+  }
+
+  const updatedData = {
+    ...body,
+    profilePic: uploadedImage.secure_url,
+  }
+
+  const result = await prisma.user.update({
+    where: { id: userId },
+    data: updatedData,
+  })
+
+  return { success: true, data: result }
+}
+
 const refreshToken = async (token: string) => {
   let verifiedToken = null
   try {
@@ -109,7 +151,7 @@ const refreshToken = async (token: string) => {
 
 const getUsers = async (
   filters: IAcademicDepartmentFilterRequest,
-  options: IPaginationOptions,
+  options: any,
 ): Promise<IGenericResponse<User[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options)
   const { searchTerm, ...filterData } = filters
@@ -259,5 +301,6 @@ export const UserService = {
   getUsers,
   changePassword,
   loginUser,
+  updateUser,
   refreshToken,
 }

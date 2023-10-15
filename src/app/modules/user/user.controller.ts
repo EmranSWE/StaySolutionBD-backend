@@ -43,6 +43,28 @@ const loginUser = catchAsync(
   },
 )
 
+// User Profile Update
+const updateUser = catchAsync(
+  async (req, res: Response, next: NextFunction) => {
+    if (req.body.data) {
+      req.body = JSON.parse(req.body.data)
+    }
+
+    const payload = {
+      body: req.body,
+      file: req.file,
+      params: req.params,
+      user: req.user,
+    }
+
+    const result = await UserService.updateUser(payload)
+    res.status(200).json({
+      success: true,
+      message: 'User updated successfully',
+      data: result,
+    })
+  },
+)
 const changePassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user
@@ -87,7 +109,7 @@ const getUsers = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'AcademicDepartments fetched successfully',
+      message: 'User fetched successfully',
       meta: result.meta,
       data: result.data,
     })
@@ -100,4 +122,5 @@ export const UserController = {
   loginUser,
   refreshToken,
   changePassword,
+  updateUser,
 }
