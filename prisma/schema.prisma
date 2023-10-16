@@ -18,6 +18,69 @@ enum ROLE {
 
 }
 
+
+enum PropertyStatus {
+Available
+Booked
+UnderMaintenance
+}
+
+enum BookingStatus {
+Confirmed
+Pending
+Cancelled
+}
+
+
+enum PaymentStatus {
+Completed
+Pending
+Failed
+}
+
+
+enum PriorityLevel {
+Low
+Medium
+High
+}
+
+
+enum IssueStatus {
+  OPEN       
+  IN_PROGRESS
+  RESOLVED    
+  CLOSED      
+}
+
+
+enum NotificationType {
+Booking
+Cancellation
+Offers
+}
+enum NotificationPlatform {
+Email
+SMS
+App
+}
+
+enum MessageCategory {
+Inquiry
+BookingRelated
+IssueRelated
+}
+
+enum Category {
+  Apartment
+  Condominium
+  Single_family_home
+  Townhouse
+  Studio
+  Duplex
+  Villa
+  Cottage
+}
 model User {
   id      String      @id @default(uuid())
   firstName String 
@@ -37,6 +100,190 @@ model User {
   password String
   passwordChangedAt DateTime? @updatedAt
   createdAt DateTime @default(now())
+  properties Property[]
+  reviews Review[]
+  bookings Booking[]
+  payments Payment[]
+  issues Issue[]
+  wishlists WishList[]
+  messageSent Message[]  @relation("MessageSent")
+  messageReceived Message[]  @relation("MessageReceived")
+  notifications Notification[]
+  loyalties Loyalty[]
+  marketplaces Marketplace[]
+  insurances Insurance[]
   @@map("users")
 }
 
+model Property {
+  id String @id @default(uuid())
+  location String[]
+  city String?
+  numberOfRooms Int
+  monthlyRent Int?
+  flatNo String?
+  description String?
+  amenities String[]
+  rules String[]
+  availableDate DateTime? @updatedAt
+  imageGallery String[]
+  size String?
+  maxOccupancy Int
+  PropertyStatus PropertyStatus
+  videoLink String?
+  propertyTags String[]
+  ownerId String
+  owner User @relation(fields:[ownerId],references:[id])
+ reviews Review[]
+ bookings Booking[]
+ issues Issue[]
+ safeties Safety[]
+ wishlists WishList[]
+  insuranceId String? @unique
+  insurance Insurance? @relation(fields: [insuranceId], references: [id])
+  @@map("properties")
+}
+
+
+model Review {
+  id String @id @default(uuid())
+  comments String
+  rating Int
+  reviewDate DateTime @default(now())
+  responseFromOwner String?
+  reviewPic String[]
+  propertyId String
+  property Property @relation(fields:[propertyId], references:[id])
+  renterId String
+  renter User @relation(fields:[renterId],references:[id])
+  
+  @@map("reviews")
+}
+
+
+model Booking {
+  id String @id @default(uuid())
+  bookingStartDate DateTime @default(now())
+  bookingEndDate DateTime 
+  bookingStatus BookingStatus
+  specialRequest String?
+  renterId String
+  renter User @relation(fields:[renterId],references:[id])
+  propertyId String
+  property Property @relation(fields:[propertyId], references:[id])
+  payments Payment[]
+  @@map("bookings")
+}
+
+
+model Payment{
+  id String @id @default(uuid())
+  paymentMethod String?
+  paymentDate DateTime @default(now())
+  paymentStatus PaymentStatus
+  securityDeposit Int
+  paymentAmount Int
+  bookingId String
+  booking Booking @relation(fields:[bookingId],references:[id])
+  renterId String
+   renter User @relation(fields:[renterId],references:[id])
+   @@map("payments")
+}
+
+model Issue {
+  id String @id @default(uuid())
+  issueDescription String
+  reportDate DateTime
+  issueStatus IssueStatus  @default(OPEN)
+  priorityLevel PriorityLevel
+  propertyId String
+  property Property @relation(fields:[propertyId], references:[id])
+    renterId String
+  user User @relation(fields:[renterId], references:[id])
+
+  @@map("issues")
+}
+
+
+model Safety{
+  id String @id @default(uuid())
+  safetyAmenities String[]
+  safetyScore Int
+  propertyId String
+  property Property @relation(fields:[propertyId],references:[id])
+}
+
+
+model Message {
+  id String @id @default(uuid())
+  content String
+  timestamps DateTime
+  category MessageCategory
+  senderId String
+  sender User @relation("MessageSent",fields:[senderId],references:[id])
+   receiverId String
+  receiver User @relation("MessageReceived",fields:[receiverId],references:[id])
+  @@map("messages")
+}
+
+model Notification {
+  id String @id @default(uuid())
+  content String
+  notificationType NotificationType
+  timestamps DateTime
+  notificationPlatform NotificationPlatform
+  userId String
+  user User @relation(fields:[userId],references:[id])
+  @@map("notifications")
+}
+
+
+model WishList {
+  id String @id @default(uuid())
+  dateAdded DateTime @default(now())
+   renterId String
+  renter User @relation(fields:[renterId],references:[id])
+   propertyId String
+  property Property @relation(fields:[propertyId],references:[id])
+  @@map("wishlists")
+}
+
+
+model Loyalty {
+  id String @id @default(uuid())
+  points Int
+  redemptionHistory String[]
+  userId String
+  user User @relation(fields:[userId],references:[id])
+  @@map("loyalties")
+}
+
+model LocalServices {
+id String @id @default(uuid())
+location String
+serviceType String
+description String
+contactDetails String
+operatingHours String?
+@@map("localservices")
+}
+
+model Marketplace {
+id String @id @default(uuid())
+itemDescription String
+price Int
+category Category @default(Apartment)
+ownerId String
+owner User @relation(fields: [ownerId], references: [id])
+@@map("marketplaces")
+}
+model Insurance {
+id String @id @default(uuid())
+policyDetails String
+coverageAmount Int
+expiryDate DateTime
+property      Property?
+renterId String
+renter User @relation(fields: [renterId], references: [id])
+@@map("insurances")
+}
