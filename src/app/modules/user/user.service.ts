@@ -11,13 +11,18 @@ import {
   ChangePasswordPayload,
   IAcademicDepartmentFilterRequest,
   IPayloadType,
+  IUserFilterRequest,
   UpdateUserResponse,
   UserUpdateInput,
 } from './user.interface'
 import { IPaginationOptions } from '../../../interface/pagination'
 import { IGenericResponse } from '../../../interface/common'
 import { paginationHelpers } from '../../../helpers/paginationHelper'
-import { userRelationalFields, userSearchableFields } from './user.contant'
+import {
+  userRelationalFields,
+  userRelationalFieldsMapper,
+  userSearchableFields,
+} from './user.constants'
 import config from '../../../config'
 import { jwtHelpers } from '../../../helpers/jwtHelpers'
 import httpStatus from 'http-status'
@@ -150,14 +155,13 @@ const refreshToken = async (token: string) => {
 }
 
 const getUsers = async (
-  filters: IAcademicDepartmentFilterRequest,
-  options: any,
+  filters: IUserFilterRequest,
+  options: IPaginationOptions,
 ): Promise<IGenericResponse<User[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options)
   const { searchTerm, ...filterData } = filters
 
   const andConditions = []
-
   if (searchTerm) {
     andConditions.push({
       OR: userSearchableFields.map(field => ({
@@ -174,7 +178,7 @@ const getUsers = async (
       AND: Object.keys(filterData).map(key => {
         if (userRelationalFields.includes(key)) {
           return {
-            [userRelationalFields[key]]: {
+            [userRelationalFieldsMapper[key]]: {
               id: (filterData as any)[key],
             },
           }
@@ -191,11 +195,7 @@ const getUsers = async (
 
   const whereConditions: Prisma.UserWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {}
-
   const result = await prisma.user.findMany({
-    // include: {
-    //   academicFaculty: true,
-    // },
     where: whereConditions,
     skip,
     take: limit,
@@ -203,7 +203,7 @@ const getUsers = async (
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
         : {
-            address: 'desc',
+            createdAt: 'desc',
           },
   })
   const total = await prisma.user.count({
@@ -295,7 +295,29 @@ const changePassword = async (
   }
 }
 
-export default changePassword
+const deleteUser = async (authId: any, deletedId: any) => {
+  const isSameUser = await prisma.user.findUnique({
+    where: {
+      id: deletedId,
+    },
+  })
+
+  if (!isSameUser) {
+    throw new ApiError(404, 'User not found')
+  }
+
+  if (isSameUser?.id !== authId) {
+    throw new ApiError(400, "You haven't permission to delete")
+  }
+
+  const result = await prisma.user.delete({
+    where: {
+      id: deletedId,
+    },
+  })
+
+  return result
+}
 export const UserService = {
   createUser,
   getUsers,
@@ -303,4 +325,5 @@ export const UserService = {
   loginUser,
   updateUser,
   refreshToken,
+  deleteUser,
 }

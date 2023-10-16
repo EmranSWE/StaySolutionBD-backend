@@ -27,3 +27,9 @@ export interface UpdateUserResponse {
   data?: any
   error?: string
 }
+
+export type IUserFilterRequest = {
+  searchTerm?: string | undefined
+  propertyId?: string | undefined
+  id?: string | undefined
+}

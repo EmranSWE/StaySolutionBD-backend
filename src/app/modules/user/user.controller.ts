@@ -6,7 +6,7 @@ import catchAsync from '../../../shared/catchAsync'
 import sendResponse from '../../../shared/sendResponse'
 import httpStatus from 'http-status'
 import pick from '../../../shared/pick'
-import { userFilterableFields } from './user.contant'
+import { IReviewQueryOption, userFilterableFields } from './user.constants'
 import config from '../../../config'
 
 const createUser = catchAsync(
@@ -104,7 +104,8 @@ const refreshToken = catchAsync(
 const getUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const filters = pick(req.query, userFilterableFields)
-    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
+    const options = pick(req.query, IReviewQueryOption)
+
     const result = await UserService.getUsers(filters, options)
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -116,6 +117,21 @@ const getUsers = catchAsync(
   },
 )
 
+//Delete a single user
+const deleteUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const UserId = req.params.id
+    const ids = req.user?.id
+
+    const result = await UserService.deleteUser(ids, UserId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: ' User deleted Successfully',
+      data: result,
+    })
+  },
+)
 export const UserController = {
   createUser,
   getUsers,
@@ -123,4 +139,5 @@ export const UserController = {
   refreshToken,
   changePassword,
   updateUser,
+  deleteUser,
 }

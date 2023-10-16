@@ -5,10 +5,9 @@ import catchAsync from '../../../shared/catchAsync'
 import sendResponse from '../../../shared/sendResponse'
 import httpStatus from 'http-status'
 import pick from '../../../shared/pick'
-import config from '../../../config'
 import { ReviewService } from './review.service'
 import { reviewFilterableFields } from './review.constant'
-import { IReviewQueryOption } from '../user/user.contant'
+import { IReviewQueryOption } from '../user/user.constants'
 
 const addReview = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -27,7 +26,6 @@ const getAllReviews = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const filters = pick(req.query, reviewFilterableFields)
     const options = pick(req.query, IReviewQueryOption)
-
     const result = await ReviewService.getAllReviews(filters, options)
     sendResponse(res, {
       statusCode: httpStatus.OK,
