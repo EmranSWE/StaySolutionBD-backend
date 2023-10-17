@@ -194,7 +194,7 @@ model Payment{
 model Issue {
   id String @id @default(uuid())
   issueDescription String
-  reportDate DateTime
+  reportDate DateTime @default(now())
   issueStatus IssueStatus  @default(OPEN)
   priorityLevel PriorityLevel
   propertyId String
