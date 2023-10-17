@@ -163,16 +163,18 @@ model Review {
 
 
 model Booking {
-  id String @id @default(uuid())
-  bookingStartDate DateTime @default(now())
-  bookingEndDate DateTime 
-  bookingStatus BookingStatus
-  specialRequest String?
-  renterId String
-  renter User @relation(fields:[renterId],references:[id])
-  propertyId String
-  property Property @relation(fields:[propertyId], references:[id])
-  payments Payment[]
+  id                String         @id @default(uuid())
+  bookingStartDate  DateTime       @default(now())
+  bookingEndDate    DateTime?
+  bookingStatus     BookingStatus @default(Pending)
+  specialRequest    String?
+  renterId          String
+  renter            User           @relation(fields: [renterId], references: [id])
+  propertyId        String
+  property          Property       @relation(fields: [propertyId], references: [id])
+  payments          Payment[]
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
   @@map("bookings")
 }
 

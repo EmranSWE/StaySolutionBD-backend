@@ -4,214 +4,202 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Prisma, Booking } from '@prisma/client'
+import { Booking, Prisma, Property, Review } from '@prisma/client'
 import prisma from '../../../shared/prisma'
+import ApiError from '../../../errors/ApiError'
+import { ICloudinaryResponse, IUploadFile } from '../../../interface/file'
 import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
 import {
-  ICloudinaryResponse,
-  IUploadFiel,
-  IUploadFile,
-} from '../../../interface/file'
-// import ApiError from '../../../errors/ApiError'
-// import { IPaginationOptions } from '../../../interface/pagination'
-// import { IGenericResponse } from '../../../interface/common'
-// import { paginationHelpers } from '../../../helpers/paginationHelper'
+  IBookingFilterRequest,
+  UpdateBookingResponse,
+} from './booking.interface'
+import { IPaginationOptions } from '../../../interface/pagination'
+import { IGenericResponse } from '../../../interface/common'
+import { paginationHelpers } from '../../../helpers/paginationHelper'
 
-// import { getUniqueRecord } from '../../utils/utils'
-// import { IBookingFilterRequest } from './Booking.interface'
-// import {
-//   BookingRelationalFields,
-//   BookingSearchableFields,
-// } from './Booking.constant'
+import { getUniqueRecord } from '../../utils/utils'
+import {
+  BookingRelationalFields,
+  BookingRelationalFieldsMapper,
+  BookingSearchableFields,
+} from './booking.constant'
 
-const addBooking = async payload => {
-  if (!payload || !payload.file) {
-    return { success: false, error: 'Payload or file is missing' }
+const addBooking = async (payload: any) => {
+  const { user, body } = payload
+
+  // Authorization check: Ensure user has the 'owner' role
+  const { role } = user
+  if (role !== 'renter') {
+    return {
+      success: false,
+      error: 'Unauthorized: You cannot update this user',
+    }
   }
 
-  const files = payload.file as IUploadFile
-
-  const uploadedImage: ICloudinaryResponse =
-    await FileUploadHelper.uploadToCloudinary(files)
-  if (!uploadedImage) {
-    return { success: false, error: 'Failed to upload image' }
+  if (body.bookingEndDate && body.bookingEndDate < body.bookingStartDate) {
+    return {
+      success: false,
+      error: 'Booking end date cannot be set before the booking start date',
+    }
+  }
+  if (!body.bookingEndDate) {
+    const startDate = new Date(body.bookingStartDate)
+    startDate.setMonth(startDate.getMonth() + 1) // add one month
+    body.bookingEndDate = startDate
+  }
+  // Prepare Booking data with the uploaded image URL
+  const updatedData = {
+    ...body,
+    renterId: user.id,
   }
 
-  payload.body.profileImage = uploadedImage.secure_url
-
+  // Create a new Booking record in the database using Prisma
   const result = await prisma.booking.create({
-    data: payload.body,
+    data: updatedData,
   })
 
+  // Return the created Booking data
   return { success: true, data: result }
 }
-// const getAllProperties = async (
-//   filters: IBookingFilterRequest,
-//   options: IPaginationOptions,
-// ): Promise<IGenericResponse<Booking[]>> => {
-//   const { limit, page, skip } = paginationHelpers.calculatePagination(options)
-//   const { searchTerm, ...filterData } = filters
-//   console.log(searchTerm)
-//   const andConditions = []
 
-//   if (searchTerm) {
-//     andConditions.push({
-//       OR: BookingSearchableFields.map(field => ({
-//         [field]: {
-//           contains: searchTerm,
-//           mode: 'insensitive',
-//         },
-//       })),
-//     })
-//   }
-//   if (Object.keys(filterData).length > 0) {
-//     andConditions.push({
-//       AND: Object.keys(filterData).map(key => {
-//         if (BookingRelationalFields.includes(key)) {
-//           return {
-//             //@ts-ignore
-//             [BookingRelationalFields[key]]: {
-//               id: (filterData as any)[key],
-//             },
-//           }
-//         } else {
-//           return {
-//             [key]: {
-//               equals: (filterData as any)[key],
-//             },
-//           }
-//         }
-//       }),
-//     })
-//   }
+const getBookings = async (
+  filters: IBookingFilterRequest,
+  options: IPaginationOptions,
+): Promise<IGenericResponse<Booking[]>> => {
+  const { limit, page, skip } = paginationHelpers.calculatePagination(options)
 
-//   const whereConditions: Prisma.BookingWhereInput =
-//     andConditions.length > 0 ? { AND: andConditions } : {}
+  const { searchTerm, bookingStatus, bookingStartDate, ...filterData } = filters
+  const andConditions = []
 
-//   const result = await prisma.Booking.findMany({
-//     where: whereConditions,
-//     skip,
-//     take: limit,
-//     orderBy:
-//       options.sortBy && options.sortOrder
-//         ? { [options.sortBy]: options.sortOrder }
-//         : {
-//             monthlyRent: 'desc',
-//           },
-//   })
-//   const total = await prisma.Booking.count({
-//     where: whereConditions,
-//   })
+  // Handling search term
+  if (searchTerm) {
+    andConditions.push({
+      OR: BookingSearchableFields.map(field => ({
+        [field]: {
+          contains: searchTerm,
+          mode: 'insensitive',
+        },
+      })),
+    })
+  }
 
-//   return {
-//     meta: {
-//       total,
-//       page,
-//       limit,
-//     },
-//     data: result,
-//   }
-// }
+  if (bookingStatus) {
+    andConditions.push({ bookingStatus: bookingStatus })
+  }
+  // Handling available after date
+  if (bookingStartDate) {
+    andConditions.push({ bookingStartDate: { gte: bookingStartDate } })
+  }
 
-// const getSingleBooking = async (payload: any) => {
-//   const model = prisma.Booking
-//   const result = getUniqueRecord(model, payload)
-//   return result
-// }
+  if (Object.keys(filterData).length > 0) {
+    andConditions.push({
+      AND: Object.keys(filterData).map(key => {
+        if (BookingRelationalFields.includes(key)) {
+          return {
+            [BookingRelationalFieldsMapper[key]]: {
+              id: (filterData as any)[key],
+            },
+          }
+        } else {
+          return {
+            [key]: {
+              equals: (filterData as any)[key],
+            },
+          }
+        }
+      }),
+    })
+  }
 
-// const updateBooking = async (
-//   authId: any,
-//   BookingId: any,
-//   payload: Booking,
-// ) => {
-//   const { BookingId, tenantId, ...safePayload } = payload
-//   const existingBooking = await prisma.Booking.findUnique({
-//     where: {
-//       id: BookingId,
-//     },
-//   })
+  const whereConditions: Prisma.BookingWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {}
 
-//   if (existingBooking?.tenantId !== authId) {
-//     throw new ApiError(400, "You haven't permission to change the Booking")
-//   }
-//   if (BookingId && tenantId) {
-//     throw new ApiError(400, "You can't change the foreign key")
-//   }
-//   const result = await prisma.Booking.update({
-//     where: {
-//       id: BookingId,
-//     },
-//     data: safePayload,
-//   })
-//   return result
-// }
+  const result = await prisma.booking.findMany({
+    where: whereConditions,
+    skip,
+    take: limit,
+    orderBy:
+      options.sortBy && options.sortOrder
+        ? { [options.sortBy]: options.sortOrder }
+        : {
+            bookingStartDate: 'desc',
+          },
+  })
+  const total = await prisma.booking.count({
+    where: whereConditions,
+  })
 
-// const deleteBooking = async (authId: any, deletedId: any) => {
-//   const isSameUser = await prisma.Booking.findUnique({
-//     where: {
-//       id: deletedId,
-//     },
-//   })
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data: result,
+  }
+}
 
-//   // If the Booking does not exist, throw an error.
-//   if (!isSameUser) {
-//     throw new ApiError(404, 'Booking not found')
-//   }
+const getSingleBooking = async (payload: any) => {
+  const model = prisma.booking
+  const result = await getUniqueRecord(model, payload)
+  return result
+}
 
-//   if (isSameUser?.tenantId !== authId) {
-//     throw new ApiError(400, "You haven't permission to change the Booking")
-//   }
+//Update Booking
+const updateBooking = async (payload: any): Promise<UpdateBookingResponse> => {
+  if (!payload.params?.id || !payload.user?.id) {
+    return { success: false, error: 'Invalid input or file is missing' }
+  }
+  const { params, user, body } = payload
+  const { id: BookingId } = params
+  const { role } = user
 
-//   const result = await prisma.Booking.delete({
-//     where: {
-//       id: deletedId,
-//     },
-//   })
+  if (role !== 'admin' && role !== 'owner') {
+    return {
+      success: false,
+      error: 'Unauthorized: You cannot update this user',
+    }
+  }
+  const { bookingStatus } = body
 
-//   return result
-// }
+  const result = await prisma.booking.update({
+    where: { id: BookingId },
+    data: { bookingStatus: bookingStatus },
+  })
+  return { success: true, data: result }
+}
+const deleteBooking = async (
+  authUser: string | any,
+  deletedId: any,
+): Promise<any> => {
+  const isSameUser = await prisma.booking.findUnique({
+    where: {
+      id: deletedId,
+    },
+  })
 
-// const singleUserBooking = async (userId: any) => {
-//   const allBookings = await prisma.Booking.findMany({
-//     where: {
-//       tenantId: userId,
-//     },
-//   })
+  // If the Booking does not exist, throw an error.
+  if (!isSameUser) {
+    throw new ApiError(404, 'Booking not found')
+  }
+  const { role, id } = authUser
 
-//   // If the Booking does not exist, throw an error.
-//   if (!allBookings) {
-//     throw new ApiError(404, 'Booking not found')
-//   }
+  if (isSameUser.renterId !== id && role !== 'admin' && role !== 'owner') {
+    throw new ApiError(400, "You haven't permission to delete the Booking")
+  }
 
-//   return allBookings
-// }
-// const singlePropertiesRating = async (BookingId: any) => {
-//   const BookingAvgRating = await prisma.Booking.aggregate({
-//     where: {
-//       BookingId: BookingId,
-//     },
-//     _avg: {
-//       rating: true,
-//     },
-//   })
+  const result = await prisma.booking.delete({
+    where: {
+      id: deletedId,
+    },
+  })
 
-//   const averageRating = BookingAvgRating._avg.rating
-
-//   // If there's no average rating (e.g. no Bookings exist), handle it appropriately.
-//   if (averageRating === null) {
-//     throw new ApiError(404, 'Booking not found')
-//   }
-
-//   const avgRate = Math.round(averageRating)
-
-//   return avgRate // return the rounded value
-// }
+  return result
+}
 export const BookingService = {
   addBooking,
-  //   getAllProperties,
-  // getSingleBooking,
-  // updateBooking,
-  // deleteBooking,
-  // singleUserBooking,
-  // singlePropertiesRating,
+  getBookings,
+  getSingleBooking,
+  updateBooking,
+  deleteBooking,
 }

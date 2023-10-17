@@ -1,50 +1,22 @@
-import express, { NextFunction, Request, Response } from 'express'
-// import { BookingController } from './Booking.controller'
-// import auth from '../../middleware/auth'
-// import { ENUM_USER_ROLE } from '../../../enum/user'
-
-// import { BookingValidation } from './Booking.validation'
-
+import express from 'express'
+import auth from '../../middleware/auth'
+import { ENUM_USER_ROLE } from '../../../enum/user'
 import { BookingController } from './booking.controller'
-import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
 const router = express.Router()
 
-router.post(
-  '/add-Booking',
-  FileUploadHelper.upload.single('file'),
-  (req: Request, res: Response, next: NextFunction) => {
-    req.body = JSON.parse(req.body.data)
-    return BookingController.addBooking(req, res, next)
-  },
+router.post('/', auth(ENUM_USER_ROLE.RENTER), BookingController.addBooking)
+router.get('/', BookingController.getBookings)
+router.get('/:id', BookingController.getSingleBooking)
+
+router.patch(
+  '/:id',
+  auth(ENUM_USER_ROLE.OWNER, ENUM_USER_ROLE.ADMIN),
+  BookingController.updateBooking,
 )
-// router.delete(
-//   '/:id',
-//   auth(ENUM_USER_ROLE.USER),
-//   BookingController.deleteBooking,
-// )
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.OWNER),
+  BookingController.deleteBooking,
+)
 
-// router.post(
-//   '/',
-//   validateRequest(BookingValidation.addBookingZodSchema),
-//   auth(ENUM_USER_ROLE.USER),
-//   BookingController.addBooking,
-// )
-// router.get(
-//   '/',
-//   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.USER),
-//   BookingController.getAllProperties,
-// )
-// router.get('/:id', BookingController.getSingleBooking)
-
-// router.patch(
-//   '/:id',
-//   validateRequest(BookingValidation.updateBookingZodSchema),
-//   auth(ENUM_USER_ROLE.USER),
-//   BookingController.updateBooking,
-// )
-// router.get('/user/:id/Bookings', BookingController.singleUserBooking)
-// router.get(
-//   '/properties/:id/average-rating',
-//   BookingController.singlePropertiesRating,
-// )
 export const BookingRoutes = router
