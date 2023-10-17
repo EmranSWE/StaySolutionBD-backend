@@ -111,7 +111,7 @@ const getBookings = async (
     })
   }
 
-  const whereConditions: Prisma.BookingWhereInput =
+  const whereConditions: any =
     andConditions.length > 0 ? { AND: andConditions } : {}
 
   const result = await prisma.booking.findMany({
