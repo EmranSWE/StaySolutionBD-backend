@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import express, { Application, Request, Response } from 'express'
 import cors from 'cors'
@@ -20,7 +22,9 @@ app.use('/api/v1', router)
 
 //Error
 
-// app.get('/', async (req: Request, res: Response, next: NextFunction) => {})
+app.get('/', async (req: Request, res: Response, next: NextFunction) => {
+  res.send('Server is running perfectly!!!!!!')
+})
 
 //global error handler
 app.use(globalErrorHandler)

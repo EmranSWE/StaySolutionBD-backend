@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -10,7 +11,6 @@ import { ZodError } from 'zod'
 
 import handleZodError from '../../errors/handleZodError'
 import handleValidationError from '../../errors/handleValidationError'
-import { errorLogger, logger } from '../../shared/logger'
 import { IGenericErrorMessage } from '../../interface/error'
 import handleClientError from '../../errors/handleClientError'
 import handleSyntaxError from '../../errors/handleSyntaxError'
@@ -22,8 +22,8 @@ const globalErrorHandler: ErrorRequestHandler = (
   next: NextFunction,
 ) => {
   config.env === 'development'
-    ? logger.log(`Please check globalErrorHandler`, { error })
-    : errorLogger.error(`Please check globalErrorHandler `, error)
+    ? console.log(`Please check globalErrorHandler`, { error })
+    : console.log(`Please check globalErrorHandler `, error)
 
   let statusCode = 500
   let message = 'Something went wrong !'
