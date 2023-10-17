@@ -101,17 +101,17 @@ const getSingleReview = async (payload: any) => {
 }
 
 const updateReview = async (authId: any, reviewId: any, payload: Review) => {
-  const { propertyId, tenantId, ...safePayload } = payload
+  const { propertyId, renterId, ...safePayload } = payload
   const existingReview = await prisma.review.findUnique({
     where: {
       id: reviewId,
     },
   })
 
-  if (existingReview?.tenantId !== authId) {
+  if (existingReview?.renterId !== authId) {
     throw new ApiError(400, "You haven't permission to change the review")
   }
-  if (propertyId && tenantId) {
+  if (propertyId && renterId) {
     throw new ApiError(400, "You can't change the foreign key")
   }
   const result = await prisma.review.update({

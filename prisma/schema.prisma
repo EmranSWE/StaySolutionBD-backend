@@ -20,9 +20,9 @@ enum ROLE {
 
 
 enum PropertyStatus {
-Available
-Booked
-UnderMaintenance
+available
+booked
+underMaintenance
 }
 
 enum BookingStatus {
@@ -129,9 +129,10 @@ model Property {
   imageGallery String[]
   size String?
   maxOccupancy Int
-  PropertyStatus PropertyStatus
+  propertyStatus PropertyStatus @default(available)
   videoLink String?
   propertyTags String[]
+  createdAt DateTime @default(now())
   ownerId String
   owner User @relation(fields:[ownerId],references:[id])
  reviews Review[]

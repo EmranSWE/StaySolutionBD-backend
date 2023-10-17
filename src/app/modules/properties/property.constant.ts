@@ -1,18 +1,19 @@
-export const propertyFilterableFields: string[] = ['searchTerm', 'id']
-
-export const propertySearchableFields: string[] = [
-  'address',
+export const propertyFilterableFields: string[] = [
+  'searchTerm',
   'numberOfRooms',
   'monthlyRent',
+  'availableAfter',
+  'id',
+  'ownerId',
+  'insuranceId',
 ]
 
-export const propertyRelationalFields: string[] = [
-  'rating',
-  'propertyId',
-  'monthlyRent',
-]
+export const propertySearchableFields: string[] = ['city', 'description']
+
+export const propertyRelationalFields: string[] = ['ownerId', 'insuranceId']
 export const propertyRelationalFieldsMapper: { [key: string]: string } = {
-  propertyId: 'propertyId',
+  ownerId: 'owner',
+  insuranceId: 'insurance',
 }
 
 export const IPropertyQueryOption = ['limit', 'page', 'sortBy', 'sortOrder']

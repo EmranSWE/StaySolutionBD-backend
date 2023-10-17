@@ -1,46 +1,39 @@
 import express from 'express'
-import { PropertyController } from './property.controller'
-// import auth from '../../middleware/auth'
-// import { ENUM_USER_ROLE } from '../../../enum/user'
-import validateRequest from '../../middleware/validateRequest'
-import { PropertyValidation } from './property.validation'
-import { ENUM_USER_ROLE } from '../../../enum/user'
+
 import auth from '../../middleware/auth'
+import { ENUM_USER_ROLE } from '../../../enum/user'
+import { PropertyController } from './property.controller'
+import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
 const router = express.Router()
 
+// router.delete('/:id', auth(ENUM_USER_ROLE.USER), PropertyController.deleteProperty)
+
+//Post to create property
 router.post(
-  '/add-property',
-  validateRequest(PropertyValidation.addPropertyZodSchema),
+  '/',
+  // validateRequest(PropertyValidation.CreatePropertyZodSchema),
+  auth(ENUM_USER_ROLE.OWNER),
+  FileUploadHelper.upload.single('file'),
   PropertyController.addProperty,
 )
-// router.delete(
-//   '/:id',
-//   auth(ENUM_USER_ROLE.USER),
-//   PropertyController.deleteProperty,
-// )
+router.get('/', PropertyController.getProperties)
+router.get('/:id', PropertyController.getSingleProperty)
 
-// router.post(
-//   '/',
-//   validateRequest(PropertyValidation.addPropertyZodSchema),
-//   auth(ENUM_USER_ROLE.USER),
-//   PropertyController.addProperty,
-// )
-router.get(
-  '/',
-  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.USER),
-  PropertyController.getAllProperties,
+router.patch(
+  '/:id',
+  auth(ENUM_USER_ROLE.OWNER),
+  FileUploadHelper.upload.single('file'),
+  PropertyController.updateProperty,
 )
-// router.get('/:id', PropertyController.getSingleProperty)
-
-// router.patch(
-//   '/:id',
-//   validateRequest(PropertyValidation.updatePropertyZodSchema),
-//   auth(ENUM_USER_ROLE.USER),
-//   PropertyController.updateProperty,
-// )
-// router.get('/user/:id/Propertys', PropertyController.singleUserProperty)
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.OWNER),
+  PropertyController.deleteProperty,
+)
+// router.delete('/user/:id/Propertys', PropertyController.singleUserProperty)
 // router.get(
 //   '/properties/:id/average-rating',
 //   PropertyController.singlePropertiesRating,
 // )
+
 export const PropertyRoutes = router

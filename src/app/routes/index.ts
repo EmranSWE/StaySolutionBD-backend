@@ -12,7 +12,7 @@ const moduleRoutes = [
     route: UserRoutes,
   },
   {
-    path: '/properties',
+    path: '/property',
     route: PropertyRoutes,
   },
   {
