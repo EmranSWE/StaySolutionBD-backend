@@ -289,6 +289,11 @@
             "date": 1697555142866,
             "name": "G:\\StaySolutionsBD\\Stay Solution Bd\\StaySolutionBD-backend\\logs\\winston\\errors\\staySolutionBd-2023-17-10-21-error.log",
             "hash": "c6a46245249d4d7319a88d91e4c0ab92e1966a28cb7e5bb2918736916a601bc1"
+        },
+        {
+            "date": 1697558564123,
+            "name": "G:\\StaySolutionsBD\\Stay Solution Bd\\StaySolutionBD-backend\\logs\\winston\\errors\\staySolutionBd-2023-17-10-22-error.log",
+            "hash": "f66c50104db4bb8727264fd162c58520ad611a39ac397dc6e758ec0610e807b8"
         }
     ],
     "hashType": "sha256"

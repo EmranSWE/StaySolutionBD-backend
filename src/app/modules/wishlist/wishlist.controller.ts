@@ -7,54 +7,49 @@ import httpStatus from 'http-status'
 import pick from '../../../shared/pick'
 
 import {
-  IPropertyQueryOption,
-  propertyFilterableFields,
-} from './property.constant'
-import { PropertyService } from './property.service'
+  IWishlistQueryOption,
+  wishlistFilterableFields,
+} from './wishlist.constant'
+import { WishlistService } from './wishlist.service'
 
-const addProperty = catchAsync(
+const addWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    if (req.body.data) {
-      req.body = JSON.parse(req.body.data)
-    }
-
     const payload = {
       body: req.body,
-      file: req.file,
       user: req.user,
     }
 
-    const result = await PropertyService.addProperty(payload)
+    const result = await WishlistService.addWishlist(payload)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Property added successfully! ',
+      message: 'Wishlist added successfully! ',
       data: result,
     })
   },
 )
 
-const getProperties = catchAsync(
+const getWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const filters = pick(req.query, propertyFilterableFields)
-    const options = pick(req.query, IPropertyQueryOption)
-    const result = await PropertyService.getProperties(filters, options)
+    const filters = pick(req.query, wishlistFilterableFields)
+    const options = pick(req.query, IWishlistQueryOption)
+    const result = await WishlistService.getWishlist(filters, options)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Properties fetched successfully',
+      message: 'Wishlist fetched successfully',
       meta: result.meta,
       data: result.data,
     })
   },
 )
 
-// Getting a single Property
-const getSingleProperty = catchAsync(
+// Getting a single Wishlist
+const getSingleWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const PropertyId = req.params.id
+    const WishlistId = req.params.id
 
-    const result = await PropertyService.getSingleProperty(PropertyId)
+    const result = await WishlistService.getSingleWishlist(WishlistId)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -64,8 +59,8 @@ const getSingleProperty = catchAsync(
   },
 )
 
-//Updating a single Property
-const updateProperty = catchAsync(
+//Updating a single Wishlist
+const updateWishlist = catchAsync(
   async (req, res: Response, next: NextFunction) => {
     if (req.body.data) {
       req.body = JSON.parse(req.body.data)
@@ -78,63 +73,63 @@ const updateProperty = catchAsync(
       user: req.user,
     }
 
-    const result = await PropertyService.updateProperty(payload)
+    const result = await WishlistService.updateWishlist(payload)
     res.status(200).json({
       success: true,
-      message: 'Property updated successfully',
+      message: 'Wishlistupdated successfully',
       data: result,
     })
   },
 )
 
-//Delete a single Property
-const deleteProperty = catchAsync(
+//Delete a single Wishlist
+const deleteWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const PropertyId = req.params.id
+    const WishlistId = req.params.id
     const ids = req.user
 
-    const result = await PropertyService.deleteProperty(ids, PropertyId)
+    const result = await WishlistService.deleteWishlist(ids, WishlistId)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: ' Property deleted Successfully',
+      message: ' Wishlistdeleted Successfully',
       data: result,
     })
   },
 )
 
-// //Get a single Property
-// const singleUserProperty = catchAsync(
+// //Get a single Wishlist
+// const singleUserWishlist= catchAsync(
 //   async (req: Request, res: Response, next: NextFunction) => {
 //     const userId = req.params.id
-//     const result = await PropertyService.singleUserProperty(userId)
+//     const result = await WishlistService.singleUserWishlist(userId)
 //     sendResponse(res, {
 //       statusCode: httpStatus.OK,
 //       success: true,
-//       message: ' Get a single user all Property',
+//       message: ' Get a single user all Wishlist',
 //       data: result,
 //     })
 //   },
 // )
-// //Get a single Property
+// //Get a single Wishlist
 // const singlePropertiesRating = catchAsync(
 //   async (req: Request, res: Response, next: NextFunction) => {
-//     const propertyId = req.params.id
-//     const result = await PropertyService.singlePropertiesRating(propertyId)
+//     const WishlistId = req.params.id
+//     const result = await WishlistService.singlePropertiesRating(WishlistId)
 //     sendResponse(res, {
 //       statusCode: httpStatus.OK,
 //       success: true,
-//       message: 'Get a single property average rating',
+//       message: 'Get a single Wishlistaverage rating',
 //       data: result,
 //     })
 //   },
 // )
-export const PropertyController = {
-  addProperty,
-  getProperties,
-  getSingleProperty,
-  updateProperty,
-  deleteProperty,
-  // singleUserProperty,
+export const WishlistController = {
+  addWishlist,
+  getWishlist,
+  getSingleWishlist,
+  updateWishlist,
+  deleteWishlist,
+  // singleUserWishlist,
   // singlePropertiesRating,
 }

@@ -1,41 +1,13 @@
-// import { z } from 'zod'
+import { z } from 'zod'
 
-// const CreatePropertyZodSchema = z.object({
-//   body: z.object({
-//     firstName: z.string({
-//       required_error: 'Name is required',
-//       invalid_type_error: 'Name must be a string',
-//     }),
-//     middleName: z.string().optional(),
-//     lastName: z.string(),
-
-//     phone: z.string(),
-//     profilePic: z.string().optional(),
-//     role: z.enum(['super_admin', 'admin', 'owner', 'renter']),
-//     preferredPropertyType: z.string().optional(),
-//     preferredAmenities: z.string().array().optional(),
-//     preferredLocation: z.string().optional(),
-//     searchHistory: z.string().array().optional(),
-//     socialMediaLink: z.string().array().optional(),
-//     userStatus: z.string().array().optional(),
-//     address: z.string().optional(),
-//     password: PasswordSchema,
-//     passwordChangedAt: z.date().optional(),
-//     createdAt: z.date().optional(),
-//     properties: z.array(z.any()).optional(),
-//     reviews: z.array(z.any()).optional(),
-//     bookings: z.array(z.any()).optional(),
-//     payments: z.array(z.any()).optional(),
-//     issues: z.array(z.any()).optional(),
-//     wishlists: z.array(z.any()).optional(),
-//     messageSent: z.array(z.any()).optional(),
-//     messageReceived: z.array(z.any()).optional(),
-//     notifications: z.array(z.any()).optional(),
-//     loyalties: z.array(z.any()).optional(),
-//     marketplaces: z.array(z.any()).optional(),
-//     insurances: z.array(z.any()).optional(),
-//   }),
-// })
+const CreateWishlistZodSchema = z.object({
+  body: z.object({
+    propertyId: z.string({
+      required_error: 'Property is required',
+      invalid_type_error: 'Property must be a string',
+    }),
+  }),
+})
 
 // const UserLoginZodSchema = z.object({
 //   body: z.object({
@@ -95,6 +67,6 @@
 //     insurances: z.array(z.any()).optional(),
 //   }),
 // })
-// export const PropertyValidation = {
-//   CreatePropertyZodSchema,
-// }
+export const WishlistValidation = {
+  CreateWishlistZodSchema,
+}
