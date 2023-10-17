@@ -273,6 +273,7 @@ model Marketplace {
 id String @id @default(uuid())
 itemDescription String
 price Int
+propertyImage String?
 category Category @default(Apartment)
 ownerId String
 owner User @relation(fields: [ownerId], references: [id])

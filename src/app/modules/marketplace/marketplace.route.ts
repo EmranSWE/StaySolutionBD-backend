@@ -2,8 +2,9 @@ import express from 'express'
 
 import auth from '../../middleware/auth'
 import { ENUM_USER_ROLE } from '../../../enum/user'
-import { PropertyController } from './property.controller'
+
 import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
+import { MarketplaceController } from './marketplace.controller'
 const router = express.Router()
 
 //Post to create property
@@ -11,26 +12,21 @@ router.post(
   '/',
   auth(ENUM_USER_ROLE.OWNER),
   FileUploadHelper.upload.single('file'),
-  PropertyController.addProperty,
+  MarketplaceController.addMarketplace,
 )
-router.get('/', PropertyController.getProperties)
-router.get('/:id', PropertyController.getSingleProperty)
+router.get('/', MarketplaceController.getMarketplaces)
+router.get('/:id', MarketplaceController.getSingleMarketplace)
 
 router.patch(
   '/:id',
   auth(ENUM_USER_ROLE.OWNER),
   FileUploadHelper.upload.single('file'),
-  PropertyController.updateProperty,
+  MarketplaceController.updateMarketplace,
 )
 router.delete(
   '/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.OWNER),
-  PropertyController.deleteProperty,
+  MarketplaceController.deleteMarketplace,
 )
-// router.delete('/user/:id/Propertys', PropertyController.singleUserProperty)
-// router.get(
-//   '/properties/:id/average-rating',
-//   PropertyController.singlePropertiesRating,
-// )
 
-export const PropertyRoutes = router
+export const MarketplaceRoutes = router

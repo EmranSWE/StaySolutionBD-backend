@@ -2,8 +2,8 @@
 
 // const CreatePropertyZodSchema = z.object({
 //   body: z.object({
-//     firstName: z.string({
-//       required_error: 'Name is required',
+//     itemDescription: z.string({
+//       required_error: 'Description is required',
 //       invalid_type_error: 'Name must be a string',
 //     }),
 //     middleName: z.string().optional(),

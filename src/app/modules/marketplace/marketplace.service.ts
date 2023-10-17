@@ -3,45 +3,29 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { Prisma, Property, Review } from '@prisma/client'
+import { Prisma, Marketplace } from '@prisma/client'
 import prisma from '../../../shared/prisma'
 import ApiError from '../../../errors/ApiError'
 import { ICloudinaryResponse, IUploadFile } from '../../../interface/file'
 import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
-import {
-  IPropertyFilterRequest,
-  UpdatePropertyResponse,
-} from './property.interface'
+
 import { IPaginationOptions } from '../../../interface/pagination'
 import { IGenericResponse } from '../../../interface/common'
 import { paginationHelpers } from '../../../helpers/paginationHelper'
-import {
-  propertyFilterableFields,
-  propertyRelationalFields,
-  propertyRelationalFieldsMapper,
-  propertySearchableFields,
-} from './property.constant'
+
 import { getUniqueRecord } from '../../utils/utils'
+import {
+  IMarketplaceFilterRequest,
+  UpdateMarketplaceResponse,
+} from './marketplace.interface'
+import {
+  marketplaceRelationalFields,
+  marketplaceRelationalFieldsMapper,
+  marketplaceSearchableFields,
+} from './marketplace.constant'
 
-/**
- * Service function to add a new property to the database.
- *
- * @param payload - The input object containing file, user, and property details.
- * @param payload.file - The image file for the property.
- * @param payload.user - The user object with information about the user making the request.
- * @param payload.body - The property details.
- *
- * @returns An object indicating the success status and the data or error message.
- *
- * @example
- * const response = await addProperty({ file, user, body });
- * if (response.success) console.log("Property added:", response.data);
- * else console.error("Error:", response.error);
- */
-const addProperty = async (payload: any) => {
+const addMarketplace = async (payload: any) => {
   const { file, user, body } = payload
-
   // Validate file input
   if (!file) {
     return { success: false, error: 'Invalid input or file is missing' }
@@ -56,7 +40,7 @@ const addProperty = async (payload: any) => {
     }
   }
 
-  // Upload property image to Cloudinary (or similar cloud storage)
+  // Upload Marketplace image to Cloudinary (or similar cloud storage)
   const uploadedImage: ICloudinaryResponse =
     await FileUploadHelper.uploadToCloudinary(file as IUploadFile)
 
@@ -65,41 +49,37 @@ const addProperty = async (payload: any) => {
     return { success: false, error: 'Failed to upload image' }
   }
 
-  // Prepare property data with the uploaded image URL
+  // Prepare Marketplace data with the uploaded image URL
   const updatedData = {
     ...body,
-    imageGallery: [uploadedImage.secure_url],
+    ownerId: user.id,
+    propertyImage: uploadedImage.secure_url,
   }
 
-  // Create a new property record in the database using Prisma
-  const result = await prisma.property.create({
+  // Create a new Marketplace record in the database using Prisma
+  const result = await prisma.marketplace.create({
     data: updatedData,
+    include: { owner: true },
   })
 
-  // Return the created property data
+  // Return the created Marketplace data
   return { success: true, data: result }
 }
 
-const getProperties = async (
-  filters: IPropertyFilterRequest,
+const getMarketplaces = async (
+  filters: IMarketplaceFilterRequest,
   options: IPaginationOptions,
-): Promise<IGenericResponse<Property[]>> => {
+): Promise<IGenericResponse<Marketplace[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options)
 
-  const {
-    searchTerm,
-    numberOfRooms,
-    availableAfter,
-    monthlyRent,
-    ...filterData
-  } = filters
+  const { searchTerm, price, category, ...filterData } = filters
 
   const andConditions = []
 
   // Handling search term
   if (searchTerm) {
     andConditions.push({
-      OR: propertySearchableFields.map(field => ({
+      OR: marketplaceSearchableFields.map(field => ({
         [field]: {
           contains: searchTerm,
           mode: 'insensitive',
@@ -109,29 +89,21 @@ const getProperties = async (
   }
 
   // Handling number of rooms
-  const numberOfRoomsInt = Number(numberOfRooms)
+  const priceInt = Number(price)
 
-  if (!isNaN(numberOfRoomsInt)) {
+  if (!isNaN(priceInt)) {
     // Check if the parsed value is a valid number
-    andConditions.push({ numberOfRooms: numberOfRoomsInt })
+    andConditions.push({ price: priceInt })
   }
-  const monthlyRentInt = Number(monthlyRent)
-
-  if (!isNaN(monthlyRentInt)) {
-    // Check if the parsed value is a valid number
-    andConditions.push({ monthlyRent: { lte: monthlyRentInt } })
+  if (category) {
+    andConditions.push({ category: category })
   }
-  // Handling available after date
-  if (availableAfter) {
-    andConditions.push({ availableDate: { gte: availableAfter } })
-  }
-
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
       AND: Object.keys(filterData).map(key => {
-        if (propertyRelationalFields.includes(key)) {
+        if (marketplaceRelationalFields.includes(key)) {
           return {
-            [propertyRelationalFieldsMapper[key]]: {
+            [marketplaceRelationalFieldsMapper[key]]: {
               id: (filterData as any)[key],
             },
           }
@@ -146,21 +118,22 @@ const getProperties = async (
     })
   }
 
-  const whereConditions: Prisma.PropertyWhereInput =
+  const whereConditions: Prisma.MarketplaceWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {}
 
-  const result = await prisma.property.findMany({
+  const result = await prisma.marketplace.findMany({
     where: whereConditions,
+    include: { owner: true },
     skip,
     take: limit,
     orderBy:
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
         : {
-            createdAt: 'desc',
+            price: 'desc',
           },
   })
-  const total = await prisma.property.count({
+  const total = await prisma.marketplace.count({
     where: whereConditions,
   })
 
@@ -174,29 +147,30 @@ const getProperties = async (
   }
 }
 
-const getSingleProperty = async (payload: any) => {
-  const model = prisma.property
+const getSingleMarketplace = async (payload: any) => {
+  const model = prisma.marketplace
   const result = await getUniqueRecord(model, payload)
   return result
 }
 
-//Update property
-const updateProperty = async (
+//Update Marketplace
+const updateMarketplace = async (
   payload: any,
-): Promise<UpdatePropertyResponse> => {
-  if (!payload?.file || !payload.params?.id || !payload.user?.id) {
+): Promise<UpdateMarketplaceResponse> => {
+  if (!payload.params?.id || !payload.user?.id) {
     return { success: false, error: 'Invalid input or file is missing' }
   }
+
   const { file, params, user, body } = payload
-  const { id: propertyId } = params
+  const { id: MarketplaceId } = params
   const { id: userId } = user
-  const existingProperty = await prisma.property.findUnique({
+  const existingMarketplace = await prisma.marketplace.findUnique({
     where: {
-      id: propertyId,
+      id: MarketplaceId,
     },
   })
 
-  if (existingProperty?.ownerId !== userId) {
+  if (existingMarketplace?.ownerId !== userId) {
     return {
       success: false,
       error: 'Unauthorized: You cannot update this user',
@@ -212,39 +186,37 @@ const updateProperty = async (
 
   const updatedData = {
     ...body,
-    imageGallery: {
-      push: uploadedImage.secure_url,
-    },
+    propertyImage: uploadedImage.secure_url,
   }
 
-  const result = await prisma.property.update({
-    where: { id: propertyId },
+  const result = await prisma.marketplace.update({
+    where: { id: MarketplaceId },
     data: updatedData,
   })
 
   return { success: true, data: result }
 }
-const deleteProperty = async (
+const deleteMarketplace = async (
   authUser: string | any,
   deletedId: any,
 ): Promise<any> => {
-  const isSameUser = await prisma.property.findUnique({
+  const isSameUser = await prisma.marketplace.findUnique({
     where: {
       id: deletedId,
     },
   })
 
-  // If the property does not exist, throw an error.
+  // If the Marketplace does not exist, throw an error.
   if (!isSameUser) {
-    throw new ApiError(404, 'Property not found')
+    throw new ApiError(404, 'Marketplace not found')
   }
   const { role, id } = authUser
 
   if (isSameUser.ownerId !== id && role !== 'admin' && role !== 'super_admin') {
-    throw new ApiError(400, "You haven't permission to delete the property")
+    throw new ApiError(400, "You haven't permission to delete the Marketplace")
   }
 
-  const result = await prisma.property.delete({
+  const result = await prisma.marketplace.delete({
     where: {
       id: deletedId,
     },
@@ -252,12 +224,12 @@ const deleteProperty = async (
 
   return result
 }
-export const PropertyService = {
-  addProperty,
-  getProperties,
-  getSingleProperty,
-  updateProperty,
-  deleteProperty,
-  // singleUserProperty,
+export const MarketplaceService = {
+  addMarketplace,
+  getMarketplaces,
+  getSingleMarketplace,
+  updateMarketplace,
+  deleteMarketplace,
+  // singleUserMarketplace,
   // singlePropertiesRating,
 }

@@ -5,14 +5,13 @@ import catchAsync from '../../../shared/catchAsync'
 import sendResponse from '../../../shared/sendResponse'
 import httpStatus from 'http-status'
 import pick from '../../../shared/pick'
-
+import { MarketplaceService } from './marketplace.service'
 import {
-  IPropertyQueryOption,
-  propertyFilterableFields,
-} from './property.constant'
-import { PropertyService } from './property.service'
+  ImarketplaceQueryOption,
+  marketplaceFilterableFields,
+} from './marketplace.constant'
 
-const addProperty = catchAsync(
+const addMarketplace = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     if (req.body.data) {
       req.body = JSON.parse(req.body.data)
@@ -24,37 +23,37 @@ const addProperty = catchAsync(
       user: req.user,
     }
 
-    const result = await PropertyService.addProperty(payload)
+    const result = await MarketplaceService.addMarketplace(payload)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Property added successfully! ',
+      message: 'Marketplace added successfully! ',
       data: result,
     })
   },
 )
 
-const getProperties = catchAsync(
+const getMarketplaces = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const filters = pick(req.query, propertyFilterableFields)
-    const options = pick(req.query, IPropertyQueryOption)
-    const result = await PropertyService.getProperties(filters, options)
+    const filters = pick(req.query, marketplaceFilterableFields)
+    const options = pick(req.query, ImarketplaceQueryOption)
+    const result = await MarketplaceService.getMarketplaces(filters, options)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Properties fetched successfully',
+      message: 'Marketplace fetched successfully',
       meta: result.meta,
       data: result.data,
     })
   },
 )
 
-// Getting a single Property
-const getSingleProperty = catchAsync(
+// Getting a single Marketplace
+const getSingleMarketplace = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const PropertyId = req.params.id
+    const MarketplaceId = req.params.id
 
-    const result = await PropertyService.getSingleProperty(PropertyId)
+    const result = await MarketplaceService.getSingleMarketplace(MarketplaceId)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -64,8 +63,8 @@ const getSingleProperty = catchAsync(
   },
 )
 
-//Updating a single Property
-const updateProperty = catchAsync(
+//Updating a single Marketplace
+const updateMarketplace = catchAsync(
   async (req, res: Response, next: NextFunction) => {
     if (req.body.data) {
       req.body = JSON.parse(req.body.data)
@@ -78,63 +77,66 @@ const updateProperty = catchAsync(
       user: req.user,
     }
 
-    const result = await PropertyService.updateProperty(payload)
+    const result = await MarketplaceService.updateMarketplace(payload)
     res.status(200).json({
       success: true,
-      message: 'Property updated successfully',
+      message: 'Marketplace updated successfully',
       data: result,
     })
   },
 )
 
-//Delete a single Property
-const deleteProperty = catchAsync(
+//Delete a single Marketplace
+const deleteMarketplace = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const PropertyId = req.params.id
+    const MarketplaceId = req.params.id
     const ids = req.user
 
-    const result = await PropertyService.deleteProperty(ids, PropertyId)
+    const result = await MarketplaceService.deleteMarketplace(
+      ids,
+      MarketplaceId,
+    )
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: ' Property deleted Successfully',
+      message: ' Marketplace deleted Successfully',
       data: result,
     })
   },
 )
 
-// //Get a single Property
-// const singleUserProperty = catchAsync(
+// //Get a single Marketplace
+// const singleUserMarketplace = catchAsync(
 //   async (req: Request, res: Response, next: NextFunction) => {
 //     const userId = req.params.id
-//     const result = await PropertyService.singleUserProperty(userId)
+//     const result = await MarketplaceService.singleUserMarketplace(userId)
 //     sendResponse(res, {
 //       statusCode: httpStatus.OK,
 //       success: true,
-//       message: ' Get a single user all Property',
+//       message: ' Get a single user all Marketplace',
 //       data: result,
 //     })
 //   },
 // )
-// //Get a single Property
+// //Get a single Marketplace
 // const singlePropertiesRating = catchAsync(
 //   async (req: Request, res: Response, next: NextFunction) => {
-//     const propertyId = req.params.id
-//     const result = await PropertyService.singlePropertiesRating(propertyId)
+//     const MarketplaceId = req.params.id
+//     const result = await MarketplaceService.singlePropertiesRating(MarketplaceId)
 //     sendResponse(res, {
 //       statusCode: httpStatus.OK,
 //       success: true,
-//       message: 'Get a single property average rating',
+//       message: 'Get a single Marketplace average rating',
 //       data: result,
 //     })
 //   },
 // )
-export const PropertyController = {
-  addProperty,
-  getProperties,
-  getSingleProperty,
-  updateProperty,
-  deleteProperty,
-  // singleUserProperty,
+export const MarketplaceController = {
+  addMarketplace,
+  getMarketplaces,
+  getSingleMarketplace,
+  updateMarketplace,
+  deleteMarketplace,
+  // singleUserMarketplace,
   // singlePropertiesRating,
 }

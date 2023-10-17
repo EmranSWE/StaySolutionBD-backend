@@ -6,6 +6,7 @@ import { BookingRoutes } from '../modules/booking/booking.route'
 import { IssueRoutes } from '../modules/issue/issue.routes'
 import { SafetyRoutes } from '../modules/safety/safety.routes'
 import { WishlistRoutes } from '../modules/wishlist/wishlist.route'
+import { MarketplaceRoutes } from '../modules/marketplace/marketplace.route'
 
 const router = express.Router()
 
@@ -37,6 +38,10 @@ const moduleRoutes = [
   {
     path: '/wishlist',
     route: WishlistRoutes,
+  },
+  {
+    path: '/marketplace',
+    route: MarketplaceRoutes,
   },
 ]
 
