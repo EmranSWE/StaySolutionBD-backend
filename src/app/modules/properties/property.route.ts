@@ -6,12 +6,9 @@ import { PropertyController } from './property.controller'
 import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
 const router = express.Router()
 
-// router.delete('/:id', auth(ENUM_USER_ROLE.USER), PropertyController.deleteProperty)
-
 //Post to create property
 router.post(
   '/',
-  // validateRequest(PropertyValidation.CreatePropertyZodSchema),
   auth(ENUM_USER_ROLE.OWNER),
   FileUploadHelper.upload.single('file'),
   PropertyController.addProperty,

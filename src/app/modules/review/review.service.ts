@@ -7,7 +7,7 @@
 import { Prisma, Review } from '@prisma/client'
 import prisma from '../../../shared/prisma'
 import ApiError from '../../../errors/ApiError'
-import { IReviewFilterRequest } from './review.interface'
+import { IPayload, IReviewFilterRequest } from './review.interface'
 import { IPaginationOptions } from '../../../interface/pagination'
 import { IGenericResponse } from '../../../interface/common'
 import { paginationHelpers } from '../../../helpers/paginationHelper'
@@ -16,14 +16,62 @@ import {
   reviewSearchableFields,
 } from './review.constant'
 import { getUniqueRecord } from '../../utils/utils'
+import { ICloudinaryResponse, IUploadFile } from '../../../interface/file'
+import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
 
-const addReview = async (payload: Review) => {
-  if (payload.rating > 5) {
-    throw new ApiError(400, 'User rating between 1 to 5')
+const addReview = async (payload: IPayload) => {
+  const { file, user, body } = payload
+
+  // Validate file input
+  if (!file) {
+    return { success: false, error: 'Invalid input or file is missing' }
   }
-  const reviewData = await prisma.review.create({ data: payload })
 
-  return reviewData
+  // Authorization check: Ensure user has the 'renter' role
+  const { role } = user
+  if (role !== 'renter') {
+    return {
+      success: false,
+      error: 'Unauthorized: You can only add a review as a renter',
+    }
+  }
+
+  // Upload property image to Cloudinary (or similar cloud storage)
+  const uploadedImage: ICloudinaryResponse =
+    await FileUploadHelper.uploadToCloudinary(file as IUploadFile)
+
+  // Validate successful image upload
+  if (!uploadedImage?.secure_url) {
+    return { success: false, error: 'Failed to upload image' }
+  }
+
+  // Prepare property data with the uploaded image URL
+  const updatedData = {
+    ...body,
+    reviewPic: [uploadedImage.secure_url],
+    property: {
+      connect: {
+        id: body.propertyId,
+      },
+    },
+    renter: {
+      connect: {
+        id: user?.id, // Assuming the renter is the authenticated user
+      },
+    },
+  }
+
+  // Remove the direct `propertyId` and `renterId` as they're not needed anymore
+  delete updatedData.propertyId
+  delete updatedData.renterId
+
+  // Create a new review record in the database using Prisma
+  const result = await prisma.review.create({
+    data: updatedData,
+  })
+
+  // Return the created review data
+  return { success: true, data: result }
 }
 
 const getAllReviews = async (
@@ -100,27 +148,45 @@ const getSingleReview = async (payload: any) => {
   return result
 }
 
-const updateReview = async (authId: any, reviewId: any, payload: Review) => {
-  const { propertyId, renterId, ...safePayload } = payload
-  const existingReview = await prisma.review.findUnique({
-    where: {
-      id: reviewId,
-    },
+const updateReview = async (payload: IPayload) => {
+  const { file, user, body, review } = payload
+  // Validate file input
+  if (!file) {
+    return { success: false, error: 'Invalid input or file is missing' }
+  }
+
+  // Authorization check: Ensure user has the 'owner' role
+  const { role } = user
+  if (role !== 'renter') {
+    return {
+      success: false,
+      error: 'Unauthorized: You cannot update this user',
+    }
+  }
+
+  // Upload property image to Cloudinary (or similar cloud storage)
+  const uploadedImage: ICloudinaryResponse =
+    await FileUploadHelper.uploadToCloudinary(file as IUploadFile)
+
+  // Validate successful image upload
+  if (!uploadedImage?.secure_url) {
+    return { success: false, error: 'Failed to upload image' }
+  }
+
+  // Prepare property data with the uploaded image URL
+  const updatedData = {
+    ...body,
+    reviewPic: [uploadedImage.secure_url],
+  }
+  const id = review.id
+  // Create a new property record in the database using Prisma
+  const result = await prisma.review.update({
+    where: { id: id },
+    data: updatedData,
   })
 
-  if (existingReview?.renterId !== authId) {
-    throw new ApiError(400, "You haven't permission to change the review")
-  }
-  if (propertyId && renterId) {
-    throw new ApiError(400, "You can't change the foreign key")
-  }
-  const result = await prisma.review.update({
-    where: {
-      id: reviewId,
-    },
-    data: safePayload,
-  })
-  return result
+  // Return the created property data
+  return { success: true, data: result }
 }
 
 const deleteReview = async (authId: any, deletedId: any) => {
@@ -135,7 +201,7 @@ const deleteReview = async (authId: any, deletedId: any) => {
     throw new ApiError(404, 'Review not found')
   }
 
-  if (isSameUser?.tenantId !== authId) {
+  if (isSameUser?.renterId !== authId) {
     throw new ApiError(400, "You haven't permission to change the review")
   }
 
@@ -151,7 +217,7 @@ const deleteReview = async (authId: any, deletedId: any) => {
 const singleUserReview = async (userId: any) => {
   const allReviews = await prisma.review.findMany({
     where: {
-      tenantId: userId,
+      renterId: userId,
     },
   })
 

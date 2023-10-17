@@ -23,15 +23,6 @@ import {
   propertySearchableFields,
 } from './property.constant'
 import { getUniqueRecord } from '../../utils/utils'
-// import { IReviewFilterRequest } from './review.interface'
-// import { IPaginationOptions } from '../../../interface/pagination'
-// import { IGenericResponse } from '../../../interface/common'
-// import { paginationHelpers } from '../../../helpers/paginationHelper'
-// import {
-//   reviewRelationalFields,
-//   reviewSearchableFields,
-// } from './review.constant'
-// import { getUniqueRecord } from '../../utils/utils'
 
 /**
  * Service function to add a new property to the database.

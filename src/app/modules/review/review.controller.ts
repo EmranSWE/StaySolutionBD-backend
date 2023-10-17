@@ -11,8 +11,17 @@ import { IReviewQueryOption } from '../user/user.constants'
 
 const addReview = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const reviewData = req.body
-    const result = await ReviewService.addReview(reviewData)
+    if (req.body.data) {
+      req.body = JSON.parse(req.body.data)
+    }
+
+    const payload = {
+      body: req.body,
+      file: req.file,
+      user: req.user,
+    }
+
+    const result = await ReviewService.addReview(payload)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -55,10 +64,18 @@ const getSingleReview = catchAsync(
 //Updating a single review
 const updateReview = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const reviewId = req.params.id
-    const updatedData = req.body
-    const ids = req.user?.id
-    const result = await ReviewService.updateReview(ids, reviewId, updatedData)
+    if (req.body.data) {
+      req.body = JSON.parse(req.body.data)
+    }
+
+    const payload = {
+      body: req.body,
+      file: req.file,
+      user: req.user,
+      review: req.params,
+    }
+
+    const result = await ReviewService.updateReview(payload)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
