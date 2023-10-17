@@ -105,7 +105,8 @@ const getProperties = async (
     })
   }
 
-  const whereConditions = andConditions.length > 0 ? { AND: andConditions } : {}
+  const whereConditions: Prisma.IssueWhereInput | undefined =
+    andConditions.length > 0 ? { AND: andConditions } : {}
 
   const result = await prisma.issue.findMany({
     where: whereConditions,

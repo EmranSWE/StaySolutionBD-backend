@@ -5,40 +5,31 @@ import catchAsync from '../../../shared/catchAsync'
 import sendResponse from '../../../shared/sendResponse'
 import httpStatus from 'http-status'
 import pick from '../../../shared/pick'
+import { SafetyService } from './safety.service'
+import { ISafetyQueryOption, SafetyFilterableFields } from './safety.constant'
 
-import {
-  IPropertyQueryOption,
-  propertyFilterableFields,
-} from './property.constant'
-import { PropertyService } from './property.service'
-
-const addProperty = catchAsync(
+const addSafety = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    if (req.body.data) {
-      req.body = JSON.parse(req.body.data)
-    }
-
     const payload = {
       body: req.body,
-      file: req.file,
       user: req.user,
     }
 
-    const result = await PropertyService.addProperty(payload)
+    const result = await SafetyService.addSafety(payload)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Property added successfully! ',
+      message: 'Safety added successfully! ',
       data: result,
     })
   },
 )
 
-const getProperties = catchAsync(
+const getSafeties = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const filters = pick(req.query, propertyFilterableFields)
-    const options = pick(req.query, IPropertyQueryOption)
-    const result = await PropertyService.getProperties(filters, options)
+    const filters = pick(req.query, SafetyFilterableFields)
+    const options = pick(req.query, ISafetyQueryOption)
+    const result = await SafetyService.getProperties(filters, options)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -49,12 +40,12 @@ const getProperties = catchAsync(
   },
 )
 
-// Getting a single Property
-const getSingleProperty = catchAsync(
+// Getting a single Safety
+const getSingleSafety = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const PropertyId = req.params.id
+    const SafetyId = req.params.id
 
-    const result = await PropertyService.getSingleProperty(PropertyId)
+    const result = await SafetyService.getSingleSafety(SafetyId)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -64,77 +55,72 @@ const getSingleProperty = catchAsync(
   },
 )
 
-//Updating a single Property
-const updateProperty = catchAsync(
+//Updating a single Safety
+const updateSafety = catchAsync(
   async (req, res: Response, next: NextFunction) => {
-    if (req.body.data) {
-      req.body = JSON.parse(req.body.data)
-    }
-
     const payload = {
       body: req.body,
-      file: req.file,
       params: req.params,
       user: req.user,
     }
 
-    const result = await PropertyService.updateProperty(payload)
+    const result = await SafetyService.updateSafety(payload)
     res.status(200).json({
       success: true,
-      message: 'Property updated successfully',
+      message: 'Safety updated successfully',
       data: result,
     })
   },
 )
 
-//Delete a single Property
-const deleteProperty = catchAsync(
+//Delete a single Safety
+const deleteSafety = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const PropertyId = req.params.id
+    const SafetyId = req.params.id
     const ids = req.user
 
-    const result = await PropertyService.deleteProperty(ids, PropertyId)
+    const result = await SafetyService.deleteSafety(ids, SafetyId)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: ' Property deleted Successfully',
+      message: ' Safety deleted Successfully',
       data: result,
     })
   },
 )
 
-// //Get a single Property
-// const singleUserProperty = catchAsync(
+// //Get a single Safety
+// const singleUserSafety = catchAsync(
 //   async (req: Request, res: Response, next: NextFunction) => {
 //     const userId = req.params.id
-//     const result = await PropertyService.singleUserProperty(userId)
+//     const result = await SafetyService.singleUserSafety(userId)
 //     sendResponse(res, {
 //       statusCode: httpStatus.OK,
 //       success: true,
-//       message: ' Get a single user all Property',
+//       message: ' Get a single user all Safety',
 //       data: result,
 //     })
 //   },
 // )
-// //Get a single Property
+// //Get a single Safety
 // const singlePropertiesRating = catchAsync(
 //   async (req: Request, res: Response, next: NextFunction) => {
-//     const propertyId = req.params.id
-//     const result = await PropertyService.singlePropertiesRating(propertyId)
+//     const SafetyId = req.params.id
+//     const result = await SafetyService.singlePropertiesRating(SafetyId)
 //     sendResponse(res, {
 //       statusCode: httpStatus.OK,
 //       success: true,
-//       message: 'Get a single property average rating',
+//       message: 'Get a single Safety average rating',
 //       data: result,
 //     })
 //   },
 // )
-export const PropertyController = {
-  addProperty,
-  getProperties,
-  getSingleProperty,
-  updateProperty,
-  deleteProperty,
-  // singleUserProperty,
+export const SafetyController = {
+  addSafety,
+  getSafeties,
+  getSingleSafety,
+  updateSafety,
+  deleteSafety,
+  // singleUserSafety,
   // singlePropertiesRating,
 }

@@ -7,16 +7,15 @@ export type IPayloadType = {
   params: { id: string }
 }
 
-export interface UpdatePropertyResponse {
+export interface UpdateSafetyResponse {
   success?: boolean
   data?: any
   error?: string
 }
 
-export type IPropertyFilterRequest = {
+export type ISafetyFilterRequest = {
   searchTerm?: string
-  numberOfRooms?: number
-  monthlyRent?: number
-  availableAfter?: Date
+  id?: any
+  propertyId?: any
   [key: string]: any
 }

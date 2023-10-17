@@ -4,6 +4,7 @@ import { PropertyRoutes } from '../modules/properties/property.route'
 import { ReviewRoutes } from '../modules/review/review.route'
 import { BookingRoutes } from '../modules/booking/booking.route'
 import { IssueRoutes } from '../modules/issue/issue.routes'
+import { SafetyRoutes } from '../modules/safety/safety.routes'
 
 const router = express.Router()
 
@@ -27,6 +28,10 @@ const moduleRoutes = [
   {
     path: '/issues',
     route: IssueRoutes,
+  },
+  {
+    path: '/safety',
+    route: SafetyRoutes,
   },
 ]
 
