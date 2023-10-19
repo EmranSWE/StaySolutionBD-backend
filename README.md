@@ -47,14 +47,79 @@ A comprehensive property management system that provides a seamless experience f
 
 ### Entities
 
-#### User
-- UserID (Primary Key)
-- FirstName, LastName, Email, Password, ...
-#### Property
-- PropertyID (Primary Key)
-- OwnerID (Foreign Key referencing User)
-- Address, Description, ...
-... *(Continue with all the entities you've provided)*
+### User
+- **UserID**: Primary Key 
+- **FirstName**: User's first name
+- **LastName**: User's last name
+- **Email**: User's email address
+- **Password**: Encrypted password for authentication
+- **Phone**: User's phone number
+- **ProfilePic**: URL to the profile picture
+- **UserType**: Specifies if user is a renter or property owner
+- **PreferredPropertyType**: User's preference for property types (e.g., Apartment, House, etc.)
+- **PreferredAmenities**: Amenities the user looks for in a property
+- **PreferredLocation**: User's preferred property location
+- **SearchHistory**: Record of the user's search activities
+- **BookingHistory**: Record of the user's booking activities
+- **SocialMediaLinks**: URLs to user's social media profiles
+- **UserStatus**: Active, Inactive, etc.
+
+### Property
+- **PropertyID**: Primary Key 
+- **OwnerID**: Foreign Key referencing User
+- **Address**: Location of the property
+- **Description**: A brief about the property
+... *(Continue with the other fields you've provided for Property)*
+
+### Booking
+- **BookingID**: Primary Key 
+- **TenantID**: Foreign Key referencing User
+- **PropertyID**: Foreign Key referencing Property
+
+### Payment
+- **PaymentID**: Primary Key
+- **BookingID**: Foreign Key referencing Booking
+- **Amount**: Amount of the payment
+- **PaymentMethod**: Method used for the payment (e.g., credit card, bank transfer)
+- **PaymentStatus**: Current status of the payment (e.g., pending, completed)
+- **PaymentDate**: Date when the payment was made or processed
+- **SecurityDepositAmount**: Amount kept as security deposit
+
+### Review
+- **ReviewID**: Primary Key
+- **PropertyID**: Foreign Key referencing Property
+- **TenantID**: Foreign Key referencing User
+- **Rating**: Rating given to the property
+- **Comments**: Review comments or feedback
+- **ReviewDate**: Date of the review
+- **ResponseFromOwner**: Owner's response to the review, if any
+- **ReviewPhotos**: Any photos added with the review
+
+### Issue (Refair)
+- **IssueID**: Primary Key
+- **PropertyID**: Foreign Key referencing Property
+- **TenantID**: Foreign Key referencing User
+- **IssueDescription**: Description of the issue or repair needed
+- **IssueStatus**: Current status of the issue (e.g., pending, resolved)
+- **ReportDate**: Date when the issue was reported
+- **PriorityLevel**: Priority assigned to the issue (e.g., high, medium, low)
+
+### Message
+- **MessageID**: Primary Key
+- **SenderID**: Foreign Key referencing User
+- **ReceiverID**: Foreign Key referencing User
+- **Content**: Message content
+- **Timestamp**: When the message was sent
+- **MessageCategory**: Category or type of the message (e.g., inquiry, complaint)
+
+### Notification
+- **NotificationID**: Primary Key
+- **UserID**: Foreign Key referencing User
+- **Content**: Notification content
+- **Timestamp**: When the notification was issued
+- **NotificationType**: Type of notification (e.g., alert, reminder)
+- **NotificationPlatform**: Where the notification was sent (e.g., app, email)
+  
 
 ### Relationships
 
@@ -134,21 +199,123 @@ A comprehensive property management system that provides a seamless experience f
 ## API Endpoints
 
 #### User Endpoints
+## API Endpoints
 
-- **Registration**: 
-  - [POST] `/api/v1/user/users`: Register a new user.
-- **Login**: 
-  - [POST] `/api/v1/user/login`: User login.
-... *(Continue with all the endpoints you've provided)*
+### Base URL
+All endpoints are based on the following URL: `https://stay-solution-bd-backend.vercel.app/`
 
-## Contributing
+### User Endpoints
+- **Register a User**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/user/users`
+- **Login**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/user/login`
+- **Get User Details**
+  - **Method**: `GET`
+  - **Endpoint**: `/api/v1/user/users/{id}`
+- **Update User**
+  - **Method**: `PUT`
+  - **Endpoint**: `/api/v1/user/users/{id}`
+- **Delete User**
+  - **Method**: `DELETE`
+  - **Endpoint**: `/api/v1/user/users/{id}`
 
-For contributions, please create a pull request. Make sure to follow the coding standards and add tests for new features.
+### Property Endpoints
+- **Add Property**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/property/properties`
+- **Get All Properties**
+  - **Method**: `GET`
+  - **Endpoint**: `/api/v1/property/properties`
+  - ### Review Endpoints
+- **Add a Review for a Property**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/review/reviews`
+- **Get Reviews for a Property**
+  - **Method**: `GET`
+  - **Endpoint**: `/api/v1/property/properties/{id}/reviews`
+
+### Issue (Repair) Endpoints
+- **Report an Issue for a Property**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/issue/issues`
+- **Get Issue Details**
+  - **Method**: `GET`
+  - **Endpoint**: `/api/v1/issue/issues/{id}`
+- **Update an Issue**
+  - **Method**: `PUT`
+  - **Endpoint**: `/api/v1/issue/issues/{id}`
+
+### Message Endpoints
+- **Send a Message**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/message/messages`
+- **Get Messages for a User**
+  - **Method**: `GET`
+  - **Endpoint**: `/api/v1/user/users/{id}/messages`
+
+### Notification Endpoints
+- **Create a Notification**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/notification/notifications`
+- **Get Notifications for a User**
+  - **Method**: `GET`
+  - **Endpoint**: `/api/v1/user/users/{id}/notifications`
+- **Delete a Notification**
+  - **Method**: `DELETE`
+  - **Endpoint**: `/api/v1/notification/notifications/{id}`
+
+### Wishlist Endpoints
+- **Add Property to Wishlist**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/wishlist/items`
+- **View User Wishlist**
+  - **Method**: `GET`
+  - **Endpoint**: `/api/v1/user/users/{id}/wishlist`
+- **Remove Property from Wishlist**
+  - **Method**: `DELETE`
+  - **Endpoint**: `/api/v1/wishlist/items/{id}`
+
+### Loyalty Program Endpoints
+- **Join Loyalty Program**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/loyalty/enroll`
+- **Get User Loyalty Points**
+  - **Method**: `GET`
+  - **Endpoint**: `/api/v1/user/users/{id}/loyalty`
+- **Redeem Loyalty Points**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/loyalty/redeem`
+
+### Local Services & Attractions Endpoints
+- **List a Local Service/Attraction**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/services/list`
+- **Get Services & Attractions by Location**
+  - **Method**: `GET`
+  - **Endpoint**: `/api/v1/services?location={location}`
+
+### Safety Endpoints
+- **Add Safety Record for Property**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/safety/records`
+- **Fetch Safety Records for Property**
+  - **Method**: `GET`
+  - **Endpoint**: `/api/v1/property/properties/{id}/safety`
+
+### Insurance Endpoints
+- **Purchase Insurance for a Property Booking**
+  - **Method**: `POST`
+  - **Endpoint**: `/api/v1/insurance/purchase`
+- **View Insurance Policies for a User**
+  - **Method**: `GET`
+  - **Endpoint**: `/api/v1/user/users/{id}/insurance`
+
 
 ## License
 
 This project is licensed under the MIT License.
-
 
 
 ### All code are update as per requirement,
