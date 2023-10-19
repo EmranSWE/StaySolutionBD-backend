@@ -1,6 +1,7 @@
 # Stay Solution BD , is one point solution of rental service
 
 ### Live Link: https://stay-solution-bd-backend.vercel.app/api/v1
+## POSTMAN https://martian-comet-596528.postman.co/workspace/New-Team-Workspace~4291e7f1-879e-4461-9d74-21bf9d590423/collection/27394351-094df829-23b0-4ef2-a540-4f7464feb98b?action=share&creator=27394351
 
 # Stay Solution BD
 
