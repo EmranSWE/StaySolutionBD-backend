@@ -1,5 +1,5 @@
 # Stay Solution BD , is one point solution of rental service
-# Cow Hut Admin Auth Assignment
+
 
 ### Live Link: https://stay-solution-bd-backend.vercel.app/api/v1
 
