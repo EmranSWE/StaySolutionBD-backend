@@ -1,15 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.WishlistValidation = void 0;
-const zod_1 = require("zod");
+'use strict'
+Object.defineProperty(exports, '__esModule', { value: true })
+exports.WishlistValidation = void 0
+const zod_1 = require('zod')
 const CreateWishlistZodSchema = zod_1.z.object({
-    body: zod_1.z.object({
-        propertyId: zod_1.z.string({
-            required_error: 'Property is required',
-            invalid_type_error: 'Property must be a string',
-        }),
+  body: zod_1.z.object({
+    propertyId: zod_1.z.string({
+      required_error: 'Property is required',
+      invalid_type_error: 'Property must be a string',
     }),
-});
+  }),
+})
 // const UserLoginZodSchema = z.object({
 //   body: z.object({
 //     email: z.string({
@@ -65,5 +65,5 @@ const CreateWishlistZodSchema = zod_1.z.object({
 //   }),
 // })
 exports.WishlistValidation = {
-    CreateWishlistZodSchema,
-};
+  CreateWishlistZodSchema,
+}
