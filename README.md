@@ -61,7 +61,75 @@ A comprehensive property management system that provides a seamless experience f
 #### User to Property
 - **Owns**: A user can own multiple properties, but each property is owned by a single user.
 - **Cardinality**: One to Many (from User to Property)
-... *(Continue with all the relationships you've provided)*
+
+#### User to Booking
+- **Books**: A user (as a tenant) can book multiple properties, but each booking is associated with one user.
+- **Cardinality**: One to Many (from User to Booking)
+
+#### Property to Booking
+- **Is Booked As**: A property can have multiple bookings over time, but each booking is associated with a single property.
+- **Cardinality**: One to Many (from Property to Booking)
+
+#### Booking to Payment
+- **Generates**: Each booking can generate multiple payments, especially if there's a system of installments or split payments.
+- **Cardinality**: One to Many (from Booking to Payment)
+
+#### Property to Review
+- **Receives**: A property can receive multiple reviews, but each review is specific to a single property.
+- **Cardinality**: One to Many (from Property to Review)
+
+#### User to Review
+- **Writes**: A user can write multiple reviews, but each review is written by a single user.
+- **Cardinality**: One to Many (from User to Review)
+
+#### Property to Issue (Repair)
+- **Has**: A property can have multiple issues reported, but each issue is associated with a single property.
+- **Cardinality**: One to Many (from Property to Issue)
+
+#### User to Issue (Repair)
+- **Reports**: A user can report multiple issues across different properties, but each issue report is made by a single user.
+- **Cardinality**: One to Many (from User to Issue)
+
+#### User to Message (as a Sender)
+- **Sends**: A user can send messages to multiple users.
+- **Cardinality**: One to Many (from one User to many Messages)
+
+#### User to Message (as a Receiver)
+- **Receives**: A user can receive messages from multiple users.
+- **Cardinality**: One to Many (from one User to many Messages)
+
+#### User to Notification
+- **Receives Notification**: A user can receive multiple notifications.
+- **Cardinality**: One to Many (from User to Notification)
+
+#### User to Wishlist
+- **Creates Wishlist**: A user can have multiple items in their wishlist.
+- **Cardinality**: One to Many (from User to Wishlist)
+
+#### Property to Wishlist
+- **Is Wished For**: A property can be on the wishlist of multiple users.
+- **Cardinality**: One to Many (from Property to Wishlist)
+
+#### User to Loyalty Program
+- **Participates In**: A user can participate in the loyalty program.
+- **Cardinality**: One to One (assuming each user has one loyalty program record)
+
+#### Property to Safety
+- **Has Safety Features**: Each property can have a record of its safety features.
+- **Cardinality**: One to One (each property to its safety record)
+
+#### User to Marketplace Items
+- **Lists Item**: A user can list multiple items in the marketplace.
+- **Cardinality**: One to Many (from User to Marketplace Items)
+
+#### Property to Insurance
+- **Is Insured By**: Each property can have an associated insurance policy.
+- **Cardinality**: One to One (each property to its insurance record)
+
+#### User to Insurance (as a Tenant)
+- **Purchases Insurance**: A tenant can purchase multiple insurance policies (especially if they book multiple properties).
+- **Cardinality**: One to Many (from User to Insurance policies)
+
 
 ## API Endpoints
 
