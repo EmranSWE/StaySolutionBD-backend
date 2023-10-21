@@ -105,19 +105,19 @@ const deleteMarketplace = catchAsync(
   },
 )
 
-// //Get a single Marketplace
-// const singleUserMarketplace = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const userId = req.params.id
-//     const result = await MarketplaceService.singleUserMarketplace(userId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: ' Get a single user all Marketplace',
-//       data: result,
-//     })
-//   },
-// )
+//Get a single Marketplace
+const singleUserMarketplace = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.id
+    const result = await MarketplaceService.singleUserMarketplace(userId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Get a my user all Property',
+      data: result,
+    })
+  },
+)
 // //Get a single Marketplace
 // const singlePropertiesRating = catchAsync(
 //   async (req: Request, res: Response, next: NextFunction) => {
@@ -137,6 +137,6 @@ export const MarketplaceController = {
   getSingleMarketplace,
   updateMarketplace,
   deleteMarketplace,
-  // singleUserMarketplace,
+  singleUserMarketplace,
   // singlePropertiesRating,
 }

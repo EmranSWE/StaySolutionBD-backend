@@ -223,12 +223,21 @@ const deleteMarketplace = async (
 
   return result
 }
+
+const singleUserMarketplace = async (userId: any) => {
+  const result = await prisma.marketplace.findMany({
+    where: { ownerId: userId },
+    include: { owner: true },
+  })
+
+  return result
+}
 export const MarketplaceService = {
   addMarketplace,
   getMarketplaces,
   getSingleMarketplace,
   updateMarketplace,
   deleteMarketplace,
-  // singleUserMarketplace,
+  singleUserMarketplace,
   // singlePropertiesRating,
 }

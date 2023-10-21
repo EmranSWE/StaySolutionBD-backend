@@ -186,12 +186,19 @@ const deleteMarketplace = (authUser, deletedId) => __awaiter(void 0, void 0, voi
     });
     return result;
 });
+const singleUserMarketplace = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.marketplace.findMany({
+        where: { ownerId: userId },
+        include: { owner: true },
+    });
+    return result;
+});
 exports.MarketplaceService = {
     addMarketplace,
     getMarketplaces,
     getSingleMarketplace,
     updateMarketplace,
     deleteMarketplace,
-    // singleUserMarketplace,
+    singleUserMarketplace,
     // singlePropertiesRating,
 };
