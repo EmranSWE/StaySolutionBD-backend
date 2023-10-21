@@ -36,11 +36,9 @@ const addReview = async (payload: IPayload) => {
     }
   }
 
-  // Upload property image to Cloudinary (or similar cloud storage)
+  // Upload Marketplace image to Cloudinary using the stream approach
   const uploadedImage: ICloudinaryResponse =
-    await FileUploadHelper.uploadToCloudinary(file as IUploadFile)
-
-  // Validate successful image upload
+    await FileUploadHelper.uploadToCloudinary(file.buffer)
   if (!uploadedImage?.secure_url) {
     return { success: false, error: 'Failed to upload image' }
   }
@@ -164,11 +162,9 @@ const updateReview = async (payload: IPayload) => {
     }
   }
 
-  // Upload property image to Cloudinary (or similar cloud storage)
+  // Upload Marketplace image to Cloudinary using the stream approach
   const uploadedImage: ICloudinaryResponse =
-    await FileUploadHelper.uploadToCloudinary(file as IUploadFile)
-
-  // Validate successful image upload
+    await FileUploadHelper.uploadToCloudinary(file.buffer)
   if (!uploadedImage?.secure_url) {
     return { success: false, error: 'Failed to upload image' }
   }

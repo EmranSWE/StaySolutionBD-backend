@@ -27,7 +27,7 @@ router.delete(
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.OWNER),
   PropertyController.deleteProperty,
 )
-// router.delete('/user/:id/Propertys', PropertyController.singleUserProperty)
+router.get('/my-property/:id/', PropertyController.singleUserProperty)
 // router.get(
 //   '/properties/:id/average-rating',
 //   PropertyController.singlePropertiesRating,

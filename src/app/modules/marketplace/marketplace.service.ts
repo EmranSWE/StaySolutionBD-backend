@@ -41,10 +41,10 @@ const addMarketplace = async (payload: any) => {
   }
 
   // Upload Marketplace image to Cloudinary (or similar cloud storage)
+  // const uploadedImage: ICloudinaryResponse =
+  //   await FileUploadHelper.uploadToCloudinary(file as IUploadFile)
   const uploadedImage: ICloudinaryResponse =
-    await FileUploadHelper.uploadToCloudinary(file as IUploadFile)
-
-  // Validate successful image upload
+    await FileUploadHelper.uploadToCloudinary(file.buffer)
   if (!uploadedImage?.secure_url) {
     return { success: false, error: 'Failed to upload image' }
   }
@@ -62,7 +62,7 @@ const addMarketplace = async (payload: any) => {
     include: { owner: true },
   })
 
-  // Return the created Marketplace data
+  // // Return the created Marketplace data
   return { success: true, data: result }
 }
 
@@ -178,8 +178,7 @@ const updateMarketplace = async (
   }
 
   const uploadedImage: ICloudinaryResponse =
-    await FileUploadHelper.uploadToCloudinary(file as IUploadFile)
-
+    await FileUploadHelper.uploadToCloudinary(file.buffer)
   if (!uploadedImage?.secure_url) {
     return { success: false, error: 'Failed to upload image' }
   }

@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 // /* eslint-disable @typescript-eslint/ban-ts-comment */
 // /* eslint-disable no-useless-catch */
 // /* eslint-disable no-unused-vars */

@@ -16,6 +16,7 @@ import cookieParser from 'cookie-parser'
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
 app.use(cookieParser())
 //Application use
 app.use('/api/v1', router)

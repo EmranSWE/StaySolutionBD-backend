@@ -56,15 +56,12 @@ const addProperty = async (payload: any) => {
     }
   }
 
-  // Upload property image to Cloudinary (or similar cloud storage)
+  // Upload Marketplace image to Cloudinary using the stream approach
   const uploadedImage: ICloudinaryResponse =
-    await FileUploadHelper.uploadToCloudinary(file as IUploadFile)
-
-  // Validate successful image upload
+    await FileUploadHelper.uploadToCloudinary(file.buffer)
   if (!uploadedImage?.secure_url) {
     return { success: false, error: 'Failed to upload image' }
   }
-
   // Prepare property data with the uploaded image URL
   const updatedData = {
     ...body,
@@ -203,9 +200,9 @@ const updateProperty = async (
     }
   }
 
+  // Upload Marketplace image to Cloudinary using the stream approach
   const uploadedImage: ICloudinaryResponse =
-    await FileUploadHelper.uploadToCloudinary(file as IUploadFile)
-
+    await FileUploadHelper.uploadToCloudinary(file.buffer)
   if (!uploadedImage?.secure_url) {
     return { success: false, error: 'Failed to upload image' }
   }

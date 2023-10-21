@@ -104,9 +104,9 @@ const updateUser = async (payload: any): Promise<UpdateUserResponse> => {
     return { success: false, error: 'You cannot update primary email' }
   }
 
+  // Upload Marketplace image to Cloudinary using the stream approach
   const uploadedImage: ICloudinaryResponse =
-    await FileUploadHelper.uploadToCloudinary(file as IUploadFile)
-
+    await FileUploadHelper.uploadToCloudinary(file.buffer)
   if (!uploadedImage?.secure_url) {
     return { success: false, error: 'Failed to upload image' }
   }

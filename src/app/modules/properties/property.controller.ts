@@ -104,18 +104,18 @@ const deleteProperty = catchAsync(
 )
 
 // //Get a single Property
-// const singleUserProperty = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const userId = req.params.id
-//     const result = await PropertyService.singleUserProperty(userId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: ' Get a single user all Property',
-//       data: result,
-//     })
-//   },
-// )
+const singleUserProperty = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.id
+    const result = await PropertyService.singleUserProperty(userId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Get a my user all Property',
+      data: result,
+    })
+  },
+)
 // //Get a single Property
 // const singlePropertiesRating = catchAsync(
 //   async (req: Request, res: Response, next: NextFunction) => {
@@ -135,6 +135,6 @@ export const PropertyController = {
   getSingleProperty,
   updateProperty,
   deleteProperty,
-  // singleUserProperty,
+  singleUserProperty,
   // singlePropertiesRating,
 }
