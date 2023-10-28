@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-useless-catch */
 /* eslint-disable no-unused-vars */
@@ -34,6 +35,10 @@ const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const utils_1 = require("../../utils/utils");
 const payment_constant_1 = require("./payment.constant");
+const stripe_1 = __importDefault(require("stripe"));
+const stripe = new stripe_1.default(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2020-08-27',
+});
 /**
  * Service function to add a new Payment to the database.
  *
@@ -67,6 +72,71 @@ const addPayment = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     });
     // Return the created Payment data
     return { success: true, data: result };
+});
+const addPaymentStripe = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const { user, body } = payload;
+    const { token, paymentId } = body;
+    const { role, id: userId } = user;
+    if (role !== 'renter') {
+        return {
+            success: false,
+            error: 'Unauthorized: You cannot update this user',
+        };
+    }
+    const booking = yield prisma_1.default.booking.findUnique({
+        where: {
+            id: paymentId,
+        },
+        include: {
+            property: true,
+            renter: true,
+        },
+    });
+    //@ts-ignore
+    const { description, monthlyRent } = booking === null || booking === void 0 ? void 0 : booking.property;
+    const stripeCustomer = yield stripe.customers.create({
+        //@ts-ignore
+        email: user.email,
+        source: token,
+        address: {
+            city: 'Imran',
+            country: 'Bangladesh',
+            line1: 'Arshinagr',
+            line2: null,
+            postal_code: '10001',
+            state: 'dhaka',
+        },
+        shipping: {
+            name: 'Imran',
+            address: {
+                city: 'Dhaka',
+                country: null,
+                line1: 'KK 137 ST',
+                line2: null,
+                postal_code: '10001',
+                state: null,
+            },
+        },
+        name: 'imran',
+        phone: '01838235450',
+    });
+    // CREATE STRIPE CHARGE
+    const stripeCharge = yield stripe.charges.create({
+        amount: monthlyRent * 100,
+        currency: 'usd',
+        customer: stripeCustomer.id,
+        description: `Purchased the ${description} for ${monthlyRent}`,
+    });
+    const updateStatus = {
+        bookingStatus: 'Confirmed',
+    };
+    if (stripeCharge.status === 'succeeded') {
+        const result = yield prisma_1.default.booking.update({
+            where: { id: paymentId },
+            data: updateStatus,
+        });
+        return { success: true, data: result };
+    }
 });
 const getProperties = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { limit, page, skip } = paginationHelper_1.paginationHelpers.calculatePagination(options);
@@ -187,6 +257,7 @@ const deletePayment = (authUser, deletedId) => __awaiter(void 0, void 0, void 0,
 });
 exports.PaymentService = {
     addPayment,
+    addPaymentStripe,
     getProperties,
     getSinglePayment,
     updatePayment,

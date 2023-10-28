@@ -17,6 +17,7 @@ router.post('/login', (0, validateRequest_1.default)(user_validation_1.UserValid
 router.post('/change-password', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.RENTER, user_1.ENUM_USER_ROLE.OWNER), (0, validateRequest_1.default)(user_validation_1.UserValidation.UserChangePasswordZodSchema), user_controller_1.UserController.changePassword);
 router.patch('/update-profile/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.RENTER, user_1.ENUM_USER_ROLE.OWNER), FileUploadHelper_1.FileUploadHelper.upload.single('file'), user_controller_1.UserController.updateUser);
 router.get('/get-user', (0, auth_1.default)(user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.ADMIN), user_controller_1.UserController.getUsers);
+router.get('/get-user/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.ADMIN), user_controller_1.UserController.getSingleUser);
 router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.RENTER, user_1.ENUM_USER_ROLE.OWNER), user_controller_1.UserController.deleteUser);
 router.get('/refresh-token', user_controller_1.UserController.refreshToken);
 exports.UserRoutes = router;

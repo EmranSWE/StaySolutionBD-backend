@@ -27,4 +27,10 @@ router.delete(
   PaymentController.deletePayment,
 )
 
+router.post(
+  '/create-payment-intent',
+  auth(ENUM_USER_ROLE.RENTER),
+  PaymentController.addPaymentStripe,
+)
+
 export const PaymentRoutes = router

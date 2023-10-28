@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-useless-catch */
 /* eslint-disable no-unused-vars */
@@ -25,6 +26,10 @@ import {
   paymentSearchableFields,
 } from './payment.constant'
 
+import Stripe from 'stripe'
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY! as string, {
+  apiVersion: '2020-08-27' as any,
+})
 /**
  * Service function to add a new Payment to the database.
  *
@@ -64,6 +69,78 @@ const addPayment = async (payload: any) => {
 
   // Return the created Payment data
   return { success: true, data: result }
+}
+
+const addPaymentStripe = async (payload: any) => {
+  const { user, body } = payload
+  const { token, paymentId } = body
+
+  const { role, id: userId } = user
+  if (role !== 'renter') {
+    return {
+      success: false,
+      error: 'Unauthorized: You cannot update this user',
+    }
+  }
+
+  const booking = await prisma.booking.findUnique({
+    where: {
+      id: paymentId,
+    },
+    include: {
+      property: true,
+      renter: true,
+    },
+  })
+
+  //@ts-ignore
+  const { description, monthlyRent } = booking?.property
+
+  const stripeCustomer = await stripe.customers.create({
+    //@ts-ignore
+    email: user.email as string,
+    source: token, //
+    address: {
+      city: 'Imran',
+      country: 'Bangladesh',
+      line1: 'Arshinagr',
+      line2: null,
+      postal_code: '10001',
+      state: 'dhaka',
+    },
+    shipping: {
+      name: 'Imran',
+      address: {
+        city: 'Dhaka',
+        country: null,
+        line1: 'KK 137 ST',
+        line2: null,
+        postal_code: '10001',
+        state: null,
+      },
+    },
+    name: 'imran',
+    phone: '01838235450',
+  })
+  // CREATE STRIPE CHARGE
+  const stripeCharge = await stripe.charges.create({
+    amount: monthlyRent * 100,
+    currency: 'usd',
+    customer: stripeCustomer.id,
+    description: `Purchased the ${description} for ${monthlyRent}`,
+  })
+
+  const updateStatus = {
+    bookingStatus: 'Confirmed' as any,
+  }
+
+  if (stripeCharge.status === 'succeeded') {
+    const result = await prisma.booking.update({
+      where: { id: paymentId },
+      data: updateStatus,
+    })
+    return { success: true, data: result }
+  }
 }
 
 const getProperties = async (
@@ -209,6 +286,7 @@ const deletePayment = async (
 }
 export const PaymentService = {
   addPayment,
+  addPaymentStripe,
   getProperties,
   getSinglePayment,
   updatePayment,

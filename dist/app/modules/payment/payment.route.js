@@ -17,4 +17,5 @@ router.get('/', payment_controller_1.PaymentController.getPayments);
 router.get('/:id', payment_controller_1.PaymentController.getSinglePayment);
 router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.OWNER, user_1.ENUM_USER_ROLE.ADMIN), payment_controller_1.PaymentController.updatePayment);
 router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.OWNER), payment_controller_1.PaymentController.deletePayment);
+router.post('/create-payment-intent', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), payment_controller_1.PaymentController.addPaymentStripe);
 exports.PaymentRoutes = router;

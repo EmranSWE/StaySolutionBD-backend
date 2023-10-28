@@ -29,6 +29,21 @@ const addPayment = catchAsync(
   },
 )
 
+const addPaymentStripe = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const payload = {
+      body: req.body,
+      user: req.user,
+    }
+    const result = await PaymentService.addPaymentStripe(payload)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Payment added successfully! ',
+      data: result,
+    })
+  },
+)
 const getPayments = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const filters = pick(req.query, paymentFilterableFields)
@@ -100,6 +115,7 @@ const deletePayment = catchAsync(
 
 export const PaymentController = {
   addPayment,
+  addPaymentStripe,
   getPayments,
   getSinglePayment,
   updatePayment,

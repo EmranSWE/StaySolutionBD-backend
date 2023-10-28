@@ -89,7 +89,7 @@ const deleteProperty = (0, catchAsync_1.default)((req, res, next) => __awaiter(v
         data: result,
     });
 }));
-// //Get a single Property
+//Get a single Property
 const singleUserProperty = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.params.id;
     const result = yield property_service_1.PropertyService.singleUserProperty(userId);

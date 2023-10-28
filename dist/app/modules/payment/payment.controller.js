@@ -32,6 +32,19 @@ const addPayment = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 
         data: result,
     });
 }));
+const addPaymentStripe = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const payload = {
+        body: req.body,
+        user: req.user,
+    };
+    const result = yield payment_service_1.PaymentService.addPaymentStripe(payload);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Payment added successfully! ',
+        data: result,
+    });
+}));
 const getPayments = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const filters = (0, pick_1.default)(req.query, payment_constant_1.paymentFilterableFields);
     const options = (0, pick_1.default)(req.query, payment_constant_1.IPaymentQueryOption);
@@ -87,6 +100,7 @@ const deletePayment = (0, catchAsync_1.default)((req, res, next) => __awaiter(vo
 }));
 exports.PaymentController = {
     addPayment,
+    addPaymentStripe,
     getPayments,
     getSinglePayment,
     updatePayment,

@@ -103,7 +103,7 @@ const deleteProperty = catchAsync(
   },
 )
 
-// //Get a single Property
+//Get a single Property
 const singleUserProperty = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.id

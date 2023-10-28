@@ -28,6 +28,7 @@ import { jwtHelpers } from '../../../helpers/jwtHelpers'
 import httpStatus from 'http-status'
 import { ICloudinaryResponse, IUploadFile } from '../../../interface/file'
 import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
+import { getUniqueRecord } from '../../utils/utils'
 
 const createUser = async (data: User) => {
   if (!data?.password) {
@@ -295,6 +296,12 @@ const changePassword = async (
   }
 }
 
+const getSingleUser = async (payload: any) => {
+  const model = prisma.user
+  const result = await getUniqueRecord(model, payload)
+  return result
+}
+
 const deleteUser = async (authId: any, deletedId: any) => {
   const isSameUser = await prisma.user.findUnique({
     where: {
@@ -321,6 +328,7 @@ const deleteUser = async (authId: any, deletedId: any) => {
 export const UserService = {
   createUser,
   getUsers,
+  getSingleUser,
   changePassword,
   loginUser,
   updateUser,

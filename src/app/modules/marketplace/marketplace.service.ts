@@ -62,7 +62,7 @@ const addMarketplace = async (payload: any) => {
     include: { owner: true },
   })
 
-  // // Return the created Marketplace data
+  // Return the created Marketplace data
   return { success: true, data: result }
 }
 

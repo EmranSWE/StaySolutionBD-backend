@@ -33,6 +33,7 @@ const config_1 = __importDefault(require("../../../config"));
 const jwtHelpers_1 = require("../../../helpers/jwtHelpers");
 const http_status_1 = __importDefault(require("http-status"));
 const FileUploadHelper_1 = require("../../../helpers/FileUploadHelper");
+const utils_1 = require("../../utils/utils");
 const createUser = (data) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(data === null || data === void 0 ? void 0 : data.password)) {
         throw new ApiError_1.default(400, 'Password is required');
@@ -219,6 +220,12 @@ const changePassword = (currentUser, payload) => __awaiter(void 0, void 0, void 
         throw new ApiError_1.default(http_status_1.default.INTERNAL_SERVER_ERROR, 'An unexpected error occurred');
     }
 });
+const getSingleUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(payload);
+    const model = prisma_1.default.user;
+    const result = yield (0, utils_1.getUniqueRecord)(model, payload);
+    return result;
+});
 const deleteUser = (authId, deletedId) => __awaiter(void 0, void 0, void 0, function* () {
     const isSameUser = yield prisma_1.default.user.findUnique({
         where: {
@@ -241,6 +248,7 @@ const deleteUser = (authId, deletedId) => __awaiter(void 0, void 0, void 0, func
 exports.UserService = {
     createUser,
     getUsers,
+    getSingleUser,
     changePassword,
     loginUser,
     updateUser,

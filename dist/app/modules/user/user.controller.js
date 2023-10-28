@@ -116,6 +116,17 @@ const getUsers = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0,
         data: result.data,
     });
 }));
+// get single user
+const getSingleUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = req.params.id;
+    const result = yield user_service_1.UserService.getSingleUser(userId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Get a my user all Property',
+        data: result,
+    });
+}));
 //Delete a single user
 const deleteUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -132,6 +143,7 @@ const deleteUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 
 exports.UserController = {
     createUser,
     getUsers,
+    getSingleUser,
     loginUser,
     refreshToken,
     changePassword,

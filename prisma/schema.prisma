@@ -183,7 +183,7 @@ model Payment{
   id String @id @default(uuid())
   paymentMethod String?
   paymentDate DateTime @default(now())
-  paymentStatus PaymentStatus
+  paymentStatus PaymentStatus @default(Pending)
   securityDeposit Int
   paymentAmount Int
   bookingId String

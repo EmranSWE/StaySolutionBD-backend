@@ -116,7 +116,20 @@ const getUsers = catchAsync(
     })
   },
 )
+// get single user
 
+const getSingleUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.id
+    const result = await UserService.getSingleUser(userId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Get a my user all Property',
+      data: result,
+    })
+  },
+)
 //Delete a single user
 const deleteUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -135,6 +148,7 @@ const deleteUser = catchAsync(
 export const UserController = {
   createUser,
   getUsers,
+  getSingleUser,
   loginUser,
   refreshToken,
   changePassword,
