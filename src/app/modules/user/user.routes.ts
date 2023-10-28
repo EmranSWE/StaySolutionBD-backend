@@ -49,8 +49,13 @@ router.get(
   UserController.getUsers,
 )
 router.get(
-  '/get-user/:id',
-  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  '/get-user/my-profile',
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.OWNER,
+    ENUM_USER_ROLE.RENTER,
+  ),
   UserController.getSingleUser,
 )
 router.delete(

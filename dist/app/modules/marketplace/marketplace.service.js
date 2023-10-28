@@ -58,11 +58,10 @@ const addMarketplace = (payload) => __awaiter(void 0, void 0, void 0, function* 
         data: updatedData,
         include: { owner: true },
     });
-    // // Return the created Marketplace data
+    // Return the created Marketplace data
     return { success: true, data: result };
 });
 const getMarketplaces = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(filters);
     const { limit, page, skip } = paginationHelper_1.paginationHelpers.calculatePagination(options);
     const { searchTerm, price, category } = filters, filterData = __rest(filters, ["searchTerm", "price", "category"]);
     const andConditions = [];

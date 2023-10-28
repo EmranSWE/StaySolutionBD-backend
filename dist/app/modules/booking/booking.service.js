@@ -35,7 +35,6 @@ const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const utils_1 = require("../../utils/utils");
 const booking_constant_1 = require("./booking.constant");
 const addBooking = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(payload);
     const { user, body } = payload;
     // Authorization check: Ensure user has the 'owner' role
     const { role } = user;

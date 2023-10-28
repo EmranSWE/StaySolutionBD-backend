@@ -49,14 +49,12 @@ const updateUser = catchAsync(
     if (req.body.data) {
       req.body = JSON.parse(req.body.data)
     }
-
     const payload = {
       body: req.body,
       file: req.file,
       params: req.params,
       user: req.user,
     }
-
     const result = await UserService.updateUser(payload)
     res.status(200).json({
       success: true,
@@ -120,7 +118,8 @@ const getUsers = catchAsync(
 
 const getSingleUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.params.id
+    const userId = req?.user?.id
+
     const result = await UserService.getSingleUser(userId)
     sendResponse(res, {
       statusCode: httpStatus.OK,

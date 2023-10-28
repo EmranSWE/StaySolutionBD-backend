@@ -221,7 +221,6 @@ const changePassword = (currentUser, payload) => __awaiter(void 0, void 0, void 
     }
 });
 const getSingleUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(payload);
     const model = prisma_1.default.user;
     const result = yield (0, utils_1.getUniqueRecord)(model, payload);
     return result;
