@@ -23,10 +23,19 @@ const addMonthlyRentPayment = async (payload: any) => {
   const { user, body } = payload
 
   const { id: userId } = user
+  const { bookingId, ...rest } = body
+
+  const booking = await prisma.booking.findUnique({
+    where: {
+      id: bookingId,
+    },
+  })
+  const propertyId = booking?.propertyId
 
   // Prepare MonthlyRentPayment data with the uploaded image URL
   const updatedData = {
-    ...body,
+    ...rest,
+    propertyId: propertyId,
     renterId: userId,
   }
   // Create a new MonthlyRentPayment record in the database using Prisma
@@ -98,7 +107,7 @@ const getMonthlyRentPayments = async (
     })
   }
 
-  const whereConditions: Prisma.MonthlyRentPaymentWhereInput =
+  const whereConditions: any =
     andConditions.length > 0 ? { AND: andConditions } : {}
 
   const result = await prisma.monthlyRentPayment.findMany({
@@ -154,7 +163,7 @@ const getTotalMonthlyRentPayment = async () => {
 }
 
 // Get total rent amount for a specific property
-const getSpecificPropertyTotalPayment = async propertyId => {
+const getSpecificPropertyTotalPayment = async (propertyId: any) => {
   if (!propertyId) {
     throw new Error('Property ID must be provided')
   }

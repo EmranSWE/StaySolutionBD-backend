@@ -118,6 +118,7 @@ model User {
 
 model Property {
   id String @id @default(uuid())
+  title String?
   location String[]
   city String?
   numberOfRooms Int
@@ -212,6 +213,7 @@ model MonthlyRentPayment {
 
 model Issue {
   id String @id @default(uuid())
+   title String?
   issueDescription String
   reportDate DateTime @default(now())
   issueStatus IssueStatus  @default(OPEN)
@@ -226,6 +228,7 @@ model Issue {
 
 model Safety{
   id String @id @default(uuid())
+   title String?
   safetyAmenities String[]
   safetyScore Int
   propertyId String
@@ -289,6 +292,7 @@ operatingHours String?
 
 model Marketplace {
 id String @id @default(uuid())
+ title String?
 itemDescription String
 price Int
 propertyImage String?
