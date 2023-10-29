@@ -87,6 +87,10 @@ const getProperties = async (
     numberOfRooms,
     availableAfter,
     monthlyRent,
+    location,
+    size,
+    maxOccupancy,
+    propertyStatus,
     ...filterData
   } = filters
 
@@ -110,6 +114,14 @@ const getProperties = async (
   if (!isNaN(numberOfRoomsInt)) {
     // Check if the parsed value is a valid number
     andConditions.push({ numberOfRooms: numberOfRoomsInt })
+  }
+
+  // Handling number of rooms
+  const maxOccupancyInt = Number(maxOccupancy)
+
+  if (!isNaN(maxOccupancyInt)) {
+    // Check if the parsed value is a valid number
+    andConditions.push({ maxOccupancy: maxOccupancyInt })
   }
   const monthlyRentInt = Number(monthlyRent)
 
