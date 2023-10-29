@@ -14,6 +14,7 @@ const router = express_1.default.Router();
 //Post to create Payment
 router.post('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), (0, validateRequest_1.default)(payment_validation_1.PaymentValidation.CreatePaymentZodSchema), payment_controller_1.PaymentController.addPayment);
 router.get('/', payment_controller_1.PaymentController.getPayments);
+router.get('/rent-management', payment_controller_1.PaymentController.getAllRent);
 router.get('/:id', payment_controller_1.PaymentController.getSinglePayment);
 router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.OWNER, user_1.ENUM_USER_ROLE.ADMIN), payment_controller_1.PaymentController.updatePayment);
 router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.OWNER), payment_controller_1.PaymentController.deletePayment);

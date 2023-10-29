@@ -48,11 +48,25 @@ const getPayments = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const filters = pick(req.query, paymentFilterableFields)
     const options = pick(req.query, IPaymentQueryOption)
-    const result = await PaymentService.getProperties(filters, options)
+    const result = await PaymentService.getPayments(filters, options)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Properties fetched successfully',
+      message: 'Payments fetched successfully',
+      meta: result.meta,
+      data: result.data,
+    })
+  },
+)
+const getAllRent = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const filters = pick(req.query, paymentFilterableFields)
+    const options = pick(req.query, IPaymentQueryOption)
+    const result = await PaymentService.getAllRent(filters, options)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Payments fetched successfully',
       meta: result.meta,
       data: result.data,
     })
@@ -117,6 +131,7 @@ export const PaymentController = {
   addPayment,
   addPaymentStripe,
   getPayments,
+  getAllRent,
   getSinglePayment,
   updatePayment,
   deletePayment,

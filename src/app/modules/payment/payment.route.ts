@@ -14,6 +14,7 @@ router.post(
   PaymentController.addPayment,
 )
 router.get('/', PaymentController.getPayments)
+router.get('/rent-management', PaymentController.getAllRent)
 router.get('/:id', PaymentController.getSinglePayment)
 
 router.patch(

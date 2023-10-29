@@ -69,7 +69,7 @@ const loginUser = (data) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const updateUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
-    if (!(payload === null || payload === void 0 ? void 0 : payload.file) || !((_a = payload.params) === null || _a === void 0 ? void 0 : _a.id) || !((_b = payload.user) === null || _b === void 0 ? void 0 : _b.id)) {
+    if (!((_a = payload.params) === null || _a === void 0 ? void 0 : _a.id) || !((_b = payload.user) === null || _b === void 0 ? void 0 : _b.id)) {
         return { success: false, error: 'Invalid input or file is missing' };
     }
     const { file, params, user, body } = payload;

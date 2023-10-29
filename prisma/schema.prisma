@@ -112,6 +112,7 @@ model User {
   loyalties Loyalty[]
   marketplaces Marketplace[]
   insurances Insurance[]
+  monthlyRentPayments MonthlyRentPayment[]
   @@map("users")
 }
 
@@ -139,6 +140,7 @@ model Property {
  bookings Booking[]
  issues Issue[]
  safeties Safety[]
+ monthlyRentPayments MonthlyRentPayment[]
  wishlists WishList[]
   insuranceId String? @unique
   insurance Insurance? @relation(fields: [insuranceId], references: [id])
@@ -193,6 +195,21 @@ model Payment{
    @@map("payments")
 }
 
+
+model MonthlyRentPayment {
+  id            String    @id @default(uuid())
+  month         Int       // Represent month as an integer, e.g., January = 1, February = 2, etc.
+  year          Int
+  status        PaymentStatus @default(Pending) 
+  amount        Int?
+  paymentDate   DateTime?  // Date when the payment was made
+  propertyId    String
+  property      Property   @relation(fields: [propertyId], references: [id])
+  renterId      String
+  renter        User       @relation(fields: [renterId], references: [id])
+  @@map("monthly_rent_payments")
+}
+
 model Issue {
   id String @id @default(uuid())
   issueDescription String
@@ -203,7 +220,6 @@ model Issue {
   property Property @relation(fields:[propertyId], references:[id])
     renterId String
   user User @relation(fields:[renterId], references:[id])
-
   @@map("issues")
 }
 

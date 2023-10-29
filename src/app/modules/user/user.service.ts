@@ -88,7 +88,7 @@ const loginUser = async (data: User) => {
 }
 
 const updateUser = async (payload: any): Promise<UpdateUserResponse> => {
-  if (!payload?.file || !payload.params?.id || !payload.user?.id) {
+  if (!payload.params?.id || !payload.user?.id) {
     return { success: false, error: 'Invalid input or file is missing' }
   }
   const { file, params, user, body } = payload

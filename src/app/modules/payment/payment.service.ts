@@ -8,8 +8,6 @@
 import { Prisma, Payment, Review } from '@prisma/client'
 import prisma from '../../../shared/prisma'
 import ApiError from '../../../errors/ApiError'
-import { ICloudinaryResponse, IUploadFile } from '../../../interface/file'
-import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
 
 import { IPaginationOptions } from '../../../interface/pagination'
 import { IGenericResponse } from '../../../interface/common'
@@ -143,7 +141,8 @@ const addPaymentStripe = async (payload: any) => {
   }
 }
 
-const getProperties = async (
+//Get all payments
+const getPayments = async (
   filters: IPaymentFilterRequest,
   options: IPaginationOptions,
 ): Promise<IGenericResponse<Payment[]>> => {
@@ -223,6 +222,144 @@ const getProperties = async (
   }
 }
 
+const getAllRent = async (
+  filters: IPaymentFilterRequest,
+  options: IPaginationOptions,
+): Promise<IGenericResponse<Payment[]>> => {
+  const { limit, page, skip } = paginationHelpers.calculatePagination(options)
+
+  const { searchTerm, paymentStatus, paymentAmount, ...filterData } = filters
+
+  const andConditions = []
+
+  // Handling search term
+  if (searchTerm) {
+    andConditions.push({
+      OR: paymentSearchableFields.map(field => ({
+        [field]: {
+          contains: searchTerm,
+          mode: 'insensitive',
+        },
+      })),
+    })
+  }
+
+  // Handling number of rooms
+  const paymentAmountInt = Number(paymentAmount)
+
+  if (!isNaN(paymentAmountInt)) {
+    // Check if the parsed value is a valid number
+    andConditions.push({ paymentAmount: paymentAmountInt })
+  }
+  if (paymentStatus) {
+    andConditions.push({ paymentStatus: paymentStatus })
+  }
+  if (Object.keys(filterData).length > 0) {
+    andConditions.push({
+      AND: Object.keys(filterData).map(key => {
+        if (paymentRelationalFields.includes(key)) {
+          return {
+            [paymentRelationalFieldsMapper[key]]: {
+              id: (filterData as any)[key],
+            },
+          }
+        } else {
+          return {
+            [key]: {
+              equals: (filterData as any)[key],
+            },
+          }
+        }
+      }),
+    })
+  }
+
+  const whereConditions: Prisma.PaymentWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {}
+
+  const result = await prisma.payment.findMany({
+    where: whereConditions,
+    skip,
+    take: limit,
+    orderBy:
+      options.sortBy && options.sortOrder
+        ? { [options.sortBy]: options.sortOrder }
+        : {
+            paymentAmount: 'desc',
+          },
+    include: {
+      booking: {
+        include: {
+          property: true,
+        },
+      },
+    },
+  })
+
+  // const formattedResponse = result.map(payment => ({
+  //   paymentDate: payment.paymentDate,
+  //   paymentStatus: payment.paymentStatus,
+  //   securityDeposit: payment.securityDeposit,
+  //   paymentAmount: payment.paymentAmount,
+  //   bookingStatus: payment.booking?.bookingStatus,
+  //   monthlyRent: payment.booking?.property?.monthlyRent,
+  //   flatNo: payment.booking?.property?.flatNo,
+  // }))
+
+  // console.log(formattedResponse)
+
+  type PaymentGroup = {
+    flatNo: string | null
+    paymentStatus: string
+  }
+
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ]
+
+  // Define the type for groupedByMonth
+  const groupedByMonth: Record<string, PaymentGroup[]> = {}
+
+  result.forEach(payment => {
+    const paymentDate = new Date(payment.paymentDate)
+    const month = monthNames[paymentDate.getMonth()]
+
+    if (!groupedByMonth[month]) {
+      groupedByMonth[month] = []
+    }
+
+    groupedByMonth[month].push({
+      flatNo: payment.booking?.property?.flatNo || null,
+      paymentStatus: payment.paymentStatus,
+    })
+  })
+
+  // console.log(result.booking.bookingId)
+  const total = await prisma.payment.count({
+    where: whereConditions,
+  })
+
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data: result,
+  }
+}
+//Get single payment details
 const getSinglePayment = async (payload: any) => {
   const model = prisma.payment
   const result = await getUniqueRecord(model, payload)
@@ -287,8 +424,9 @@ const deletePayment = async (
 export const PaymentService = {
   addPayment,
   addPaymentStripe,
-  getProperties,
+  getPayments,
   getSinglePayment,
   updatePayment,
   deletePayment,
+  getAllRent,
 }

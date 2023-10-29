@@ -1,10 +1,4 @@
 "use strict";
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable no-useless-catch */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -138,7 +132,8 @@ const addPaymentStripe = (payload) => __awaiter(void 0, void 0, void 0, function
         return { success: true, data: result };
     }
 });
-const getProperties = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
+//Get all payments
+const getPayments = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { limit, page, skip } = paginationHelper_1.paginationHelpers.calculatePagination(options);
     const { searchTerm, paymentStatus, paymentAmount } = filters, filterData = __rest(filters, ["searchTerm", "paymentStatus", "paymentAmount"]);
     const andConditions = [];
@@ -205,6 +200,111 @@ const getProperties = (filters, options) => __awaiter(void 0, void 0, void 0, fu
         data: result,
     };
 });
+const getAllRent = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
+    const { limit, page, skip } = paginationHelper_1.paginationHelpers.calculatePagination(options);
+    const { searchTerm, paymentStatus, paymentAmount } = filters, filterData = __rest(filters, ["searchTerm", "paymentStatus", "paymentAmount"]);
+    const andConditions = [];
+    // Handling search term
+    if (searchTerm) {
+        andConditions.push({
+            OR: payment_constant_1.paymentSearchableFields.map(field => ({
+                [field]: {
+                    contains: searchTerm,
+                    mode: 'insensitive',
+                },
+            })),
+        });
+    }
+    // Handling number of rooms
+    const paymentAmountInt = Number(paymentAmount);
+    if (!isNaN(paymentAmountInt)) {
+        // Check if the parsed value is a valid number
+        andConditions.push({ paymentAmount: paymentAmountInt });
+    }
+    if (paymentStatus) {
+        andConditions.push({ paymentStatus: paymentStatus });
+    }
+    if (Object.keys(filterData).length > 0) {
+        andConditions.push({
+            AND: Object.keys(filterData).map(key => {
+                if (payment_constant_1.paymentRelationalFields.includes(key)) {
+                    return {
+                        [payment_constant_1.paymentRelationalFieldsMapper[key]]: {
+                            id: filterData[key],
+                        },
+                    };
+                }
+                else {
+                    return {
+                        [key]: {
+                            equals: filterData[key],
+                        },
+                    };
+                }
+            }),
+        });
+    }
+    const whereConditions = andConditions.length > 0 ? { AND: andConditions } : {};
+    const result = yield prisma_1.default.payment.findMany({
+        where: whereConditions,
+        skip,
+        take: limit,
+        orderBy: options.sortBy && options.sortOrder
+            ? { [options.sortBy]: options.sortOrder }
+            : {
+                paymentAmount: 'desc',
+            },
+        include: {
+            booking: {
+                include: {
+                    property: true,
+                },
+            },
+        },
+    });
+    const monthNames = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ];
+    // Define the type for groupedByMonth
+    const groupedByMonth = {};
+    result.forEach(payment => {
+        var _a, _b;
+        const paymentDate = new Date(payment.paymentDate);
+        const month = monthNames[paymentDate.getMonth()];
+        if (!groupedByMonth[month]) {
+            groupedByMonth[month] = [];
+        }
+        groupedByMonth[month].push({
+            flatNo: ((_b = (_a = payment.booking) === null || _a === void 0 ? void 0 : _a.property) === null || _b === void 0 ? void 0 : _b.flatNo) || null,
+            paymentStatus: payment.paymentStatus,
+        });
+    });
+    console.log(groupedByMonth);
+    // console.log(result.booking.bookingId)
+    const total = yield prisma_1.default.payment.count({
+        where: whereConditions,
+    });
+    return {
+        meta: {
+            total,
+            page,
+            limit,
+        },
+        data: result,
+    };
+});
+//Get single payment details
 const getSinglePayment = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const model = prisma_1.default.payment;
     const result = yield (0, utils_1.getUniqueRecord)(model, payload);
@@ -258,8 +358,9 @@ const deletePayment = (authUser, deletedId) => __awaiter(void 0, void 0, void 0,
 exports.PaymentService = {
     addPayment,
     addPaymentStripe,
-    getProperties,
+    getPayments,
     getSinglePayment,
     updatePayment,
     deletePayment,
+    getAllRent,
 };

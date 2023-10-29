@@ -2,13 +2,13 @@ import express from 'express'
 import { UserRoutes } from '../modules/user/user.routes'
 import { PaymentRoutes } from '../modules/payment/payment.route'
 import { ReviewRoutes } from '../modules/review/review.route'
-
 import { IssueRoutes } from '../modules/issue/issue.routes'
 import { SafetyRoutes } from '../modules/safety/safety.routes'
 import { WishlistRoutes } from '../modules/wishlist/wishlist.route'
 import { MarketplaceRoutes } from '../modules/marketplace/marketplace.route'
 import { BookingRoutes } from '../modules/booking/booking.route'
 import { PropertyRoutes } from '../modules/properties/property.route'
+import { MonthlyRentPaymentRoutes } from '../modules/monthlyRentPayments/monthlyRentPayment.route'
 
 const router = express.Router()
 
@@ -48,6 +48,10 @@ const moduleRoutes = [
   {
     path: '/payment',
     route: PaymentRoutes,
+  },
+  {
+    path: '/rent',
+    route: MonthlyRentPaymentRoutes,
   },
 ]
 

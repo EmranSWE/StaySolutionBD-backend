@@ -48,11 +48,23 @@ const addPaymentStripe = (0, catchAsync_1.default)((req, res, next) => __awaiter
 const getPayments = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const filters = (0, pick_1.default)(req.query, payment_constant_1.paymentFilterableFields);
     const options = (0, pick_1.default)(req.query, payment_constant_1.IPaymentQueryOption);
-    const result = yield payment_service_1.PaymentService.getProperties(filters, options);
+    const result = yield payment_service_1.PaymentService.getPayments(filters, options);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Properties fetched successfully',
+        message: 'Payments fetched successfully',
+        meta: result.meta,
+        data: result.data,
+    });
+}));
+const getAllRent = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const filters = (0, pick_1.default)(req.query, payment_constant_1.paymentFilterableFields);
+    const options = (0, pick_1.default)(req.query, payment_constant_1.IPaymentQueryOption);
+    const result = yield payment_service_1.PaymentService.getAllRent(filters, options);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Payments fetched successfully',
         meta: result.meta,
         data: result.data,
     });
@@ -102,6 +114,7 @@ exports.PaymentController = {
     addPayment,
     addPaymentStripe,
     getPayments,
+    getAllRent,
     getSinglePayment,
     updatePayment,
     deletePayment,
