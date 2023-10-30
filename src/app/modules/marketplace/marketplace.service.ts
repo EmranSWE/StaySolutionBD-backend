@@ -148,8 +148,14 @@ const getMarketplaces = async (
 }
 
 const getSingleMarketplace = async (payload: any) => {
-  const model = prisma.marketplace
-  const result = await getUniqueRecord(model, payload)
+  const result = await prisma.marketplace.findUnique({
+    where: {
+      id: payload,
+    },
+    include: {
+      owner: true,
+    },
+  })
   return result
 }
 

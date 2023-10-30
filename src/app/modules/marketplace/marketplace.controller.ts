@@ -7,7 +7,7 @@ import httpStatus from 'http-status'
 import pick from '../../../shared/pick'
 import { MarketplaceService } from './marketplace.service'
 import {
-  ImarketplaceQueryOption,
+  IMarketplaceQueryOption,
   marketplaceFilterableFields,
 } from './marketplace.constant'
 
@@ -36,7 +36,7 @@ const addMarketplace = catchAsync(
 const getMarketplaces = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const filters = pick(req.query, marketplaceFilterableFields)
-    const options = pick(req.query, ImarketplaceQueryOption)
+    const options = pick(req.query, IMarketplaceQueryOption)
     const result = await MarketplaceService.getMarketplaces(filters, options)
     sendResponse(res, {
       statusCode: httpStatus.OK,

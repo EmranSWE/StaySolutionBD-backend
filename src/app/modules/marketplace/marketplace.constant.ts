@@ -6,11 +6,14 @@ export const marketplaceFilterableFields: string[] = [
   'ownerId',
 ]
 
-export const marketplaceSearchableFields: string[] = ['itemDescription']
+export const marketplaceSearchableFields: string[] = [
+  'title',
+  'itemDescription',
+]
 
 export const marketplaceRelationalFields: string[] = ['ownerId']
 export const marketplaceRelationalFieldsMapper: { [key: string]: string } = {
   ownerId: 'owner',
 }
 
-export const ImarketplaceQueryOption = ['limit', 'page', 'sortBy', 'sortOrder']
+export const IMarketplaceQueryOption = ['limit', 'page', 'sortBy', 'sortOrder']
