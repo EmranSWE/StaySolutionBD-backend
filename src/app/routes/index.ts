@@ -9,6 +9,8 @@ import { MarketplaceRoutes } from '../modules/marketplace/marketplace.route'
 import { BookingRoutes } from '../modules/booking/booking.route'
 import { PropertyRoutes } from '../modules/properties/property.route'
 import { MonthlyRentPaymentRoutes } from '../modules/monthlyRentPayments/monthlyRentPayment.route'
+import { ContactRoutes } from '../modules/contactUs/contact.route'
+import { FeedbackRoutes } from '../modules/feedback/feedback.route'
 
 const router = express.Router()
 
@@ -52,6 +54,14 @@ const moduleRoutes = [
   {
     path: '/rent',
     route: MonthlyRentPaymentRoutes,
+  },
+  {
+    path: '/contact',
+    route: ContactRoutes,
+  },
+  {
+    path: '/feedback',
+    route: FeedbackRoutes,
   },
 ]
 

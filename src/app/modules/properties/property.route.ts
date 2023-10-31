@@ -14,6 +14,7 @@ router.post(
   PropertyController.addProperty,
 )
 router.get('/', PropertyController.getProperties)
+router.get('/featured-property', PropertyController.getFeaturedProperties)
 router.get('/:id', PropertyController.getSingleProperty)
 
 router.patch(

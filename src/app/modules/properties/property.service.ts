@@ -188,6 +188,19 @@ const getSingleProperty = async (payload: any) => {
   return result
 }
 
+// Get featured Property
+const getFeaturedProperties = async () => {
+  const result = await prisma.property.findMany({
+    where: {
+      propertyStatus: 'available',
+    },
+    orderBy: {
+      createdAt: 'asc',
+    },
+    take: 4,
+  })
+  return result
+}
 //Update property
 const updateProperty = async (
   payload: any,
@@ -275,5 +288,6 @@ export const PropertyService = {
   updateProperty,
   deleteProperty,
   singleUserProperty,
+  getFeaturedProperties,
   // singlePropertiesRating,
 }

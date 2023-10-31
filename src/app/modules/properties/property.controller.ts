@@ -49,6 +49,18 @@ const getProperties = catchAsync(
   },
 )
 
+const getFeaturedProperties = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await PropertyService.getFeaturedProperties()
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Properties fetched successfully',
+      data: result,
+    })
+  },
+)
+
 // Getting a single Property
 const getSingleProperty = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -132,6 +144,7 @@ const singleUserProperty = catchAsync(
 export const PropertyController = {
   addProperty,
   getProperties,
+  getFeaturedProperties,
   getSingleProperty,
   updateProperty,
   deleteProperty,

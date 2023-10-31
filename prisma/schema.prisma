@@ -112,6 +112,7 @@ model User {
   loyalties Loyalty[]
   marketplaces Marketplace[]
   insurances Insurance[]
+  feedbacks Feedback[]
   monthlyRentPayments MonthlyRentPayment[]
   @@map("users")
 }
@@ -310,4 +311,24 @@ property      Property?
 renterId String
 renter User @relation(fields: [renterId], references: [id])
 @@map("insurances")
+}
+
+
+
+model ContactUs {
+  id String @id @default(uuid())
+  name String
+  email String
+  subject String
+  message String
+  @@map("contact_us")
+}
+
+model Feedback {
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  rating Int
+  feedback String
+  @@map("feedback")
 }
