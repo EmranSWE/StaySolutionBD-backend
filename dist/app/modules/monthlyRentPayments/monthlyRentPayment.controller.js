@@ -97,23 +97,18 @@ const getSpecificPropertyTotalPayment = (0, catchAsync_1.default)((req, res, nex
 //     })
 //   },
 // )
-// //Delete a single MonthlyRentPayment
-// const deleteMonthlyRentPayment = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const MonthlyRentPaymentId = req.params.id
-//     const ids = req.user
-//     const result = await MonthlyRentPaymentService.deleteMonthlyRentPayment(
-//       ids,
-//       MonthlyRentPaymentId,
-//     )
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: ' MonthlyRentPayment deleted Successfully',
-//       data: result,
-//     })
-//   },
-// )
+//Delete a single MonthlyRentPayment
+const deleteMonthlyRentPayment = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const MonthlyRentPaymentId = req.params.id;
+    const ids = req.user;
+    const result = yield monthlyRentPayment_service_1.MonthlyRentPaymentService.deleteMonthlyRentPayment(ids, MonthlyRentPaymentId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: ' MonthlyRentPayment deleted Successfully',
+        data: result,
+    });
+}));
 exports.MonthlyRentPaymentController = {
     addMonthlyRentPayment,
     getMonthlyRentPayments,
@@ -121,7 +116,7 @@ exports.MonthlyRentPaymentController = {
     getTotalMonthlyRentPayment,
     getSpecificPropertyTotalPayment,
     // updateMonthlyRentPayment,
-    // deleteMonthlyRentPayment,
+    deleteMonthlyRentPayment,
     // singleUserMonthlyRentPayment,
     // singlePropertiesRating,
 };

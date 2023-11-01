@@ -13,5 +13,5 @@ router.post('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), booking_cont
 router.get('/', booking_controller_1.BookingController.getBookings);
 router.get('/:id', booking_controller_1.BookingController.getSingleBooking);
 router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.OWNER, user_1.ENUM_USER_ROLE.ADMIN), booking_controller_1.BookingController.updateBooking);
-router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.OWNER), booking_controller_1.BookingController.deleteBooking);
+router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.OWNER, user_1.ENUM_USER_ROLE.RENTER), booking_controller_1.BookingController.deleteBooking);
 exports.BookingRoutes = router;

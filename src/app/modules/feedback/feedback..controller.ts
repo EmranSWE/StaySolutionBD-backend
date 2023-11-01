@@ -94,36 +94,52 @@ const deleteFeedback = catchAsync(
   },
 )
 
-// //Get a single Feedback
-// const singleUserFeedback = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const userId = req.params.id
-//     const result = await FeedbackService.singleUserFeedback(userId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: ' Get a single user all Feedback',
-//       data: result,
-//     })
-//   },
-// )
-// //Get a single Feedback
-// const singlePropertiesRating = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const propertyId = req.params.id
-//     const result = await FeedbackService.singlePropertiesRating(propertyId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'Get a single property average rating',
-//       data: result,
-//     })
-//   },
-// )
+//Get a single Feedback
+const singleUserFeedback = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.id
+    const result = await FeedbackService.singleUserFeedback(userId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: ' Get a single user all Feedback',
+      data: result,
+    })
+  },
+)
+
+//Get a single Feedback
+const updateFeedback = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const data = req.body
+    const id = req.params.id
+    const result = await FeedbackService.updateFeedback(data, id)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: ' Get a single user all Feedback',
+      data: result,
+    })
+  },
+)
+//Get a single Feedback
+const getSingleFeedback = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const feedbackId = req.params.id
+    const result = await FeedbackService.getSingleFeedback(feedbackId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Get a single feedback average rating',
+      data: result,
+    })
+  },
+)
 export const FeedbackController = {
   addFeedback,
   getAllFeedbacks,
-  // getSingleFeedback,
-  // updateFeedback,
+  singleUserFeedback,
+  getSingleFeedback,
   deleteFeedback,
+  updateFeedback,
 }

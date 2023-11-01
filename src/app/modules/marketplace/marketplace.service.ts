@@ -168,6 +168,7 @@ const updateMarketplace = async (
   }
 
   const { file, params, user, body } = payload
+
   const { id: MarketplaceId } = params
   const { id: userId } = user
   const existingMarketplace = await prisma.marketplace.findUnique({
@@ -185,9 +186,6 @@ const updateMarketplace = async (
 
   const uploadedImage: ICloudinaryResponse =
     await FileUploadHelper.uploadToCloudinary(file.buffer)
-  if (!uploadedImage?.secure_url) {
-    return { success: false, error: 'Failed to upload image' }
-  }
 
   const updatedData = {
     ...body,

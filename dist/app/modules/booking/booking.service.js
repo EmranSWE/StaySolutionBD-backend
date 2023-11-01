@@ -167,9 +167,9 @@ const deleteBooking = (authUser, deletedId) => __awaiter(void 0, void 0, void 0,
         throw new ApiError_1.default(404, 'Booking not found');
     }
     const { role, id } = authUser;
-    if (isSameUser.renterId !== id && role !== 'admin' && role !== 'owner') {
-        throw new ApiError_1.default(400, "You haven't permission to delete the Booking");
-    }
+    // if (isSameUser.renterId !== id && role !== 'admin' && role !== 'owner') {
+    //   throw new ApiError(400, "You haven't permission to delete the Booking")
+    // }
     const result = yield prisma_1.default.booking.delete({
         where: {
             id: deletedId,

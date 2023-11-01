@@ -21,12 +21,13 @@ router.post(
   FeedbackController.addFeedback,
 )
 router.get('/', FeedbackController.getAllFeedbacks)
-// router.get('/:id', FeedbackController.getSingleFeedback)
+router.get('/my-feedback/:id', FeedbackController.singleUserFeedback)
+router.get('/:id', FeedbackController.getSingleFeedback)
 
-// router.patch(
-//   '/:id',
-//   auth(ENUM_USER_ROLE.RENTER, ENUM_USER_ROLE.OWNER),
-//   FeedbackController.updateFeedback,
-// )
+router.patch(
+  '/:id',
+  auth(ENUM_USER_ROLE.RENTER, ENUM_USER_ROLE.OWNER),
+  FeedbackController.updateFeedback,
+)
 
 export const FeedbackRoutes = router

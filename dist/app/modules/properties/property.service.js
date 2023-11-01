@@ -178,7 +178,6 @@ const getFeaturedProperties = () => __awaiter(void 0, void 0, void 0, function* 
 //Update property
 const updateProperty = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    console.log(payload);
     if (!((_a = payload.params) === null || _a === void 0 ? void 0 : _a.id)) {
         return { success: false, error: 'Invalid input or file is missing' };
     }

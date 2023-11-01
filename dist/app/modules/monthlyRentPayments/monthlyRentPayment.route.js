@@ -83,11 +83,7 @@ router.get('/properties/:propertyId/rents', monthlyRentPayment_controller_1.Mont
 //   MonthlyRentPaymentController.updateMonthlyRentPayment,
 // )
 // // Delete a MonthlyRentPayment entry by its ID
-// router.delete(
-//   '/:id',
-//   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.OWNER),
-//   MonthlyRentPaymentController.deleteMonthlyRentPayment,
-// )
+router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.OWNER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.deleteMonthlyRentPayment);
 // // Delete a MonthlyRentPayment entry by its ID
 // router.delete(
 //   '/monthly-rent-MonthlyRentPayments/:MonthlyRentPaymentId',

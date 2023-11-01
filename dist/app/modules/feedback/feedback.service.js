@@ -99,26 +99,26 @@ const getAllFeedbacks = (options) => __awaiter(void 0, void 0, void 0, function*
 //   // Return the created property data
 //   return { success: true, data: result }
 // }
-// const deleteFeedback = async (authId: any, deletedId: any) => {
-//   const isSameUser = await prisma.Feedback.findUnique({
-//     where: {
-//       id: deletedId,
-//     },
-//   })
-//   // If the Feedback does not exist, throw an error.
-//   if (!isSameUser) {
-//     throw new ApiError(404, 'Feedback not found')
-//   }
-//   if (isSameUser?.renterId !== authId) {
-//     throw new ApiError(400, "You haven't permission to change the Feedback")
-//   }
-//   const result = await prisma.Feedback.delete({
-//     where: {
-//       id: deletedId,
-//     },
-//   })
-//   return result
-// }
+const deleteFeedback = (authId, deletedId) => __awaiter(void 0, void 0, void 0, function* () {
+    // const isSameUser = await prisma.Feedback.findUnique({
+    //   where: {
+    //     id: deletedId,
+    //   },
+    // })
+    // // If the Feedback does not exist, throw an error.
+    // if (!isSameUser) {
+    //   throw new ApiError(404, 'Feedback not found')
+    // }
+    // if (isSameUser?.renterId !== authId) {
+    //   throw new ApiError(400, "You haven't permission to change the Feedback")
+    // }
+    const result = yield prisma_1.default.feedback.delete({
+        where: {
+            id: deletedId,
+        },
+    });
+    return result;
+});
 // const singleUserFeedback = async (userId: any) => {
 //   const allFeedbacks = await prisma.Feedback.findMany({
 //     where: {
@@ -153,7 +153,7 @@ exports.FeedbackService = {
     getAllFeedbacks,
     // getSingleFeedback,
     // updateFeedback,
-    // deleteFeedback,
+    deleteFeedback,
     // singleUserFeedback,
     // singlePropertiesRating,
 };

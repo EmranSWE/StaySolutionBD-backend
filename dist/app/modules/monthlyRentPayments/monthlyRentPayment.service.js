@@ -30,6 +30,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MonthlyRentPaymentService = void 0;
+const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
 const monthlyRentPayment_constant_1 = require("./monthlyRentPayment.constant");
@@ -185,37 +186,29 @@ const getSpecificPropertyTotalPayment = (propertyId) => __awaiter(void 0, void 0
 //   })
 //   return { success: true, data: result }
 // }
-// const deleteMonthlyRentPayment = async (
-//   authUser: string | any,
-//   deletedId: any,
-// ): Promise<any> => {
-//   const isSameUser = await prisma.MonthlyRentPayment.findUnique({
-//     where: {
-//       id: deletedId,
-//     },
-//   })
-//   // If the MonthlyRentPayment does not exist, throw an error.
-//   if (!isSameUser) {
-//     throw new ApiError(404, 'MonthlyRentPayment not found')
-//   }
-//   const { role, id } = authUser
-//   if (
-//     isSameUser.renterId !== id &&
-//     role !== 'admin' &&
-//     role !== 'super_admin'
-//   ) {
-//     throw new ApiError(
-//       400,
-//       "You haven't permission to delete the MonthlyRentPayment",
-//     )
-//   }
-//   const result = await prisma.MonthlyRentPayment.delete({
-//     where: {
-//       id: deletedId,
-//     },
-//   })
-//   return result
-// }
+const deleteMonthlyRentPayment = (authUser, deletedId) => __awaiter(void 0, void 0, void 0, function* () {
+    const isSameUser = yield prisma_1.default.monthlyRentPayment.findUnique({
+        where: {
+            id: deletedId,
+        },
+    });
+    // If the MonthlyRentPayment does not exist, throw an error.
+    if (!isSameUser) {
+        throw new ApiError_1.default(404, 'MonthlyRentPayment not found');
+    }
+    const { role, id } = authUser;
+    if (isSameUser.renterId !== id &&
+        role !== 'admin' &&
+        role !== 'super_admin') {
+        throw new ApiError_1.default(400, "You haven't permission to delete the MonthlyRentPayment");
+    }
+    const result = yield prisma_1.default.monthlyRentPayment.delete({
+        where: {
+            id: deletedId,
+        },
+    });
+    return result;
+});
 exports.MonthlyRentPaymentService = {
     addMonthlyRentPayment,
     getMonthlyRentPayments,
@@ -223,6 +216,6 @@ exports.MonthlyRentPaymentService = {
     getTotalMonthlyRentPayment,
     getSpecificPropertyTotalPayment,
     // updateMonthlyRentPayment,
-    // deleteMonthlyRentPayment,
+    deleteMonthlyRentPayment,
     // getAllRent,
 };
