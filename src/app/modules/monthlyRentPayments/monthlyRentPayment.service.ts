@@ -204,41 +204,41 @@ const getSpecificPropertyTotalPayment = async (propertyId: any) => {
 //   })
 //   return { success: true, data: result }
 // }
-// const deleteMonthlyRentPayment = async (
-//   authUser: string | any,
-//   deletedId: any,
-// ): Promise<any> => {
-//   const isSameUser = await prisma.MonthlyRentPayment.findUnique({
-//     where: {
-//       id: deletedId,
-//     },
-//   })
 
-//   // If the MonthlyRentPayment does not exist, throw an error.
-//   if (!isSameUser) {
-//     throw new ApiError(404, 'MonthlyRentPayment not found')
-//   }
-//   const { role, id } = authUser
+const deleteMonthlyRentPayment = async (
+  authUser: string | any,
+  deletedId: any,
+): Promise<any> => {
+  const isSameUser = await prisma.monthlyRentPayment.findUnique({
+    where: {
+      id: deletedId,
+    },
+  })
 
-//   if (
-//     isSameUser.renterId !== id &&
-//     role !== 'admin' &&
-//     role !== 'super_admin'
-//   ) {
-//     throw new ApiError(
-//       400,
-//       "You haven't permission to delete the MonthlyRentPayment",
-//     )
-//   }
+  // If the MonthlyRentPayment does not exist, throw an error.
+  if (!isSameUser) {
+    throw new ApiError(404, 'MonthlyRentPayment not found')
+  }
+  const { role, id } = authUser
 
-//   const result = await prisma.MonthlyRentPayment.delete({
-//     where: {
-//       id: deletedId,
-//     },
-//   })
+  if (
+    isSameUser.renterId !== id &&
+    role !== 'admin' &&
+    role !== 'super_admin'
+  ) {
+    throw new ApiError(
+      400,
+      "You haven't permission to delete the MonthlyRentPayment",
+    )
+  }
 
-//   return result
-// }
+  const result = await prisma.monthlyRentPayment.delete({
+    where: {
+      id: deletedId,
+    },
+  })
+  return result
+}
 export const MonthlyRentPaymentService = {
   addMonthlyRentPayment,
   getMonthlyRentPayments,
@@ -246,6 +246,6 @@ export const MonthlyRentPaymentService = {
   getTotalMonthlyRentPayment,
   getSpecificPropertyTotalPayment,
   // updateMonthlyRentPayment,
-  // deleteMonthlyRentPayment,
+  deleteMonthlyRentPayment,
   // getAllRent,
 }

@@ -9,8 +9,6 @@ import bcrypt from 'bcrypt'
 import { Secret } from 'jsonwebtoken'
 import {
   ChangePasswordPayload,
-  IAcademicDepartmentFilterRequest,
-  IPayloadType,
   IUserFilterRequest,
   UpdateUserResponse,
   UserUpdateInput,
@@ -26,7 +24,7 @@ import {
 import config from '../../../config'
 import { jwtHelpers } from '../../../helpers/jwtHelpers'
 import httpStatus from 'http-status'
-import { ICloudinaryResponse, IUploadFile } from '../../../interface/file'
+import { ICloudinaryResponse } from '../../../interface/file'
 import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
 import { getUniqueRecord } from '../../utils/utils'
 
@@ -312,8 +310,7 @@ const deleteUser = async (authId: any, deletedId: any) => {
   if (!isSameUser) {
     throw new ApiError(404, 'User not found')
   }
-
-  if (isSameUser?.id !== authId) {
+  if (isSameUser?.id !== authId.id && authId.role !== 'admin') {
     throw new ApiError(400, "You haven't permission to delete")
   }
 
@@ -325,6 +322,7 @@ const deleteUser = async (authId: any, deletedId: any) => {
 
   return result
 }
+
 export const UserService = {
   createUser,
   getUsers,

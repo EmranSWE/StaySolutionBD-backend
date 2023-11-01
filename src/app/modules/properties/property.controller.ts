@@ -17,7 +17,6 @@ const addProperty = catchAsync(
     if (req.body.data) {
       req.body = JSON.parse(req.body.data)
     }
-
     const payload = {
       body: req.body,
       file: req.file,

@@ -41,7 +41,6 @@ import { getUniqueRecord } from '../../utils/utils'
  */
 const addProperty = async (payload: any) => {
   const { file, user, body } = payload
-
   // Validate file input
   if (!file) {
     return { success: false, error: 'Invalid input or file is missing' }
@@ -205,19 +204,19 @@ const getFeaturedProperties = async () => {
 const updateProperty = async (
   payload: any,
 ): Promise<UpdatePropertyResponse> => {
-  if (!payload?.file || !payload.params?.id || !payload.user?.id) {
+  if (!payload.params?.id) {
     return { success: false, error: 'Invalid input or file is missing' }
   }
   const { file, params, user, body } = payload
   const { id: propertyId } = params
-  const { id: userId } = user
+  const { id: userId, role } = user
   const existingProperty = await prisma.property.findUnique({
     where: {
       id: propertyId,
     },
   })
 
-  if (existingProperty?.ownerId !== userId) {
+  if (existingProperty?.ownerId !== userId && role !== 'admin') {
     return {
       success: false,
       error: 'Unauthorized: You cannot update this user',
@@ -245,6 +244,7 @@ const updateProperty = async (
 
   return { success: true, data: result }
 }
+
 const deleteProperty = async (
   authUser: string | any,
   deletedId: any,
@@ -254,7 +254,6 @@ const deleteProperty = async (
       id: deletedId,
     },
   })
-
   // If the property does not exist, throw an error.
   if (!isSameUser) {
     throw new ApiError(404, 'Property not found')

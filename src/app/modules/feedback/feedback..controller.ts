@@ -78,21 +78,21 @@ const getAllFeedbacks = catchAsync(
 //   },
 // )
 
-// //Delete a single Feedback
-// const deleteFeedback = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const FeedbackId = req.params.id
-//     const ids = req.user?.id
+//Delete a single Feedback
+const deleteFeedback = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const FeedbackId = req.params.id
+    const ids = req.user?.id
 
-//     const result = await FeedbackService.deleteFeedback(ids, FeedbackId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: ' Feedback deleted Successfully',
-//       data: result,
-//     })
-//   },
-// )
+    const result = await FeedbackService.deleteFeedback(ids, FeedbackId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: ' Feedback deleted Successfully',
+      data: result,
+    })
+  },
+)
 
 // //Get a single Feedback
 // const singleUserFeedback = catchAsync(
@@ -125,5 +125,5 @@ export const FeedbackController = {
   getAllFeedbacks,
   // getSingleFeedback,
   // updateFeedback,
-  // deleteFeedback,
+  deleteFeedback,
 }

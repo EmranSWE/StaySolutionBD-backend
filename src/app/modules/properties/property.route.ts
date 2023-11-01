@@ -19,7 +19,7 @@ router.get('/:id', PropertyController.getSingleProperty)
 
 router.patch(
   '/:id',
-  auth(ENUM_USER_ROLE.OWNER),
+  auth(ENUM_USER_ROLE.OWNER, ENUM_USER_ROLE.ADMIN),
   FileUploadHelper.upload.single('file'),
   PropertyController.updateProperty,
 )

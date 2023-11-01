@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.delete(
   '/:id',
-  auth(ENUM_USER_ROLE.RENTER),
+  auth(ENUM_USER_ROLE.RENTER, ENUM_USER_ROLE.ADMIN),
   ReviewController.deleteReview,
 )
 

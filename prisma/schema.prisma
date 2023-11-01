@@ -119,9 +119,9 @@ model User {
 
 model Property {
   id String @id @default(uuid())
-  title String?
-  location String[]
-  city String?
+  title String
+  location String?
+  city String[]
   numberOfRooms Int
   monthlyRent Int?
   flatNo String?

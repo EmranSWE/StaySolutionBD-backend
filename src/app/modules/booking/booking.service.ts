@@ -184,9 +184,9 @@ const deleteBooking = async (
   }
   const { role, id } = authUser
 
-  if (isSameUser.renterId !== id && role !== 'admin' && role !== 'owner') {
-    throw new ApiError(400, "You haven't permission to delete the Booking")
-  }
+  // if (isSameUser.renterId !== id && role !== 'admin' && role !== 'owner') {
+  //   throw new ApiError(400, "You haven't permission to delete the Booking")
+  // }
 
   const result = await prisma.booking.delete({
     where: {
