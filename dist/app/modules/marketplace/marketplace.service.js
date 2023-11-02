@@ -160,9 +160,6 @@ const updateMarketplace = (payload) => __awaiter(void 0, void 0, void 0, functio
         };
     }
     const uploadedImage = yield FileUploadHelper_1.FileUploadHelper.uploadToCloudinary(file.buffer);
-    if (!(uploadedImage === null || uploadedImage === void 0 ? void 0 : uploadedImage.secure_url)) {
-        return { success: false, error: 'Failed to upload image' };
-    }
     const updatedData = Object.assign(Object.assign({}, body), { propertyImage: uploadedImage.secure_url });
     const result = yield prisma_1.default.marketplace.update({
         where: { id: MarketplaceId },

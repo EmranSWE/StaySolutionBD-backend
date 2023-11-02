@@ -9,7 +9,7 @@ const contact_controller_1 = require("./contact.controller");
 const user_1 = require("../../../enum/user");
 const auth_1 = __importDefault(require("../../middleware/auth"));
 const router = express_1.default.Router();
-router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), contact_controller_1.ContactController.deleteContact);
+router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER, user_1.ENUM_USER_ROLE.ADMIN), contact_controller_1.ContactController.deleteContact);
 router.post('/', contact_controller_1.ContactController.addContact);
 router.get('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN), contact_controller_1.ContactController.getAllContacts);
 router.get('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN), contact_controller_1.ContactController.getSingleContact);

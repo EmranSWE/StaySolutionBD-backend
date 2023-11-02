@@ -127,6 +127,20 @@ const singleUserProperty = catchAsync(
     })
   },
 )
+
+//Get a single Renter Property
+const singleRenterProperty = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const renterId = req.params.id
+    const result = await PropertyService.singleRenterProperty(renterId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Get a my user all Property',
+      data: result,
+    })
+  },
+)
 // //Get a single Property
 // const singlePropertiesRating = catchAsync(
 //   async (req: Request, res: Response, next: NextFunction) => {
@@ -148,5 +162,6 @@ export const PropertyController = {
   updateProperty,
   deleteProperty,
   singleUserProperty,
+  singleRenterProperty,
   // singlePropertiesRating,
 }

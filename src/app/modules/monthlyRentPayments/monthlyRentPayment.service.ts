@@ -19,9 +19,37 @@ import {
   MonthlyRentPaymentSearchableFields,
 } from './monthlyRentPayment.constant'
 
+// const addMonthlyRentPayment = async (payload: any) => {
+//   const { user, body } = payload
+//   console.log(payload)
+//   const { id: userId } = user
+//   const { bookingId, ...rest } = body
+
+//   const booking = await prisma.booking.findUnique({
+//     where: {
+//       id: bookingId,
+//     },
+//   })
+
+//   const propertyId = booking?.propertyId
+
+//   // Prepare MonthlyRentPayment data with the uploaded image URL
+//   const updatedData = {
+//     ...rest,
+//     propertyId: propertyId,
+//     renterId: userId,
+//   }
+//   // Create a new MonthlyRentPayment record in the database using Prisma
+//   const result = await prisma.monthlyRentPayment.create({
+//     data: updatedData,
+//   })
+
+//   // Return the created MonthlyRentPayment data
+//   return { success: true, data: result }
+// }
+
 const addMonthlyRentPayment = async (payload: any) => {
   const { user, body } = payload
-
   const { id: userId } = user
   const { bookingId, ...rest } = body
 
@@ -30,6 +58,7 @@ const addMonthlyRentPayment = async (payload: any) => {
       id: bookingId,
     },
   })
+
   const propertyId = booking?.propertyId
 
   // Prepare MonthlyRentPayment data with the uploaded image URL
@@ -38,15 +67,40 @@ const addMonthlyRentPayment = async (payload: any) => {
     propertyId: propertyId,
     renterId: userId,
   }
+
   // Create a new MonthlyRentPayment record in the database using Prisma
   const result = await prisma.monthlyRentPayment.create({
     data: updatedData,
   })
 
+  // Check if the payment is completed (you need to implement this logic)
+  const paymentCompleted = true // You need to set this based on your payment gateway logic
+
+  if (paymentCompleted) {
+    // Update the bookingStatus to 'confirmed' and propertyStatus to 'booked'
+    await prisma.booking.update({
+      where: {
+        id: bookingId,
+      },
+      data: {
+        bookingStatus: 'Confirmed',
+      },
+    })
+
+    // Assuming you have a 'property' field in the 'booking' table that you want to update
+    await prisma.property.update({
+      where: {
+        id: propertyId,
+      },
+      data: {
+        propertyStatus: 'booked',
+      },
+    })
+  }
+
   // Return the created MonthlyRentPayment data
   return { success: true, data: result }
 }
-
 //Get all MonthlyRentPayments
 const getMonthlyRentPayments = async (
   filters: IMonthlyRentPaymentFilterRequest,
@@ -152,6 +206,23 @@ const getSingleMonthlyRentPayment = async (payload: any) => {
   return result
 }
 
+//Get single MonthlyRentPayment details
+const getSingleUserMonthlyRentPayment = async (renterId: any) => {
+  const result = await prisma.monthlyRentPayment.findMany({
+    where: {
+      renterId: renterId,
+    },
+    select: {
+      month: true,
+      year: true,
+      status: true,
+      amount: true,
+    },
+  })
+
+  return result
+}
+
 //Get total MonthlyRentPayment details
 const getTotalMonthlyRentPayment = async () => {
   const totalRent = await prisma.monthlyRentPayment.aggregate({
@@ -246,6 +317,7 @@ export const MonthlyRentPaymentService = {
   getTotalMonthlyRentPayment,
   getSpecificPropertyTotalPayment,
   // updateMonthlyRentPayment,
+  getSingleUserMonthlyRentPayment,
   deleteMonthlyRentPayment,
   // getAllRent,
 }

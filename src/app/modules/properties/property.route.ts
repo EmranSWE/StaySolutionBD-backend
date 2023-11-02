@@ -28,10 +28,17 @@ router.delete(
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.OWNER),
   PropertyController.deleteProperty,
 )
+
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.OWNER),
+  PropertyController.deleteProperty,
+)
 router.get('/my-property/:id/', PropertyController.singleUserProperty)
-// router.get(
-//   '/properties/:id/average-rating',
-//   PropertyController.singlePropertiesRating,
-// )
+router.get(
+  '/properties/:id/my-property',
+  auth(ENUM_USER_ROLE.RENTER),
+  PropertyController.singleRenterProperty,
+)
 
 export const PropertyRoutes = router

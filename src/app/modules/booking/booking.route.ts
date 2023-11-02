@@ -4,6 +4,11 @@ import { ENUM_USER_ROLE } from '../../../enum/user'
 import { BookingController } from './booking.controller'
 const router = express.Router()
 
+router.get(
+  '/my-booking',
+  auth(ENUM_USER_ROLE.RENTER),
+  BookingController.getSingleUserBooking,
+)
 router.post('/', auth(ENUM_USER_ROLE.RENTER), BookingController.addBooking)
 router.get('/', BookingController.getBookings)
 router.get('/:id', BookingController.getSingleBooking)

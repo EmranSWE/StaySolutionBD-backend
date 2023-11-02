@@ -145,11 +145,6 @@ const singleUserFeedback = async (userId: string) => {
     },
   })
 
-  // If the feedback array is empty, throw an error.
-  if (myFeedback.length === 0) {
-    throw new ApiError(404, 'Feedback not found')
-  }
-
   return myFeedback
 }
 const getSingleFeedback = async (feedbackId: any) => {

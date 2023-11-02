@@ -280,6 +280,24 @@ const singleUserProperty = async (userId: any) => {
 
   return result
 }
+
+const singleRenterProperty = async (renterId: any) => {
+  const result = await prisma.property.findMany({
+    where: {
+      bookings: {
+        some: {
+          renterId: renterId,
+          bookingStatus: 'Confirmed',
+        },
+      },
+    },
+    include: {
+      bookings: true,
+    },
+  })
+
+  return result
+}
 export const PropertyService = {
   addProperty,
   getProperties,
@@ -288,5 +306,6 @@ export const PropertyService = {
   deleteProperty,
   singleUserProperty,
   getFeaturedProperties,
+  singleRenterProperty,
   // singlePropertiesRating,
 }

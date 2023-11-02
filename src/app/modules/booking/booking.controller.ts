@@ -62,6 +62,20 @@ const getSingleBooking = catchAsync(
   },
 )
 
+// Getting a single User Booking
+const getSingleUserBooking = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id
+    const result = await BookingService.getSingleUserBooking(userId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Single User booking fetched successfully',
+      data: result,
+    })
+  },
+)
+
 //Updating a single Booking
 const updateBooking = catchAsync(
   async (req, res: Response, next: NextFunction) => {
@@ -132,6 +146,7 @@ export const BookingController = {
   getSingleBooking,
   updateBooking,
   deleteBooking,
+  getSingleUserBooking,
   // singleUserBooking,
   // singlePropertiesRating,
 }

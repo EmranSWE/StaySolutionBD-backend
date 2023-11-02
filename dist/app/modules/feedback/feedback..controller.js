@@ -90,36 +90,45 @@ const deleteFeedback = (0, catchAsync_1.default)((req, res, next) => __awaiter(v
         data: result,
     });
 }));
-// //Get a single Feedback
-// const singleUserFeedback = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const userId = req.params.id
-//     const result = await FeedbackService.singleUserFeedback(userId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: ' Get a single user all Feedback',
-//       data: result,
-//     })
-//   },
-// )
-// //Get a single Feedback
-// const singlePropertiesRating = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const propertyId = req.params.id
-//     const result = await FeedbackService.singlePropertiesRating(propertyId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'Get a single property average rating',
-//       data: result,
-//     })
-//   },
-// )
+//Get a single Feedback
+const singleUserFeedback = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = req.params.id;
+    const result = yield feedback_service_1.FeedbackService.singleUserFeedback(userId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: ' Get a single user all Feedback',
+        data: result,
+    });
+}));
+//Get a single Feedback
+const updateFeedback = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = req.body;
+    const id = req.params.id;
+    const result = yield feedback_service_1.FeedbackService.updateFeedback(data, id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: ' Get a single user all Feedback',
+        data: result,
+    });
+}));
+//Get a single Feedback
+const getSingleFeedback = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const feedbackId = req.params.id;
+    const result = yield feedback_service_1.FeedbackService.getSingleFeedback(feedbackId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Get a single feedback average rating',
+        data: result,
+    });
+}));
 exports.FeedbackController = {
     addFeedback,
     getAllFeedbacks,
-    // getSingleFeedback,
-    // updateFeedback,
+    singleUserFeedback,
+    getSingleFeedback,
     deleteFeedback,
+    updateFeedback,
 };

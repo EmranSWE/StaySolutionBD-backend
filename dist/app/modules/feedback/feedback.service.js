@@ -19,6 +19,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FeedbackService = void 0;
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
+const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const addFeedback = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { user, body } = payload;
@@ -119,41 +120,41 @@ const deleteFeedback = (authId, deletedId) => __awaiter(void 0, void 0, void 0, 
     });
     return result;
 });
-// const singleUserFeedback = async (userId: any) => {
-//   const allFeedbacks = await prisma.Feedback.findMany({
-//     where: {
-//       renterId: userId,
-//     },
-//   })
-//   // If the Feedback does not exist, throw an error.
-//   if (!allFeedbacks) {
-//     throw new ApiError(404, 'Feedback not found')
-//   }
-//   return allFeedbacks
-// }
-// const singlePropertiesRating = async (propertyId: any) => {
-//   const propertyAvgRating = await prisma.Feedback.aggregate({
-//     where: {
-//       propertyId: propertyId,
-//     },
-//     _avg: {
-//       rating: true,
-//     },
-//   })
-//   const averageRating = propertyAvgRating._avg.rating
-//   // If there's no average rating (e.g. no Feedbacks exist), handle it appropriately.
-//   if (averageRating === null) {
-//     throw new ApiError(404, 'Feedback not found')
-//   }
-//   const avgRate = Math.round(averageRating)
-//   return avgRate // return the rounded value
-// }
+const singleUserFeedback = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const myFeedback = yield prisma_1.default.feedback.findMany({
+        where: {
+            userId: userId,
+        },
+    });
+    // If the feedback array is empty, throw an error.
+    if (myFeedback.length === 0) {
+        throw new ApiError_1.default(404, 'Feedback not found');
+    }
+    return myFeedback;
+});
+const getSingleFeedback = (feedbackId) => __awaiter(void 0, void 0, void 0, function* () {
+    const feedback = yield prisma_1.default.feedback.findUnique({
+        where: {
+            id: feedbackId,
+        },
+    });
+    return feedback; // return the rounded value
+});
+const updateFeedback = (data, id) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!id) {
+        return { success: false, error: 'Invalid input or file is missing' };
+    }
+    const result = yield prisma_1.default.feedback.update({
+        where: { id: id },
+        data: data,
+    });
+    return { success: true, data: result };
+});
 exports.FeedbackService = {
     addFeedback,
     getAllFeedbacks,
-    // getSingleFeedback,
-    // updateFeedback,
+    getSingleFeedback,
     deleteFeedback,
-    // singleUserFeedback,
-    // singlePropertiesRating,
+    singleUserFeedback,
+    updateFeedback,
 };

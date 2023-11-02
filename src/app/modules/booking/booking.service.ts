@@ -7,8 +7,6 @@
 import { Booking, Prisma, Property, Review } from '@prisma/client'
 import prisma from '../../../shared/prisma'
 import ApiError from '../../../errors/ApiError'
-import { ICloudinaryResponse, IUploadFile } from '../../../interface/file'
-import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
 import {
   IBookingFilterRequest,
   UpdateBookingResponse,
@@ -26,7 +24,6 @@ import {
 
 const addBooking = async (payload: any) => {
   const { user, body } = payload
-
   // Authorization check: Ensure user has the 'owner' role
   const { role } = user
   if (role !== 'renter') {
@@ -124,6 +121,9 @@ const getBookings = async (
         : {
             bookingStartDate: 'desc',
           },
+    include: {
+      property: true,
+    },
   })
   const total = await prisma.booking.count({
     where: whereConditions,
@@ -142,6 +142,18 @@ const getBookings = async (
 const getSingleBooking = async (payload: any) => {
   const model = prisma.booking
   const result = await getUniqueRecord(model, payload)
+  return result
+}
+
+const getSingleUserBooking = async (userId: any) => {
+  const result = await prisma.booking.findMany({
+    where: {
+      renterId: userId,
+    },
+    include: {
+      property: true,
+    },
+  })
   return result
 }
 
@@ -202,4 +214,5 @@ export const BookingService = {
   getSingleBooking,
   updateBooking,
   deleteBooking,
+  getSingleUserBooking,
 }

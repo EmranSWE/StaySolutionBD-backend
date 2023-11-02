@@ -65,6 +65,20 @@ const getSingleMonthlyRentPayment = catchAsync(
   },
 )
 
+// Getting a single MonthlyRentPayment
+const getSingleUserMonthlyRentPayment = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const renterId = req?.user?.id
+    const result =
+      await MonthlyRentPaymentService.getSingleUserMonthlyRentPayment(renterId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Single USer Rent fetched successfully',
+      data: result,
+    })
+  },
+)
 // Getting a total MonthlyRentPayment
 const getTotalMonthlyRentPayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -143,7 +157,7 @@ export const MonthlyRentPaymentController = {
   getSingleMonthlyRentPayment,
   getTotalMonthlyRentPayment,
   getSpecificPropertyTotalPayment,
-  // updateMonthlyRentPayment,
+  getSingleUserMonthlyRentPayment,
   deleteMonthlyRentPayment,
   // singleUserMonthlyRentPayment,
   // singlePropertiesRating,

@@ -12,10 +12,7 @@ const router = express_1.default.Router();
 router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER, user_1.ENUM_USER_ROLE.OWNER, user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN), feedback__controller_1.FeedbackController.deleteFeedback);
 router.post('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER, user_1.ENUM_USER_ROLE.OWNER), feedback__controller_1.FeedbackController.addFeedback);
 router.get('/', feedback__controller_1.FeedbackController.getAllFeedbacks);
-// router.get('/:id', FeedbackController.getSingleFeedback)
-// router.patch(
-//   '/:id',
-//   auth(ENUM_USER_ROLE.RENTER, ENUM_USER_ROLE.OWNER),
-//   FeedbackController.updateFeedback,
-// )
+router.get('/my-feedback/:id', feedback__controller_1.FeedbackController.singleUserFeedback);
+router.get('/:id', feedback__controller_1.FeedbackController.getSingleFeedback);
+router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER, user_1.ENUM_USER_ROLE.OWNER), feedback__controller_1.FeedbackController.updateFeedback);
 exports.FeedbackRoutes = router;
