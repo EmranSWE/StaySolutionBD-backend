@@ -9,6 +9,7 @@ const auth_1 = __importDefault(require("../../middleware/auth"));
 const user_1 = require("../../../enum/user");
 const booking_controller_1 = require("./booking.controller");
 const router = express_1.default.Router();
+router.get('/my-booking', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), booking_controller_1.BookingController.getSingleUserBooking);
 router.post('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), booking_controller_1.BookingController.addBooking);
 router.get('/', booking_controller_1.BookingController.getBookings);
 router.get('/:id', booking_controller_1.BookingController.getSingleBooking);

@@ -32,6 +32,30 @@ const addMonthlyRentPayment = (0, catchAsync_1.default)((req, res, next) => __aw
         data: result,
     });
 }));
+const addRegularMonthlyRentPayment = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const payload = {
+        body: req.body,
+        user: req.user,
+    };
+    const result = yield monthlyRentPayment_service_1.MonthlyRentPaymentService.addRegularMonthlyRentPayment(payload);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'MonthlyRentPayment added successfully! ',
+        data: result,
+    });
+}));
+const getCurrentMonthPayments = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const propertyId = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
+    const result = yield monthlyRentPayment_service_1.MonthlyRentPaymentService.getCurrentMonthPayments(propertyId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'MonthlyRentPayment added successfully! ',
+        data: result,
+    });
+}));
 const getMonthlyRentPayments = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const filters = (0, pick_1.default)(req.query, monthlyRentPayment_constant_1.MonthlyRentPaymentFilterableFields);
     const options = (0, pick_1.default)(req.query, monthlyRentPayment_constant_1.MonthlyRentPaymentQueryOption);
@@ -52,6 +76,18 @@ const getSingleMonthlyRentPayment = (0, catchAsync_1.default)((req, res, next) =
         statusCode: http_status_1.default.OK,
         success: true,
         message: 'Single Rent fetched successfully',
+        data: result,
+    });
+}));
+// Getting a single MonthlyRentPayment
+const getSingleUserMonthlyRentPayment = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    const renterId = (_b = req === null || req === void 0 ? void 0 : req.user) === null || _b === void 0 ? void 0 : _b.id;
+    const result = yield monthlyRentPayment_service_1.MonthlyRentPaymentService.getSingleUserMonthlyRentPayment(renterId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Single USer Rent fetched successfully',
         data: result,
     });
 }));
@@ -113,10 +149,12 @@ exports.MonthlyRentPaymentController = {
     addMonthlyRentPayment,
     getMonthlyRentPayments,
     getSingleMonthlyRentPayment,
+    addRegularMonthlyRentPayment,
     getTotalMonthlyRentPayment,
     getSpecificPropertyTotalPayment,
-    // updateMonthlyRentPayment,
+    getSingleUserMonthlyRentPayment,
     deleteMonthlyRentPayment,
+    getCurrentMonthPayments,
     // singleUserMonthlyRentPayment,
     // singlePropertiesRating,
 };

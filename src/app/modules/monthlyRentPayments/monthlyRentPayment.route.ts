@@ -11,9 +11,18 @@ router.post(
   MonthlyRentPaymentController.addMonthlyRentPayment,
 )
 
+router.post(
+  '/regular-monthly-payments',
+  auth(ENUM_USER_ROLE.RENTER),
+  MonthlyRentPaymentController.addRegularMonthlyRentPayment,
+)
 // Fetch all MonthlyRentPayment entries
 router.get('/', MonthlyRentPaymentController.getMonthlyRentPayments)
 
+router.get(
+  '/current-month-rent/:id',
+  MonthlyRentPaymentController.getCurrentMonthPayments,
+)
 // Fetch a single MonthlyRentPayment entry by its ID
 router.get('/:id', MonthlyRentPaymentController.getSingleMonthlyRentPayment)
 // Fetch total rent amount across all properties and renters

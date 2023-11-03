@@ -58,6 +58,18 @@ const getSingleBooking = (0, catchAsync_1.default)((req, res, next) => __awaiter
         data: result,
     });
 }));
+// Getting a single User Booking
+const getSingleUserBooking = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+    const result = yield booking_service_1.BookingService.getSingleUserBooking(userId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Single User booking fetched successfully',
+        data: result,
+    });
+}));
 //Updating a single Booking
 const updateBooking = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.body.data) {
@@ -119,6 +131,7 @@ exports.BookingController = {
     getSingleBooking,
     updateBooking,
     deleteBooking,
+    getSingleUserBooking,
     // singleUserBooking,
     // singlePropertiesRating,
 };

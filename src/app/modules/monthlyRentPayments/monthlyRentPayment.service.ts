@@ -1,5 +1,3 @@
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-useless-catch */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -19,40 +17,10 @@ import {
   MonthlyRentPaymentSearchableFields,
 } from './monthlyRentPayment.constant'
 
-// const addMonthlyRentPayment = async (payload: any) => {
-//   const { user, body } = payload
-//   console.log(payload)
-//   const { id: userId } = user
-//   const { bookingId, ...rest } = body
-
-//   const booking = await prisma.booking.findUnique({
-//     where: {
-//       id: bookingId,
-//     },
-//   })
-
-//   const propertyId = booking?.propertyId
-
-//   // Prepare MonthlyRentPayment data with the uploaded image URL
-//   const updatedData = {
-//     ...rest,
-//     propertyId: propertyId,
-//     renterId: userId,
-//   }
-//   // Create a new MonthlyRentPayment record in the database using Prisma
-//   const result = await prisma.monthlyRentPayment.create({
-//     data: updatedData,
-//   })
-
-//   // Return the created MonthlyRentPayment data
-//   return { success: true, data: result }
-// }
-
 const addMonthlyRentPayment = async (payload: any) => {
   const { user, body } = payload
   const { id: userId } = user
   const { bookingId, ...rest } = body
-
   const booking = await prisma.booking.findUnique({
     where: {
       id: bookingId,
@@ -101,6 +69,27 @@ const addMonthlyRentPayment = async (payload: any) => {
   // Return the created MonthlyRentPayment data
   return { success: true, data: result }
 }
+
+const addRegularMonthlyRentPayment = async (payload: any) => {
+  const { user, body } = payload
+  const { id: renterId } = user
+  const { bookingId, ...rest } = body
+
+  // Prepare MonthlyRentPayment data with the uploaded image URL
+  const updatedData = {
+    ...rest,
+    renterId: renterId,
+  }
+
+  // Create a new MonthlyRentPayment record in the database using Prisma
+  const result = await prisma.monthlyRentPayment.create({
+    data: updatedData,
+  })
+
+  // Return the created MonthlyRentPayment data
+  return { success: true, data: result }
+}
+
 //Get all MonthlyRentPayments
 const getMonthlyRentPayments = async (
   filters: IMonthlyRentPaymentFilterRequest,
@@ -310,14 +299,121 @@ const deleteMonthlyRentPayment = async (
   })
   return result
 }
+
+const getCurrentMonthPayments = async (propertyId: any) => {
+  const property = await prisma.property.findUnique({
+    where: { id: propertyId },
+    include: {
+      bookings: true,
+      monthlyRentPayments: true,
+    },
+  })
+  // const hasConfirmedBookings = property.bookings.some(
+  //   booking => booking.bookingStatus === 'Confirmed',
+  // )
+
+  // let bookingEndDate = null
+
+  // if (hasConfirmedBookings) {
+  //   // Find the confirmed booking (you may need to adjust the logic if there are multiple confirmed bookings)
+  //   const confirmedBooking = property.bookings.find(
+  //     booking => booking.bookingStatus === 'Confirmed',
+  //   )
+
+  //   if (confirmedBooking) {
+  //     bookingEndDate = confirmedBooking.bookingEndDate
+  //   }
+  // }
+
+  // console.log('Has confirmed bookings:', hasConfirmedBookings)
+  // console.log('Booking end date:', bookingEndDate)
+  // console.log('Monthly Rent Data:', property?.monthlyRentPayments)
+  // console.log('Monthly Rent Data:', property?.monthlyRentPayments)
+
+  // // Get the current month and year
+  // const currentDate = new Date()
+  // const currentMonth = currentDate.getMonth() + 1 // Months are 0-based, so add 1
+  // const currentYear = currentDate.getFullYear()
+
+  // if (property?.monthlyRentPayments) {
+  //   // Check if there is a payment record for the current month and year
+  //   const hasPaymentForCurrentMonth = property.monthlyRentPayments.some(
+  //     payment => payment.month === currentMonth && payment.year === currentYear,
+  //   )
+
+  //   if (hasPaymentForCurrentMonth) {
+  //     console.log('There is a payment record for the current month.')
+  //   } else {
+  //     console.log('There is no payment record for the current month.')
+  //   }
+  // } else {
+  //   console.log('No monthly payment records found.')
+  // }
+  // if (property?.monthlyRentPayments) {
+  //   // Get the current month and year
+  //   const currentDate = new Date()
+  //   const currentMonth = currentDate.getMonth() + 1 // Months are 0-based, so add 1
+  //   const currentYear = currentDate.getFullYear()
+
+  //   // Initialize an array to track which months have payment records
+  //   const monthsWithPayments = []
+
+  //   // Iterate through the monthly payment records and track available months
+  //   property.monthlyRentPayments.forEach(payment => {
+  //     const paymentMonth = payment.month
+  //     const paymentYear = payment.year
+
+  //     // Check if the payment is completed for the specific month
+  //     if (payment.status === 'Completed') {
+  //       monthsWithPayments.push({ month: paymentMonth, year: paymentYear })
+  //     }
+  //   })
+
+  //   if (monthsWithPayments.length === 0) {
+  //     console.log('No monthly payment records found.')
+  //   } else {
+  //     // Create an array representing all expected months
+  //     const expectedMonths = []
+
+  //     // Fill the expected months with data, for example, from the current month onwards
+  //     for (let year = currentYear; year <= currentYear + 1; year++) {
+  //       const startMonth = year === currentYear ? currentMonth : 1
+  //       const endMonth = year === currentYear + 1 ? currentMonth : 12
+
+  //       for (let month = startMonth; month <= endMonth; month++) {
+  //         expectedMonths.push({ month, year })
+  //       }
+  //     }
+
+  //     // Find the months that are in expectedMonths but not in monthsWithPayments
+  //     const missingMonths = expectedMonths.filter(expectedMonth => {
+  //       return !monthsWithPayments.some(
+  //         paymentMonth =>
+  //           paymentMonth.month === expectedMonth.month &&
+  //           paymentMonth.year === expectedMonth.year,
+  //       )
+  //     })
+
+  //     if (missingMonths.length === 0) {
+  //       console.log('No missing monthly payments.')
+  //     } else {
+  //       // Log the months that are missing in the database
+  //       console.log('Missing monthly payments:', missingMonths)
+  //       return missingMonths
+  //     }
+  //   }
+  // } else {
+  //   console.log('No monthly payment records found.')
+  // }
+}
 export const MonthlyRentPaymentService = {
   addMonthlyRentPayment,
   getMonthlyRentPayments,
   getSingleMonthlyRentPayment,
   getTotalMonthlyRentPayment,
   getSpecificPropertyTotalPayment,
-  // updateMonthlyRentPayment,
+  addRegularMonthlyRentPayment,
   getSingleUserMonthlyRentPayment,
   deleteMonthlyRentPayment,
-  // getAllRent,
+  getCurrentMonthPayments,
 }

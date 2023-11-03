@@ -236,6 +236,22 @@ const singleUserProperty = (userId) => __awaiter(void 0, void 0, void 0, functio
     });
     return result;
 });
+const singleRenterProperty = (renterId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.property.findMany({
+        where: {
+            bookings: {
+                some: {
+                    renterId: renterId,
+                    bookingStatus: 'Confirmed',
+                },
+            },
+        },
+        include: {
+            bookings: true,
+        },
+    });
+    return result;
+});
 exports.PropertyService = {
     addProperty,
     getProperties,
@@ -244,5 +260,6 @@ exports.PropertyService = {
     deleteProperty,
     singleUserProperty,
     getFeaturedProperties,
+    singleRenterProperty,
     // singlePropertiesRating,
 };

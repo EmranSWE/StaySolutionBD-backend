@@ -109,6 +109,17 @@ const singleUserProperty = (0, catchAsync_1.default)((req, res, next) => __await
         data: result,
     });
 }));
+//Get a single Renter Property
+const singleRenterProperty = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const renterId = req.params.id;
+    const result = yield property_service_1.PropertyService.singleRenterProperty(renterId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Get a my user all Property',
+        data: result,
+    });
+}));
 // //Get a single Property
 // const singlePropertiesRating = catchAsync(
 //   async (req: Request, res: Response, next: NextFunction) => {
@@ -130,5 +141,6 @@ exports.PropertyController = {
     updateProperty,
     deleteProperty,
     singleUserProperty,
+    singleRenterProperty,
     // singlePropertiesRating,
 };

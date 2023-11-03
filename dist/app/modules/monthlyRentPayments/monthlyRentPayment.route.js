@@ -11,8 +11,10 @@ const monthlyRentPayment_controller_1 = require("./monthlyRentPayment.controller
 const router = express_1.default.Router();
 // Route to create a new MonthlyRentPayment entry
 router.post('/monthly-rent-payments', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.addMonthlyRentPayment);
+router.post('/regular-monthly-payments', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.addRegularMonthlyRentPayment);
 // Fetch all MonthlyRentPayment entries
 router.get('/', monthlyRentPayment_controller_1.MonthlyRentPaymentController.getMonthlyRentPayments);
+router.get('/current-month-rent/:id', monthlyRentPayment_controller_1.MonthlyRentPaymentController.getCurrentMonthPayments);
 // Fetch a single MonthlyRentPayment entry by its ID
 router.get('/:id', monthlyRentPayment_controller_1.MonthlyRentPaymentController.getSingleMonthlyRentPayment);
 // Fetch total rent amount across all properties and renters
@@ -24,11 +26,8 @@ router.get('/rents/total', monthlyRentPayment_controller_1.MonthlyRentPaymentCon
 // )
 // Fetch rent details for a specific property
 router.get('/properties/:propertyId/rents', monthlyRentPayment_controller_1.MonthlyRentPaymentController.getSpecificPropertyTotalPayment);
-// // Fetch rent details for a specific renter
-// router.get(
-//   '/renters/:renterId/rents',
-//   MonthlyRentPaymentController.getSingleMonthlyRentPayment,
-// )
+// Fetch rent details for a specific renter
+router.get('/renters/my-rents', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.getSingleUserMonthlyRentPayment);
 // // Fetch all rents that are pending
 // router.get(
 //   '/rents/pending',

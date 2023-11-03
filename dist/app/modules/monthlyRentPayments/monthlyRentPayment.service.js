@@ -1,10 +1,4 @@
 "use strict";
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable no-useless-catch */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -30,6 +24,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MonthlyRentPaymentService = void 0;
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable no-useless-catch */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
@@ -46,6 +46,43 @@ const addMonthlyRentPayment = (payload) => __awaiter(void 0, void 0, void 0, fun
     const propertyId = booking === null || booking === void 0 ? void 0 : booking.propertyId;
     // Prepare MonthlyRentPayment data with the uploaded image URL
     const updatedData = Object.assign(Object.assign({}, rest), { propertyId: propertyId, renterId: userId });
+    // Create a new MonthlyRentPayment record in the database using Prisma
+    const result = yield prisma_1.default.monthlyRentPayment.create({
+        data: updatedData,
+    });
+    // Check if the payment is completed (you need to implement this logic)
+    const paymentCompleted = true; // You need to set this based on your payment gateway logic
+    if (paymentCompleted) {
+        // Update the bookingStatus to 'confirmed' and propertyStatus to 'booked'
+        yield prisma_1.default.booking.update({
+            where: {
+                id: bookingId,
+            },
+            data: {
+                bookingStatus: 'Confirmed',
+            },
+        });
+        // Assuming you have a 'property' field in the 'booking' table that you want to update
+        yield prisma_1.default.property.update({
+            where: {
+                id: propertyId,
+            },
+            data: {
+                propertyStatus: 'booked',
+            },
+        });
+    }
+    // Return the created MonthlyRentPayment data
+    return { success: true, data: result };
+});
+const addRegularMonthlyRentPayment = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const { user, body } = payload;
+    const { id: renterId } = user;
+    const { bookingId } = body, rest = __rest(body
+    // Prepare MonthlyRentPayment data with the uploaded image URL
+    , ["bookingId"]);
+    // Prepare MonthlyRentPayment data with the uploaded image URL
+    const updatedData = Object.assign(Object.assign({}, rest), { renterId: renterId });
     // Create a new MonthlyRentPayment record in the database using Prisma
     const result = yield prisma_1.default.monthlyRentPayment.create({
         data: updatedData,
@@ -139,6 +176,21 @@ const getSingleMonthlyRentPayment = (payload) => __awaiter(void 0, void 0, void 
     });
     return result;
 });
+//Get single MonthlyRentPayment details
+const getSingleUserMonthlyRentPayment = (renterId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.monthlyRentPayment.findMany({
+        where: {
+            renterId: renterId,
+        },
+        select: {
+            month: true,
+            year: true,
+            status: true,
+            amount: true,
+        },
+    });
+    return result;
+});
 //Get total MonthlyRentPayment details
 const getTotalMonthlyRentPayment = () => __awaiter(void 0, void 0, void 0, function* () {
     const totalRent = yield prisma_1.default.monthlyRentPayment.aggregate({
@@ -209,13 +261,105 @@ const deleteMonthlyRentPayment = (authUser, deletedId) => __awaiter(void 0, void
     });
     return result;
 });
+const getCurrentMonthPayments = (propertyId) => __awaiter(void 0, void 0, void 0, function* () {
+    const property = yield prisma_1.default.property.findUnique({
+        where: { id: propertyId },
+        include: {
+            bookings: true,
+            monthlyRentPayments: true,
+        },
+    });
+    // const hasConfirmedBookings = property.bookings.some(
+    //   booking => booking.bookingStatus === 'Confirmed',
+    // )
+    // let bookingEndDate = null
+    // if (hasConfirmedBookings) {
+    //   // Find the confirmed booking (you may need to adjust the logic if there are multiple confirmed bookings)
+    //   const confirmedBooking = property.bookings.find(
+    //     booking => booking.bookingStatus === 'Confirmed',
+    //   )
+    //   if (confirmedBooking) {
+    //     bookingEndDate = confirmedBooking.bookingEndDate
+    //   }
+    // }
+    // console.log('Has confirmed bookings:', hasConfirmedBookings)
+    // console.log('Booking end date:', bookingEndDate)
+    // console.log('Monthly Rent Data:', property?.monthlyRentPayments)
+    // console.log('Monthly Rent Data:', property?.monthlyRentPayments)
+    // // Get the current month and year
+    // const currentDate = new Date()
+    // const currentMonth = currentDate.getMonth() + 1 // Months are 0-based, so add 1
+    // const currentYear = currentDate.getFullYear()
+    // if (property?.monthlyRentPayments) {
+    //   // Check if there is a payment record for the current month and year
+    //   const hasPaymentForCurrentMonth = property.monthlyRentPayments.some(
+    //     payment => payment.month === currentMonth && payment.year === currentYear,
+    //   )
+    //   if (hasPaymentForCurrentMonth) {
+    //     console.log('There is a payment record for the current month.')
+    //   } else {
+    //     console.log('There is no payment record for the current month.')
+    //   }
+    // } else {
+    //   console.log('No monthly payment records found.')
+    // }
+    // if (property?.monthlyRentPayments) {
+    //   // Get the current month and year
+    //   const currentDate = new Date()
+    //   const currentMonth = currentDate.getMonth() + 1 // Months are 0-based, so add 1
+    //   const currentYear = currentDate.getFullYear()
+    //   // Initialize an array to track which months have payment records
+    //   const monthsWithPayments = []
+    //   // Iterate through the monthly payment records and track available months
+    //   property.monthlyRentPayments.forEach(payment => {
+    //     const paymentMonth = payment.month
+    //     const paymentYear = payment.year
+    //     // Check if the payment is completed for the specific month
+    //     if (payment.status === 'Completed') {
+    //       monthsWithPayments.push({ month: paymentMonth, year: paymentYear })
+    //     }
+    //   })
+    //   if (monthsWithPayments.length === 0) {
+    //     console.log('No monthly payment records found.')
+    //   } else {
+    //     // Create an array representing all expected months
+    //     const expectedMonths = []
+    //     // Fill the expected months with data, for example, from the current month onwards
+    //     for (let year = currentYear; year <= currentYear + 1; year++) {
+    //       const startMonth = year === currentYear ? currentMonth : 1
+    //       const endMonth = year === currentYear + 1 ? currentMonth : 12
+    //       for (let month = startMonth; month <= endMonth; month++) {
+    //         expectedMonths.push({ month, year })
+    //       }
+    //     }
+    //     // Find the months that are in expectedMonths but not in monthsWithPayments
+    //     const missingMonths = expectedMonths.filter(expectedMonth => {
+    //       return !monthsWithPayments.some(
+    //         paymentMonth =>
+    //           paymentMonth.month === expectedMonth.month &&
+    //           paymentMonth.year === expectedMonth.year,
+    //       )
+    //     })
+    //     if (missingMonths.length === 0) {
+    //       console.log('No missing monthly payments.')
+    //     } else {
+    //       // Log the months that are missing in the database
+    //       console.log('Missing monthly payments:', missingMonths)
+    //       return missingMonths
+    //     }
+    //   }
+    // } else {
+    //   console.log('No monthly payment records found.')
+    // }
+});
 exports.MonthlyRentPaymentService = {
     addMonthlyRentPayment,
     getMonthlyRentPayments,
     getSingleMonthlyRentPayment,
     getTotalMonthlyRentPayment,
     getSpecificPropertyTotalPayment,
-    // updateMonthlyRentPayment,
+    addRegularMonthlyRentPayment,
+    getSingleUserMonthlyRentPayment,
     deleteMonthlyRentPayment,
-    // getAllRent,
+    getCurrentMonthPayments,
 };

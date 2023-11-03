@@ -19,7 +19,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FeedbackService = void 0;
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
-const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const addFeedback = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { user, body } = payload;
@@ -126,10 +125,6 @@ const singleUserFeedback = (userId) => __awaiter(void 0, void 0, void 0, functio
             userId: userId,
         },
     });
-    // If the feedback array is empty, throw an error.
-    if (myFeedback.length === 0) {
-        throw new ApiError_1.default(404, 'Feedback not found');
-    }
     return myFeedback;
 });
 const getSingleFeedback = (feedbackId) => __awaiter(void 0, void 0, void 0, function* () {

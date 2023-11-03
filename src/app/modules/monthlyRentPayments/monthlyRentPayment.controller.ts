@@ -29,6 +29,38 @@ const addMonthlyRentPayment = catchAsync(
   },
 )
 
+const addRegularMonthlyRentPayment = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const payload = {
+      body: req.body,
+      user: req.user,
+    }
+
+    const result =
+      await MonthlyRentPaymentService.addRegularMonthlyRentPayment(payload)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'MonthlyRentPayment added successfully! ',
+      data: result,
+    })
+  },
+)
+
+const getCurrentMonthPayments = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const propertyId = req.params?.id
+    const result =
+      await MonthlyRentPaymentService.getCurrentMonthPayments(propertyId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'MonthlyRentPayment added successfully! ',
+      data: result,
+    })
+  },
+)
+
 const getMonthlyRentPayments = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const filters = pick(req.query, MonthlyRentPaymentFilterableFields)
@@ -155,10 +187,12 @@ export const MonthlyRentPaymentController = {
   addMonthlyRentPayment,
   getMonthlyRentPayments,
   getSingleMonthlyRentPayment,
+  addRegularMonthlyRentPayment,
   getTotalMonthlyRentPayment,
   getSpecificPropertyTotalPayment,
   getSingleUserMonthlyRentPayment,
   deleteMonthlyRentPayment,
+  getCurrentMonthPayments,
   // singleUserMonthlyRentPayment,
   // singlePropertiesRating,
 }

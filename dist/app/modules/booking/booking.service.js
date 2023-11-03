@@ -116,6 +116,9 @@ const getBookings = (filters, options) => __awaiter(void 0, void 0, void 0, func
             : {
                 bookingStartDate: 'desc',
             },
+        include: {
+            property: true,
+        },
     });
     const total = yield prisma_1.default.booking.count({
         where: whereConditions,
@@ -132,6 +135,17 @@ const getBookings = (filters, options) => __awaiter(void 0, void 0, void 0, func
 const getSingleBooking = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const model = prisma_1.default.booking;
     const result = yield (0, utils_1.getUniqueRecord)(model, payload);
+    return result;
+});
+const getSingleUserBooking = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.booking.findMany({
+        where: {
+            renterId: userId,
+        },
+        include: {
+            property: true,
+        },
+    });
     return result;
 });
 //Update Booking
@@ -183,4 +197,5 @@ exports.BookingService = {
     getSingleBooking,
     updateBooking,
     deleteBooking,
+    getSingleUserBooking,
 };
