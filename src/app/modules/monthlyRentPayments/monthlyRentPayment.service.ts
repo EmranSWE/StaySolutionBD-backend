@@ -74,7 +74,6 @@ const addRegularMonthlyRentPayment = async (payload: any) => {
   const { user, body } = payload
   const { id: renterId } = user
   const { bookingId, ...rest } = body
-
   const updatedData = {
     ...rest,
     renterId: renterId,
@@ -84,7 +83,6 @@ const addRegularMonthlyRentPayment = async (payload: any) => {
   const result = await prisma.monthlyRentPayment.create({
     data: updatedData,
   })
-
   // Return the created MonthlyRentPayment data
   return { success: true, data: result }
 }
@@ -321,7 +319,9 @@ export const getCurrentMonthPayments = async (propertyId: string) => {
   }
 
   // Assuming monthlyRentPayments are sorted by date in descending order
-  const latestPayment = property.monthlyRentPayments[0]
+  const latestPayment =
+    property.monthlyRentPayments[property.monthlyRentPayments.length - 1]
+
   if (!latestPayment || latestPayment.status !== 'Completed') {
     return 'Latest payment is not completed or no payments found.'
   }
