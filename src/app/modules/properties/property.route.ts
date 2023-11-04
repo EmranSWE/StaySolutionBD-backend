@@ -13,6 +13,7 @@ router.post(
   FileUploadHelper.upload.single('file'),
   PropertyController.addProperty,
 )
+router.get('/popular-category', PropertyController.popularCategory)
 router.get('/', PropertyController.getProperties)
 router.get('/featured-property', PropertyController.getFeaturedProperties)
 router.get('/:id', PropertyController.getSingleProperty)
@@ -35,6 +36,7 @@ router.delete(
   PropertyController.deleteProperty,
 )
 router.get('/my-property/:id/', PropertyController.singleUserProperty)
+
 router.get(
   '/properties/:id/my-property',
   auth(ENUM_USER_ROLE.RENTER),

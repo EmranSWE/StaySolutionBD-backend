@@ -285,6 +285,39 @@ const singleUserProperty = async (userId: any) => {
   return result
 }
 
+const popularCategory = async () => {
+  const properties = await prisma.property.findMany()
+
+  const tagFrequency = new Map()
+
+  properties.forEach(property => {
+    property.propertyTags.forEach(tag => {
+      tagFrequency.set(tag, (tagFrequency.get(tag) || 0) + 1)
+    })
+  })
+
+  const sortedTags = Array.from(tagFrequency.entries()).sort(
+    (a, b) => b[1] - a[1],
+  )
+
+  // Get the top 3 most frequent tags
+  const popularTags = sortedTags.slice(0, 4).map(entry => entry[0])
+
+  // Filter the properties to those that include the popular tags
+  const popularProperties = properties.filter(property =>
+    property.propertyTags.some(tag => popularTags.includes(tag)),
+  )
+
+  // Map the popular properties to an array of objects with only the tag and image gallery
+  const popularCategoriesWithImages = popularProperties.map(property => ({
+    category: property.propertyTags.filter(tag => popularTags.includes(tag)),
+    imageGallery: property.imageGallery,
+  }))
+
+  // Return the popular categories with their images
+  return popularCategoriesWithImages
+}
+
 const singleRenterProperty = async (renterId: any) => {
   const result = await prisma.property.findMany({
     where: {
@@ -311,5 +344,6 @@ export const PropertyService = {
   singleUserProperty,
   getFeaturedProperties,
   singleRenterProperty,
+  popularCategory,
   // singlePropertiesRating,
 }
