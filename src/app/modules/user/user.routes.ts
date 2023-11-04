@@ -45,7 +45,7 @@ router.patch(
 )
 router.get(
   '/get-user',
-  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+
   UserController.getUsers,
 )
 router.get(

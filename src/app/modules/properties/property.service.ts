@@ -253,7 +253,11 @@ const deleteProperty = async (
     where: {
       id: deletedId,
     },
+    include: {
+      bookings: true,
+    },
   })
+
   // If the property does not exist, throw an error.
   if (!isSameUser) {
     throw new ApiError(404, 'Property not found')

@@ -184,30 +184,44 @@ const deleteBooking = async (
   authUser: string | any,
   deletedId: any,
 ): Promise<any> => {
-  const isSameUser = await prisma.booking.findUnique({
+  // First, check if the Booking exists
+  const isBooked = await prisma.booking.findUnique({
     where: {
       id: deletedId,
     },
   })
 
-  // If the Booking does not exist, throw an error.
-  if (!isSameUser) {
+  if (!isBooked) {
     throw new ApiError(404, 'Booking not found')
   }
+
   const { role, id } = authUser
 
-  // if (isSameUser.renterId !== id && role !== 'admin' && role !== 'owner') {
-  //   throw new ApiError(400, "You haven't permission to delete the Booking")
-  // }
+  // Check permissions
+  if (isBooked.renterId !== id && role !== 'admin' && role !== 'owner') {
+    throw new ApiError(400, "You haven't permission to delete the Booking")
+  }
 
+  // Update the property status first in case booking deletion fails
+  await prisma.property.update({
+    where: {
+      id: isBooked?.propertyId,
+    },
+    data: {
+      propertyStatus: 'available',
+    },
+  })
+
+  // Now delete the booking
   const result = await prisma.booking.delete({
     where: {
       id: deletedId,
     },
   })
 
-  return result
+  return { success: true, data: result }
 }
+
 export const BookingService = {
   addBooking,
   getBookings,
