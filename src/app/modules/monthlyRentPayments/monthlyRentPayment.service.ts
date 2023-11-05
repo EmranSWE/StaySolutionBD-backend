@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-useless-catch */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -192,6 +193,52 @@ const getSingleMonthlyRentPayment = async (payload: any) => {
   return result
 }
 
+const getMonthWiseMonthlyRentPayment = async () => {
+  try {
+    // Retrieve all payments from the database
+    const payments = await prisma.monthlyRentPayment.findMany({
+      where: {
+        status: 'Completed', // Filter by 'Completed' status if necessary
+      },
+      select: {
+        month: true,
+        year: true,
+        amount: true,
+      },
+    })
+
+    // Group and sum payments by month and year
+    const groupedPayments = payments.reduce((acc, payment) => {
+      const monthYearKey = `${payment.year}-${payment.month
+        .toString()
+        .padStart(2, '0')}`
+      //@ts-ignore
+      if (!acc[monthYearKey]) {
+        //@ts-ignore
+        acc[monthYearKey] = 0
+      }
+      //@ts-ignore
+      acc[monthYearKey] += payment.amount
+      return acc
+    }, {})
+
+    // Convert grouped payments into an array for the response
+    const result = Object.entries(groupedPayments).map(
+      ([monthYear, totalAmount]) => {
+        const [year, month] = monthYear.split('-')
+        return {
+          month,
+          year,
+          totalAmount,
+        }
+      },
+    )
+    return result
+  } catch (error) {
+    throw new ApiError(500, 'Error Found')
+  }
+}
+
 //Get single MonthlyRentPayment details
 const getSingleUserMonthlyRentPayment = async (renterId: any) => {
   const result = await prisma.monthlyRentPayment.findMany({
@@ -339,4 +386,5 @@ export const MonthlyRentPaymentService = {
   getSingleUserMonthlyRentPayment,
   deleteMonthlyRentPayment,
   getCurrentMonthPayments,
+  getMonthWiseMonthlyRentPayment,
 }

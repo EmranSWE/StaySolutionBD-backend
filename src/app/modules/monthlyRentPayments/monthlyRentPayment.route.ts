@@ -31,6 +31,10 @@ router.get(
   '/rents/total',
   MonthlyRentPaymentController.getTotalMonthlyRentPayment,
 )
+router.get(
+  '/rents/month-wise-totals',
+  MonthlyRentPaymentController.getMonthWiseMonthlyRentPayment,
+)
 // Fetch monthly total of rent amount across all properties and renters
 // router.get(
 //   '/rents/monthly-total',

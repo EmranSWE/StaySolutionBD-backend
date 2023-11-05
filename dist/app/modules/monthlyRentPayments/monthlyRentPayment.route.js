@@ -1,70 +1,33 @@
-'use strict'
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod }
-  }
-Object.defineProperty(exports, '__esModule', { value: true })
-exports.MonthlyRentPaymentRoutes = void 0
-const express_1 = __importDefault(require('express'))
-const auth_1 = __importDefault(require('../../middleware/auth'))
-const user_1 = require('../../../enum/user')
-const monthlyRentPayment_controller_1 = require('./monthlyRentPayment.controller')
-const router = express_1.default.Router()
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MonthlyRentPaymentRoutes = void 0;
+const express_1 = __importDefault(require("express"));
+const auth_1 = __importDefault(require("../../middleware/auth"));
+const user_1 = require("../../../enum/user");
+const monthlyRentPayment_controller_1 = require("./monthlyRentPayment.controller");
+const router = express_1.default.Router();
 // Route to create a new MonthlyRentPayment entry
-router.post(
-  '/monthly-rent-payments',
-  (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER),
-  monthlyRentPayment_controller_1.MonthlyRentPaymentController
-    .addMonthlyRentPayment,
-)
-router.post(
-  '/regular-monthly-payments',
-  (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER),
-  monthlyRentPayment_controller_1.MonthlyRentPaymentController
-    .addRegularMonthlyRentPayment,
-)
+router.post('/monthly-rent-payments', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.addMonthlyRentPayment);
+router.post('/regular-monthly-payments', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.addRegularMonthlyRentPayment);
 // Fetch all MonthlyRentPayment entries
-router.get(
-  '/',
-  monthlyRentPayment_controller_1.MonthlyRentPaymentController
-    .getMonthlyRentPayments,
-)
-router.get(
-  '/current-month-rent/:id',
-  monthlyRentPayment_controller_1.MonthlyRentPaymentController
-    .getCurrentMonthPayments,
-)
+router.get('/', monthlyRentPayment_controller_1.MonthlyRentPaymentController.getMonthlyRentPayments);
+router.get('/current-month-rent/:id', monthlyRentPayment_controller_1.MonthlyRentPaymentController.getCurrentMonthPayments);
 // Fetch a single MonthlyRentPayment entry by its ID
-router.get(
-  '/:id',
-  monthlyRentPayment_controller_1.MonthlyRentPaymentController
-    .getSingleMonthlyRentPayment,
-)
+router.get('/:id', monthlyRentPayment_controller_1.MonthlyRentPaymentController.getSingleMonthlyRentPayment);
 // Fetch total rent amount across all properties and renters
-router.get(
-  '/rents/total',
-  monthlyRentPayment_controller_1.MonthlyRentPaymentController
-    .getTotalMonthlyRentPayment,
-)
+router.get('/rents/total', monthlyRentPayment_controller_1.MonthlyRentPaymentController.getTotalMonthlyRentPayment);
 // Fetch monthly total of rent amount across all properties and renters
 // router.get(
 //   '/rents/monthly-total',
 //   MonthlyRentPaymentController.getSingleMonthlyRentPayment,
 // )
 // Fetch rent details for a specific property
-router.get(
-  '/properties/:propertyId/rents',
-  monthlyRentPayment_controller_1.MonthlyRentPaymentController
-    .getSpecificPropertyTotalPayment,
-)
+router.get('/properties/:propertyId/rents', monthlyRentPayment_controller_1.MonthlyRentPaymentController.getSpecificPropertyTotalPayment);
 // Fetch rent details for a specific renter
-router.get(
-  '/renters/my-rents',
-  (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER),
-  monthlyRentPayment_controller_1.MonthlyRentPaymentController
-    .getSingleUserMonthlyRentPayment,
-)
+router.get('/renters/my-rents', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.getSingleUserMonthlyRentPayment);
 // // Fetch all rents that are pending
 // router.get(
 //   '/rents/pending',
@@ -119,16 +82,7 @@ router.get(
 //   MonthlyRentPaymentController.updateMonthlyRentPayment,
 // )
 // // Delete a MonthlyRentPayment entry by its ID
-router.delete(
-  '/:id',
-  (0, auth_1.default)(
-    user_1.ENUM_USER_ROLE.ADMIN,
-    user_1.ENUM_USER_ROLE.SUPER_ADMIN,
-    user_1.ENUM_USER_ROLE.OWNER,
-  ),
-  monthlyRentPayment_controller_1.MonthlyRentPaymentController
-    .deleteMonthlyRentPayment,
-)
+router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.OWNER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.deleteMonthlyRentPayment);
 // // Delete a MonthlyRentPayment entry by its ID
 // router.delete(
 //   '/monthly-rent-MonthlyRentPayments/:MonthlyRentPaymentId',
@@ -141,4 +95,4 @@ router.delete(
 //   auth(ENUM_USER_ROLE.RENTER),
 //   MonthlyRentPaymentController.addMonthlyRentPaymentStripe,
 // )
-exports.MonthlyRentPaymentRoutes = router
+exports.MonthlyRentPaymentRoutes = router;
