@@ -92,6 +92,19 @@ const getMonthWiseMonthlyRentPayment = catchAsync(
     })
   },
 )
+
+const getFlatStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await MonthlyRentPaymentService.getFlatStatus()
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Current Flat fetched successfully',
+
+      data: result,
+    })
+  },
+)
 // Getting a single MonthlyRentPayment
 const getSingleMonthlyRentPayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -207,6 +220,7 @@ export const MonthlyRentPaymentController = {
   deleteMonthlyRentPayment,
   getCurrentMonthPayments,
   getMonthWiseMonthlyRentPayment,
+  getFlatStatus,
   // singleUserMonthlyRentPayment,
   // singlePropertiesRating,
 }

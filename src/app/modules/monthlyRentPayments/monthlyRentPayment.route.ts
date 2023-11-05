@@ -33,7 +33,13 @@ router.get(
 )
 router.get(
   '/rents/month-wise-totals',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   MonthlyRentPaymentController.getMonthWiseMonthlyRentPayment,
+)
+router.get(
+  '/rents/flat-status',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  MonthlyRentPaymentController.getFlatStatus,
 )
 // Fetch monthly total of rent amount across all properties and renters
 // router.get(

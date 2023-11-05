@@ -239,6 +239,31 @@ const getMonthWiseMonthlyRentPayment = async () => {
   }
 }
 
+//Get flat status details
+const getFlatStatus = async () => {
+  try {
+    const properties = await prisma.property.findMany({
+      select: {
+        flatNo: true,
+        propertyStatus: true,
+      },
+      orderBy: {
+        flatNo: 'asc', // This will sort the results by flatNo in ascending order
+      },
+    })
+
+    // Transform the data to the desired format
+    const flatStatus = properties.map(property => ({
+      flatNo: property.flatNo,
+      status: property.propertyStatus,
+    }))
+
+    return flatStatus
+  } catch (error) {
+    throw new ApiError(500, 'Error Found')
+  }
+}
+
 //Get single MonthlyRentPayment details
 const getSingleUserMonthlyRentPayment = async (renterId: any) => {
   const result = await prisma.monthlyRentPayment.findMany({
@@ -387,4 +412,5 @@ export const MonthlyRentPaymentService = {
   deleteMonthlyRentPayment,
   getCurrentMonthPayments,
   getMonthWiseMonthlyRentPayment,
+  getFlatStatus,
 }
