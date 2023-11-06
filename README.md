@@ -4,9 +4,9 @@
 Welcome to the backend repository of StaySolutionBD, the pinnacle of solution rental services. This platform stands as the connective tissue between property owners and potential renters, enabling a fluid exchange of value and convenience. Developed with a senior engineer’s acumen and foresight, this backend architecture is the heartbeat of a service that simplifies and enhances the rental experience.
 
 ## Live Access
-
 Explore StaySolutionBD in its full glory:
 - [Live Server](https://stay-solution-bd-backend.vercel.app/)
+- - [Documentation](Stay Solution BD.pdf)
 - Traverse our APIs with [Postman Workspace](https://martian-comet-596528.postman.co/workspace/New-Team-Workspace~4291e7f1-879e-4461-9d74-21bf9d590423/collection/27394351-094df829-23b0-4ef2-a540-4f7464feb98b?action=share&creator=27394351)
 
 ## Introduction
@@ -262,7 +262,7 @@ Our database schema is designed to optimize for efficiency and scalability, ensu
 
 ### Overview of the ERD
 
-The ERD illustrates the following key entities and their relationships:
+![StaySolutionBD Banner](ERD pg.pgerd.png)
 
 - **Users**: Central to our platform, containing details about renters and property owners.
 - **Properties**: Listed by owners, containing details like location, amenities, and availability.
@@ -290,8 +290,6 @@ Our ERD includes:
 ### Accessing the ERD
 
 You can view the ERD here: [Link to ERD]
-
-The ERD is maintained in [Tool/Platform used for ERD], and we ensure that it is updated to reflect any changes to our database schema as the platform evolves.
 
 ## Model Design
 
@@ -401,14 +399,10 @@ We welcome contributions from the community and are pleased to have you join us 
 3. **Clone Your Fork**: Clone the forked repository to your machine. For example:
 git clone https://github.com/your-username/staysolutionbd-backend.git
 
-sql
-Copy code
+
 
 4. **Create a Branch**: Create a new branch for your modifications:
 git checkout -b feature-branch-name
-
-sql
-Copy code
 
 5. **Set Up the Development Environment**: Refer to our [Installation](#installation) section to set up your local development environment.
 
@@ -419,14 +413,10 @@ Copy code
 8. **Commit Your Changes**: Commit your changes with a clear and descriptive commit message. Here's an example:
 git commit -m "Add a brief description of the change"
 
-vbnet
-Copy code
 
 9. **Push to Your Fork**: Push your changes to your fork on GitHub:
 git push origin feature-branch-name
 
-vbnet
-Copy code
 
 10. **Submit a Pull Request (PR)**: Go to the repository on GitHub, and you'll see a prompt to submit a pull request. Write a clear description of the changes and reference the issue number if applicable.
 
@@ -439,13 +429,7 @@ Copy code
 - **Documentation**: Update the README.md with details of changes to the interface, and provide examples if relevant.
 - **Atomic Commits**: Submit small, focused commits that address specific issues or features to make the review process easier.
 
-### Community
 
-StaySolutionBD is more than a codebase; we're a community. If you have any questions or need assistance, don't hesitate to reach out on our [community chat](#) or forums.
-
-Your contributions are integral to the open-source community and the evolution of StaySolutionBD. We look forward to seeing your creative and innovative enhancements!
-
-[Back to Top](#table-of-contents)
 
 ## Credits
 
@@ -459,7 +443,6 @@ StaySolutionBD stands on the shoulders of giants. Our platform is built using a 
 - [Redux](https://redux.js.org/): For state management across our React applications.
 - [Ant Design](https://ant.design/): For the comprehensive suite of UI components that enhance our app's usability.
 
-... and many other libraries and tools that have made this project possible.
 
 If you've contributed to StaySolutionBD and we've somehow missed you, please let us know so we can add you to the list!
 
@@ -470,5 +453,3 @@ StaySolutionBD is proudly open-source and is provided to the public under the [M
 The MIT License is one of the most permissive and flexible licenses available, promoting the collaborative development of software. For more details, please refer to the `LICENSE` file included in the repository.
 
 We encourage you to join us in improving StaySolutionBD, and by doing so, contribute to the flourishing community of open-source software.
-
-[Back to Top](#table-of-contents)
