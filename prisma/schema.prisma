@@ -200,7 +200,7 @@ model Payment{
 
 model MonthlyRentPayment {
   id            String    @id @default(uuid())
-  month         Int       // Represent month as an integer, e.g., January = 1, February = 2, etc.
+  month         Int       
   year          Int
   status        PaymentStatus @default(Pending) 
   amount        Int?
