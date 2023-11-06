@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 // /* eslint-disable no-undef */
 // import path from 'path'
 // import { createLogger, format, transports } from 'winston'
