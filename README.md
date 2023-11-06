@@ -3,6 +3,27 @@
 ### Live Link: https://stay-solution-bd-backend.vercel.app/api/v1
  - POSTMAN https://martian-comet-596528.postman.co/workspace/New-Team-Workspace~4291e7f1-879e-4461-9d74-21bf9d590423/collection/27394351-094df829-23b0-4ef2-a540-4f7464feb98b?action=share&creator=27394351
 
+# StaySolutionBD Backend
+
+Welcome to the backend repository for StaySolutionBD, a premier solution rental services platform that connects property owners with potential renters. Our backend is built to handle everything from user registration to property listings, bookings, payments, and more, providing a seamless experience for both tenants and property owners.
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Software Requirements](#software-requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Core Features](#core-features)
+- [Additional Features](#additional-features)
+- [API Endpoints](#api-endpoints)
+- [Development and Testing](#development-and-testing)
+- [Launch and Post-Launch](#launch-and-post-launch)
+- [Entity Relationship Diagram](#entity-relationship-diagram)
+- [Model Design](#model-design)
+- [JSON Data Examples](#json-data-examples)
+- [Contributing](#contributing)
+- [Credits](#credits)
+- [License](#license)
 # Stay Solution BD
 
 A comprehensive property management system that provides a seamless experience for property owners and renters.
