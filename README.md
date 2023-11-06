@@ -24,9 +24,9 @@ Welcome to the backend repository for StaySolutionBD, a premier solution rental 
 - [Contributing](#contributing)
 - [Credits](#credits)
 - [License](#license)
-# Stay Solution BD
+## Introduction
 
-A comprehensive property management system that provides a seamless experience for property owners and renters.
+StaySolutionBD is designed to ease the rental process for both property owners and tenants. This backend repository contains all necessary code to set up the server, database, and APIs required for the frontend application to function properly.
 
 ## Core Features
 
