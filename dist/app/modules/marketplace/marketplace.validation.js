@@ -1,4 +1,4 @@
-"use strict";
+'use strict'
 // import { z } from 'zod'
 // const CreatePropertyZodSchema = z.object({
 //   body: z.object({
