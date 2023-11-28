@@ -12,7 +12,6 @@ export const propertyFilterableFields: string[] = [
 
 export const propertySearchableFields: string[] = [
   'title',
-  'city',
   'description',
   'flatNo',
 ]
