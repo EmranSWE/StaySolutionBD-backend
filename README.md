@@ -1,12 +1,13 @@
 # StaySolutionBD Backend
 ![StaySolutionBD Banner](staySolutionBanner.png)
 
-Welcome to the backend repository of StaySolutionBD, the pinnacle of solution rental services. This platform stands as the connective tissue between property owners and potential renters, enabling a fluid exchange of value and convenience. Developed with a senior engineer’s acumen and foresight, this backend architecture is the heartbeat of a service that simplifies and enhances the rental experience.
+Welcome to the backend repository of StaySolutionBD, the comprehensive  of solution rental services. This platform stands as the connective tissue between property owners and potential renters, enabling a fluid exchange of value and convenience. Developed with a senior engineer’s acumen and foresight, this backend architecture is the heartbeat of a service that simplifies and enhances the rental experience.
 
 ## Live Access
 Explore StaySolutionBD in its full glory:
 - [Live Server](https://stay-solution-bd-backend.vercel.app/)
-- - [Documentation](Stay Solution BD.pdf)
+- [Frontend Server](https://github.com/EmranSWE/StaySolutionBD-frontend)
+- - [Documentation](StaySolutionBD.pdf)
 - Traverse our APIs with [Postman Workspace](https://martian-comet-596528.postman.co/workspace/New-Team-Workspace~4291e7f1-879e-4461-9d74-21bf9d590423/collection/27394351-094df829-23b0-4ef2-a540-4f7464feb98b?action=share&creator=27394351)
 
 ## Introduction
@@ -262,7 +263,7 @@ Our database schema is designed to optimize for efficiency and scalability, ensu
 
 ### Overview of the ERD
 
-![StaySolutionBD Banner](ERD pg.pgerd.png)
+![StaySolutionBD Banner](StaySolutionsBD-ERD.png)
 
 - **Users**: Central to our platform, containing details about renters and property owners.
 - **Properties**: Listed by owners, containing details like location, amenities, and availability.
