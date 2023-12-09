@@ -4,7 +4,7 @@
 Welcome to the backend repository of StaySolutionBD, the comprehensive  of solution rental services. This platform stands as the connective tissue between property owners and potential renters, enabling a fluid exchange of value and convenience. Developed with a senior engineer’s acumen and foresight, this backend architecture is the heartbeat of a service that simplifies and enhances the rental experience.
 
 ## Live Access
-Explore StaySolutionBD in its full advantage:
+Explore StaySolutionBD in it's full advantage:
 - [Live Server](https://stay-solution-bd-backend.vercel.app/)
 - [Frontend Server](https://github.com/EmranSWE/StaySolutionBD-frontend)
 - - [Documentation](StaySolutionBD.pdf)
