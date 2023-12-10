@@ -7,7 +7,7 @@
 import { Prisma, Property, Review } from '@prisma/client'
 import prisma from '../../../shared/prisma'
 import ApiError from '../../../errors/ApiError'
-import { ICloudinaryResponse, IUploadFile } from '../../../interface/file'
+import { ICloudinaryResponse } from '../../../interface/file'
 import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
 import {
   IPropertyFilterRequest,
@@ -24,21 +24,6 @@ import {
 } from './property.constant'
 import { getUniqueRecord } from '../../utils/utils'
 
-/**
- * Service function to add a new property to the database.
- *
- * @param payload - The input object containing file, user, and property details.
- * @param payload.file - The image file for the property.
- * @param payload.user - The user object with information about the user making the request.
- * @param payload.body - The property details.
- *
- * @returns An object indicating the success status and the data or error message.
- *
- * @example
- * const response = await addProperty({ file, user, body });
- * if (response.success) console.log("Property added:", response.data);
- * else console.error("Error:", response.error);
- */
 const addProperty = async (payload: any) => {
   const { file, user, body } = payload
   // Validate file input
@@ -75,104 +60,6 @@ const addProperty = async (payload: any) => {
   return { success: true, data: result }
 }
 
-// const getProperties = async (
-//   filters: IPropertyFilterRequest,
-//   options: IPaginationOptions,
-// ): Promise<IGenericResponse<Property[]>> => {
-//   const { limit, page, skip } = paginationHelpers.calculatePagination(options)
-
-//   const {
-//     searchTerm,
-//     numberOfRooms,
-//     monthlyRent,
-//     size,
-//     maxOccupancy,
-//     propertyStatus,
-//     ...filterData
-//   } = filters
-
-//   const andConditions = []
-
-//   // Handling search term
-//   if (searchTerm) {
-//     andConditions.push({
-//       OR: propertySearchableFields.map(field => ({
-//         [field]: {
-//           contains: searchTerm,
-//           mode: 'insensitive',
-//         },
-//       })),
-//     })
-//   }
-//   console.log(searchTerm)
-
-//   // Handling number of rooms
-//   const numberOfRoomsInt = Number(numberOfRooms)
-
-//   if (!isNaN(numberOfRoomsInt)) {
-//     // Check if the parsed value is a valid number
-//     andConditions.push({ numberOfRooms: { lte: numberOfRoomsInt } })
-//   }
-
-//   // Handling number of rooms
-//   const maxOccupancyInt = Number(maxOccupancy)
-
-//   if (!isNaN(maxOccupancyInt)) {
-//     // Check if the parsed value is a valid number
-//     andConditions.push({ maxOccupancy: maxOccupancyInt })
-//   }
-//   const monthlyRentInt = Number(monthlyRent)
-
-//   if (!isNaN(monthlyRentInt)) {
-//     // Check if the parsed value is a valid number
-//     andConditions.push({ monthlyRent: { lte: monthlyRentInt } })
-//   }
-//   if (Object.keys(filterData).length > 0) {
-//     andConditions.push({
-//       AND: Object.keys(filterData).map(key => {
-//         if (propertyRelationalFields.includes(key)) {
-//           return {
-//             [propertyRelationalFieldsMapper[key]]: {
-//               id: (filterData as any)[key],
-//             },
-//           }
-//         } else {
-//           return {
-//             [key]: {
-//               equals: (filterData as any)[key],
-//             },
-//           }
-//         }
-//       }),
-//     })
-//   }
-
-//   const whereConditions: Prisma.PropertyWhereInput =
-//     andConditions.length > 0 ? { AND: andConditions } : {}
-
-//   const result = await prisma.property.findMany({
-//     where: whereConditions,
-//     skip,
-//     take: limit,
-//     orderBy:
-//       options.sortBy && options.sortOrder
-//         ? { [options.sortBy]: options.sortOrder }
-//         : {
-//             createdAt: 'desc',
-//           },
-//   })
-//   const total = await prisma.property.count({
-//     where: whereConditions,
-//   })
-//   return {
-//     meta: {
-//       total,
-//       page,
-//       limit,
-//     },
-//     data: result,
-//   }
-// }
 const getProperties = async (
   filters: IPropertyFilterRequest,
   options: IPaginationOptions,
@@ -431,5 +318,4 @@ export const PropertyService = {
   getFeaturedProperties,
   singleRenterProperty,
   popularCategory,
-  // singlePropertiesRating,
 }

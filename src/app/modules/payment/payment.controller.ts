@@ -135,6 +135,4 @@ export const PaymentController = {
   getSinglePayment,
   updatePayment,
   deletePayment,
-  // singleUserPayment,
-  // singlePropertiesRating,
 }

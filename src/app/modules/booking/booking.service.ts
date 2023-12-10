@@ -41,7 +41,7 @@ const addBooking = async (payload: any) => {
   }
   if (!body.bookingEndDate) {
     const startDate = new Date(body.bookingStartDate)
-    startDate.setMonth(startDate.getMonth() + 1) // add one month
+    startDate.setMonth(startDate.getMonth() + 12)
     body.bookingEndDate = startDate
   }
   // Prepare Booking data with the uploaded image URL

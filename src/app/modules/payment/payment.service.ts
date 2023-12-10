@@ -28,21 +28,7 @@ import Stripe from 'stripe'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY! as string, {
   apiVersion: '2020-08-27' as any,
 })
-/**
- * Service function to add a new Payment to the database.
- *
- * @param payload - The input object containing file, user, and Payment details.
- * @param payload.file - The image file for the Payment.
- * @param payload.user - The user object with information about the user making the request.
- * @param payload.body - The Payment details.
- *
- * @returns An object indicating the success status and the data or error message.
- *
- * @example
- * const response = await addPayment({ file, user, body });
- * if (response.success) console.log("Payment added:", response.data);
- * else console.error("Error:", response.error);
- */
+
 const addPayment = async (payload: any) => {
   const { user, body } = payload
   // Authorization check: Ensure user has the 'owner' role
@@ -295,18 +281,6 @@ const getAllRent = async (
       },
     },
   })
-
-  // const formattedResponse = result.map(payment => ({
-  //   paymentDate: payment.paymentDate,
-  //   paymentStatus: payment.paymentStatus,
-  //   securityDeposit: payment.securityDeposit,
-  //   paymentAmount: payment.paymentAmount,
-  //   bookingStatus: payment.booking?.bookingStatus,
-  //   monthlyRent: payment.booking?.property?.monthlyRent,
-  //   flatNo: payment.booking?.property?.flatNo,
-  // }))
-
-  // console.log(formattedResponse)
 
   type PaymentGroup = {
     flatNo: string | null

@@ -59,6 +59,7 @@ Booking
 Cancellation
 Offers
 }
+
 enum NotificationPlatform {
 Email
 SMS
@@ -81,6 +82,7 @@ enum Category {
   Villa
   Cottage
 }
+
 model User {
   id      String      @id @default(uuid())
   firstName String 
@@ -204,7 +206,7 @@ model MonthlyRentPayment {
   year          Int
   status        PaymentStatus @default(Pending) 
   amount        Int?
-  paymentDate   DateTime?  // Date when the payment was made
+  paymentDate   DateTime?  
   propertyId    String
   property      Property   @relation(fields: [propertyId], references: [id])
   renterId      String

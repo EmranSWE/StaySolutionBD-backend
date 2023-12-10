@@ -21,7 +21,6 @@ const addBooking = catchAsync(
       body: req.body,
       user: req.user,
     }
-
     const result = await BookingService.addBooking(payload)
     sendResponse(res, {
       statusCode: httpStatus.OK,

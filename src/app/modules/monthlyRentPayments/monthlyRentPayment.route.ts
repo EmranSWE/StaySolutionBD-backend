@@ -4,7 +4,6 @@ import { ENUM_USER_ROLE } from '../../../enum/user'
 import { MonthlyRentPaymentController } from './monthlyRentPayment.controller'
 const router = express.Router()
 
-// Route to create a new MonthlyRentPayment entry
 router.post(
   '/monthly-rent-payments',
   auth(ENUM_USER_ROLE.RENTER),
@@ -16,13 +15,14 @@ router.post(
   auth(ENUM_USER_ROLE.RENTER),
   MonthlyRentPaymentController.addRegularMonthlyRentPayment,
 )
-// Fetch all MonthlyRentPayment entries
+
 router.get('/', MonthlyRentPaymentController.getMonthlyRentPayments)
 
 router.get(
   '/current-month-rent/:id',
   MonthlyRentPaymentController.getCurrentMonthPayments,
 )
+
 // Fetch a single MonthlyRentPayment entry by its ID
 router.get('/:id', MonthlyRentPaymentController.getSingleMonthlyRentPayment)
 // Fetch total rent amount across all properties and renters
@@ -41,13 +41,7 @@ router.get(
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   MonthlyRentPaymentController.getFlatStatus,
 )
-// Fetch monthly total of rent amount across all properties and renters
-// router.get(
-//   '/rents/monthly-total',
-//   MonthlyRentPaymentController.getSingleMonthlyRentPayment,
-// )
 
-// Fetch rent details for a specific property
 router.get(
   '/properties/:propertyId/rents',
   MonthlyRentPaymentController.getSpecificPropertyTotalPayment,

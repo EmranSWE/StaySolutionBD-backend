@@ -286,7 +286,7 @@ const getFlatStatus = () =>
           propertyStatus: true,
         },
         orderBy: {
-          flatNo: 'asc', // This will sort the results by flatNo in ascending order
+          flatNo: 'asc',
         },
       })
       // Transform the data to the desired format
@@ -341,29 +341,7 @@ const getSpecificPropertyTotalPayment = propertyId =>
     })
     return totalRent._sum.amount || 0
   })
-//Update MonthlyRentPayment
-// const updateMonthlyRentPayment = async (
-//   payload: any,
-// ): Promise<UpdateMonthlyRentPaymentResponse> => {
-//   if (!payload.params?.id || !payload.user?.id) {
-//     return { success: false, error: 'Invalid input or file is missing' }
-//   }
-//   const { params, user, body } = payload
-//   const { id: MonthlyRentPaymentId } = params
-//   const { role } = user
-//   if (role !== 'admin' && role !== 'owner') {
-//     return {
-//       success: false,
-//       error: 'Unauthorized: You cannot update this user',
-//     }
-//   }
-//   const { MonthlyRentPaymentStatus } = body
-//   const result = await prisma.MonthlyRentPayment.update({
-//     where: { id: MonthlyRentPaymentId },
-//     data: { MonthlyRentPaymentStatus: MonthlyRentPaymentStatus },
-//   })
-//   return { success: true, data: result }
-// }
+
 const deleteMonthlyRentPayment = (authUser, deletedId) =>
   __awaiter(void 0, void 0, void 0, function* () {
     const isSameUser = yield prisma_1.default.monthlyRentPayment.findUnique({

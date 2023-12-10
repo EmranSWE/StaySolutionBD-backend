@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 // import express from 'express'
 // import auth from '../../middleware/auth'
 // import { ENUM_USER_ROLE } from '../../../enum/user'
