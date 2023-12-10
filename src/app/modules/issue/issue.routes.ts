@@ -14,6 +14,7 @@ router.post(
   IssueController.addIssue,
 )
 router.get('/', IssueController.getIssues)
+
 router.get('/:id', IssueController.getSingleIssue)
 
 router.patch(
@@ -22,10 +23,6 @@ router.patch(
   validateRequest(IssueValidation.UpdateIssueZodSchema),
   IssueController.updateIssue,
 )
-router.delete(
-  '/:id',
-  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.OWNER),
-  IssueController.deleteIssue,
-)
+router.delete('/:id', auth(ENUM_USER_ROLE.RENTER), IssueController.deleteIssue)
 
 export const IssueRoutes = router

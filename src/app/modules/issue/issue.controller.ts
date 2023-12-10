@@ -78,7 +78,6 @@ const deleteIssue = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const IssueId = req.params.id
     const ids = req.user
-
     const result = await IssueService.deleteIssue(ids, IssueId)
     sendResponse(res, {
       statusCode: httpStatus.OK,

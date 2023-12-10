@@ -6,10 +6,8 @@ const CreateIssueZodSchema = z.object({
       required_error: 'Description is required',
       invalid_type_error: 'Description must be a string',
     }),
-    issueStatus: z.enum(['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED']),
+    issueStatus: z.enum(['OPEN']),
     priorityLevel: z.enum(['Low', 'Medium', 'High']),
-
-    propertyId: z.string().uuid(),
     renterId: z.string().uuid().optional(),
   }),
 })

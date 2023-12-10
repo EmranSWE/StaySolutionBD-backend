@@ -200,7 +200,6 @@ const deleteIssue = async (
       id: deletedId,
     },
   })
-
   return result
 }
 export const IssueService = {
