@@ -1,10 +1,10 @@
-'use strict'
+"use strict";
 // const pick = <T extends Record<string, unknown>, k extends keyof T>(
 //   obj: T,
 //   keys: k[],
 // ): Partial<T> => {
 //   const finalObj: Partial<T> = {}
-Object.defineProperty(exports, '__esModule', { value: true })
+Object.defineProperty(exports, "__esModule", { value: true });
 //   for (const key of keys) {
 //     if (obj && Object.hasOwnProperty.call(obj, key)) {
 //       finalObj[key] = obj[key]
@@ -21,11 +21,11 @@ Object.defineProperty(exports, '__esModule', { value: true })
  * @returns A new object containing only the picked keys.
  */
 const pick = (obj, keys) => {
-  return keys.reduce((result, key) => {
-    if (key in obj) {
-      result[key] = obj[key]
-    }
-    return result
-  }, {})
-}
-exports.default = pick
+    return keys.reduce((result, key) => {
+        if (key in obj) {
+            result[key] = obj[key];
+        }
+        return result;
+    }, {});
+};
+exports.default = pick;
