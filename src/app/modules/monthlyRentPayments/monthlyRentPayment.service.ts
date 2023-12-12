@@ -264,6 +264,30 @@ const getFlatStatus = async () => {
   }
 }
 
+//Get flat status details
+const getAllFlat = async () => {
+  try {
+    const properties = await prisma.property.findMany({
+      select: {
+        flatNo: true,
+        id: true,
+      },
+      orderBy: {
+        flatNo: 'asc', // This will sort the results by flatNo in ascending order
+      },
+    })
+
+    // // Transform the data to the desired format
+    // const flatStatus = properties.map(property => ({
+    //   flatNo: property.flatNo,
+    //   status: property.propertyStatus,
+    // }))
+    return properties
+  } catch (error) {
+    throw new ApiError(500, 'Error Found')
+  }
+}
+
 //Get single MonthlyRentPayment details
 const getSingleUserMonthlyRentPayment = async (renterId: any) => {
   const result = await prisma.monthlyRentPayment.findMany({
@@ -307,6 +331,27 @@ const getSpecificPropertyTotalPayment = async (propertyId: any) => {
   })
 
   return totalRent._sum.amount || 0
+}
+
+// Get total details of payment for a specific property
+const getSpecificPropertyPaymentDetails = async (propertyId: any) => {
+  if (!propertyId) {
+    throw new Error('Property ID must be provided')
+  }
+  const totalRent = await prisma.monthlyRentPayment.findMany({
+    where: {
+      propertyId: propertyId,
+    },
+    select: {
+      month: true,
+      year: true,
+      status: true,
+      amount: true,
+      paymentDate: true,
+    },
+  })
+
+  return totalRent
 }
 
 const deleteMonthlyRentPayment = async (
@@ -381,10 +426,12 @@ export const MonthlyRentPaymentService = {
   getSingleMonthlyRentPayment,
   getTotalMonthlyRentPayment,
   getSpecificPropertyTotalPayment,
+  getSpecificPropertyPaymentDetails,
   addRegularMonthlyRentPayment,
   getSingleUserMonthlyRentPayment,
   deleteMonthlyRentPayment,
   getCurrentMonthPayments,
   getMonthWiseMonthlyRentPayment,
   getFlatStatus,
+  getAllFlat,
 }

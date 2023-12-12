@@ -46,6 +46,10 @@ router.get(
   '/properties/:propertyId/rents',
   MonthlyRentPaymentController.getSpecificPropertyTotalPayment,
 )
+router.get(
+  '/properties/:propertyId/details',
+  MonthlyRentPaymentController.getSpecificPropertyPaymentDetails,
+)
 
 // Fetch rent details for a specific renter
 router.get(
@@ -54,6 +58,8 @@ router.get(
   MonthlyRentPaymentController.getSingleUserMonthlyRentPayment,
 )
 
+// Fetch rent details for a specific renter
+router.get('/properties/all-flat', MonthlyRentPaymentController.getAllFlat)
 // // Fetch all rents that are pending
 // router.get(
 //   '/rents/pending',

@@ -105,6 +105,18 @@ const getFlatStatus = catchAsync(
     })
   },
 )
+const getAllFlat = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await MonthlyRentPaymentService.getAllFlat()
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Current Flat fetched successfully',
+
+      data: result,
+    })
+  },
+)
 // Getting a single MonthlyRentPayment
 const getSingleMonthlyRentPayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -156,6 +168,23 @@ const getSpecificPropertyTotalPayment = catchAsync(
     const propertyId = req.params.propertyId
     const result =
       await MonthlyRentPaymentService.getSpecificPropertyTotalPayment(
+        propertyId,
+      )
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Total Rent specific property fetched successfully',
+      data: result,
+    })
+  },
+)
+
+// Fetch specific a total rent
+const getSpecificPropertyPaymentDetails = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const propertyId = req.params.propertyId
+    const result =
+      await MonthlyRentPaymentService.getSpecificPropertyPaymentDetails(
         propertyId,
       )
     sendResponse(res, {
@@ -221,6 +250,8 @@ export const MonthlyRentPaymentController = {
   getCurrentMonthPayments,
   getMonthWiseMonthlyRentPayment,
   getFlatStatus,
+  getAllFlat,
+  getSpecificPropertyPaymentDetails,
   // singleUserMonthlyRentPayment,
   // singlePropertiesRating,
 }
