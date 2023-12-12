@@ -13,6 +13,9 @@ router.post(
   FileUploadHelper.upload.single('file'),
   PropertyController.addProperty,
 )
+router.get('/available-property', PropertyController.availableProperty)
+router.get('/booked-property/', PropertyController.bookedProperty)
+
 router.get('/popular-category', PropertyController.popularCategory)
 router.get('/', PropertyController.getProperties)
 router.get('/featured-property', PropertyController.getFeaturedProperties)

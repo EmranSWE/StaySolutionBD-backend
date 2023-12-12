@@ -60,11 +60,19 @@ router.get(
 
 // Fetch rent details for a specific renter
 router.get('/properties/all-flat', MonthlyRentPaymentController.getAllFlat)
-// // Fetch all rents that are pending
-// router.get(
-//   '/rents/pending',
-//   MonthlyRentPaymentController.getSingleMonthlyRentPayment,
-// )
+
+// This month total rents
+router.get(
+  '/rents/this-month',
+  MonthlyRentPaymentController.thisMonthTotalRents,
+)
+
+// This month total rents
+router.get(
+  '/rents/my-total-rents',
+  auth(ENUM_USER_ROLE.RENTER),
+  MonthlyRentPaymentController.singleUserTotalRentAmount,
+)
 
 // // Fetch a summary of rent details
 // router.get(

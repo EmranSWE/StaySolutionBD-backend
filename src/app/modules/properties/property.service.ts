@@ -308,6 +308,26 @@ const singleRenterProperty = async (renterId: any) => {
 
   return result
 }
+
+const availableProperty = async () => {
+  const count = await prisma.property.count({
+    where: {
+      propertyStatus: 'available',
+    },
+  })
+
+  return count
+}
+
+const bookedProperty = async () => {
+  const count = await prisma.property.count({
+    where: {
+      propertyStatus: 'booked',
+    },
+  })
+
+  return count
+}
 export const PropertyService = {
   addProperty,
   getProperties,
@@ -318,4 +338,6 @@ export const PropertyService = {
   getFeaturedProperties,
   singleRenterProperty,
   popularCategory,
+  availableProperty,
+  bookedProperty,
 }

@@ -310,7 +310,11 @@ const deleteUser = async (authId: any, deletedId: any) => {
   if (!isSameUser) {
     throw new ApiError(404, 'User not found')
   }
-  if (isSameUser?.id !== authId.id && authId.role !== 'admin') {
+  if (
+    isSameUser?.id !== authId.id &&
+    authId.role !== 'admin' &&
+    authId.role !== 'super_admin'
+  ) {
     throw new ApiError(400, "You haven't permission to delete")
   }
 

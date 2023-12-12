@@ -20,8 +20,11 @@ router.get('/rents/total', monthlyRentPayment_controller_1.MonthlyRentPaymentCon
 router.get('/rents/month-wise-totals', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN), monthlyRentPayment_controller_1.MonthlyRentPaymentController.getMonthWiseMonthlyRentPayment);
 router.get('/rents/flat-status', (0, auth_1.default)(user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.ADMIN), monthlyRentPayment_controller_1.MonthlyRentPaymentController.getFlatStatus);
 router.get('/properties/:propertyId/rents', monthlyRentPayment_controller_1.MonthlyRentPaymentController.getSpecificPropertyTotalPayment);
+router.get('/properties/:propertyId/details', monthlyRentPayment_controller_1.MonthlyRentPaymentController.getSpecificPropertyPaymentDetails);
 // Fetch rent details for a specific renter
 router.get('/renters/my-rents', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.getSingleUserMonthlyRentPayment);
+// Fetch rent details for a specific renter
+router.get('/properties/all-flat', monthlyRentPayment_controller_1.MonthlyRentPaymentController.getAllFlat);
 // // Fetch all rents that are pending
 // router.get(
 //   '/rents/pending',

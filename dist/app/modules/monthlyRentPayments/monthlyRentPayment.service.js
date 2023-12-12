@@ -238,6 +238,29 @@ const getFlatStatus = () => __awaiter(void 0, void 0, void 0, function* () {
         throw new ApiError_1.default(500, 'Error Found');
     }
 });
+//Get flat status details
+const getAllFlat = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const properties = yield prisma_1.default.property.findMany({
+            select: {
+                flatNo: true,
+                id: true,
+            },
+            orderBy: {
+                flatNo: 'asc', // This will sort the results by flatNo in ascending order
+            },
+        });
+        // // Transform the data to the desired format
+        // const flatStatus = properties.map(property => ({
+        //   flatNo: property.flatNo,
+        //   status: property.propertyStatus,
+        // }))
+        return properties;
+    }
+    catch (error) {
+        throw new ApiError_1.default(500, 'Error Found');
+    }
+});
 //Get single MonthlyRentPayment details
 const getSingleUserMonthlyRentPayment = (renterId) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma_1.default.monthlyRentPayment.findMany({
@@ -276,6 +299,25 @@ const getSpecificPropertyTotalPayment = (propertyId) => __awaiter(void 0, void 0
         },
     });
     return totalRent._sum.amount || 0;
+});
+// Get total details of payment for a specific property
+const getSpecificPropertyPaymentDetails = (propertyId) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!propertyId) {
+        throw new Error('Property ID must be provided');
+    }
+    const totalRent = yield prisma_1.default.monthlyRentPayment.findMany({
+        where: {
+            propertyId: propertyId,
+        },
+        select: {
+            month: true,
+            year: true,
+            status: true,
+            amount: true,
+            paymentDate: true,
+        },
+    });
+    return totalRent;
 });
 const deleteMonthlyRentPayment = (authUser, deletedId) => __awaiter(void 0, void 0, void 0, function* () {
     const isSameUser = yield prisma_1.default.monthlyRentPayment.findUnique({
@@ -330,10 +372,12 @@ exports.MonthlyRentPaymentService = {
     getSingleMonthlyRentPayment,
     getTotalMonthlyRentPayment,
     getSpecificPropertyTotalPayment,
+    getSpecificPropertyPaymentDetails,
     addRegularMonthlyRentPayment,
     getSingleUserMonthlyRentPayment,
     deleteMonthlyRentPayment,
     getCurrentMonthPayments: exports.getCurrentMonthPayments,
     getMonthWiseMonthlyRentPayment,
     getFlatStatus,
+    getAllFlat,
 };

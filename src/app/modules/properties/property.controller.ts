@@ -12,6 +12,7 @@ import {
 } from './property.constant'
 import { PropertyService } from './property.service'
 
+//Add new property
 const addProperty = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     if (req.body.data) {
@@ -33,6 +34,7 @@ const addProperty = catchAsync(
   },
 )
 
+// Get Property
 const getProperties = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const filters = pick(req.query, propertyFilterableFields)
@@ -48,6 +50,7 @@ const getProperties = catchAsync(
   },
 )
 
+// Get Featured Property
 const getFeaturedProperties = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await PropertyService.getFeaturedProperties()
@@ -81,7 +84,6 @@ const updateProperty = catchAsync(
     if (req.body.data) {
       req.body = JSON.parse(req.body.data)
     }
-
     const payload = {
       body: req.body,
       file: req.file,
@@ -154,19 +156,31 @@ const popularCategory = catchAsync(
     })
   },
 )
-// //Get a single Property
-// const singlePropertiesRating = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const propertyId = req.params.id
-//     const result = await PropertyService.singlePropertiesRating(propertyId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'Get a single property average rating',
-//       data: result,
-//     })
-//   },
-// )
+
+// Total Available Properties
+const availableProperty = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await PropertyService.availableProperty()
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Available property',
+      data: result,
+    })
+  },
+)
+// Total Booked Properties
+const bookedProperty = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await PropertyService.bookedProperty()
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Booked property',
+      data: result,
+    })
+  },
+)
 export const PropertyController = {
   addProperty,
   getProperties,
@@ -177,5 +191,6 @@ export const PropertyController = {
   singleUserProperty,
   singleRenterProperty,
   popularCategory,
-  // singlePropertiesRating,
+  availableProperty,
+  bookedProperty,
 }

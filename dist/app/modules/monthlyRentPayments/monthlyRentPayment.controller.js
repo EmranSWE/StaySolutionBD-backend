@@ -86,6 +86,15 @@ const getFlatStatus = (0, catchAsync_1.default)((req, res, next) => __awaiter(vo
         data: result,
     });
 }));
+const getAllFlat = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield monthlyRentPayment_service_1.MonthlyRentPaymentService.getAllFlat();
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Current Flat fetched successfully',
+        data: result,
+    });
+}));
 // Getting a single MonthlyRentPayment
 const getSingleMonthlyRentPayment = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const MonthlyRentPaymentId = req.params.id;
@@ -123,6 +132,17 @@ const getTotalMonthlyRentPayment = (0, catchAsync_1.default)((req, res, next) =>
 const getSpecificPropertyTotalPayment = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const propertyId = req.params.propertyId;
     const result = yield monthlyRentPayment_service_1.MonthlyRentPaymentService.getSpecificPropertyTotalPayment(propertyId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Total Rent specific property fetched successfully',
+        data: result,
+    });
+}));
+// Fetch specific a total rent
+const getSpecificPropertyPaymentDetails = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const propertyId = req.params.propertyId;
+    const result = yield monthlyRentPayment_service_1.MonthlyRentPaymentService.getSpecificPropertyPaymentDetails(propertyId);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -175,6 +195,8 @@ exports.MonthlyRentPaymentController = {
     getCurrentMonthPayments,
     getMonthWiseMonthlyRentPayment,
     getFlatStatus,
+    getAllFlat,
+    getSpecificPropertyPaymentDetails,
     // singleUserMonthlyRentPayment,
     // singlePropertiesRating,
 };

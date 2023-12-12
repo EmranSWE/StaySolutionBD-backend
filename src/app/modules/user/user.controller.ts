@@ -134,7 +134,6 @@ const deleteUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const UserId = req.params.id
     const ids = req.user
-
     const result = await UserService.deleteUser(ids, UserId)
     sendResponse(res, {
       statusCode: httpStatus.OK,

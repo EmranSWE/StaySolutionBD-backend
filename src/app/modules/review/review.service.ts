@@ -21,7 +21,6 @@ import { FileUploadHelper } from '../../../helpers/FileUploadHelper'
 
 const addReview = async (payload: IPayload) => {
   const { file, user, body } = payload
-
   // Validate file input
   if (!file) {
     return { success: false, error: 'Invalid input or file is missing' }

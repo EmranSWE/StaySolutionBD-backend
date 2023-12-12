@@ -167,7 +167,6 @@ const updateIssue = async (payload: any): Promise<UpdateIssueResponse> => {
     where: { id: IssueId },
     data: restData,
   })
-
   return { success: true, data: result }
 }
 

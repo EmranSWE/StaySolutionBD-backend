@@ -193,6 +193,26 @@ const getSingleMonthlyRentPayment = async (payload: any) => {
   return result
 }
 
+//Get single MonthlyRentPayment details
+const thisMonthTotalRents = async () => {
+  const currentDate = new Date()
+  const currentMonth = currentDate.getMonth() + 1
+
+  const result = await prisma.monthlyRentPayment.findMany({
+    where: {
+      month: currentMonth,
+      year: currentDate.getFullYear(),
+    },
+  })
+
+  // Calculate total amount
+  const totalAmount = result.reduce(
+    (acc, payment) => acc + (payment.amount ?? 0),
+    0,
+  )
+  return totalAmount
+}
+
 const getMonthWiseMonthlyRentPayment = async () => {
   try {
     // Retrieve all payments from the database
@@ -273,15 +293,10 @@ const getAllFlat = async () => {
         id: true,
       },
       orderBy: {
-        flatNo: 'asc', // This will sort the results by flatNo in ascending order
+        flatNo: 'asc',
       },
     })
 
-    // // Transform the data to the desired format
-    // const flatStatus = properties.map(property => ({
-    //   flatNo: property.flatNo,
-    //   status: property.propertyStatus,
-    // }))
     return properties
   } catch (error) {
     throw new ApiError(500, 'Error Found')
@@ -331,6 +346,23 @@ const getSpecificPropertyTotalPayment = async (propertyId: any) => {
   })
 
   return totalRent._sum.amount || 0
+}
+
+//Get Single User total MonthlyRentPayment details
+const singleUserTotalRentAmount = async (renterId: string) => {
+  const totalRent = await prisma.monthlyRentPayment.findMany({
+    where: {
+      renterId: renterId,
+    },
+  })
+
+  // Calculate total amount
+  const totalAmount = totalRent.reduce(
+    (acc, payment) => acc + payment.amount,
+    0,
+  )
+
+  return totalAmount
 }
 
 // Get total details of payment for a specific property
@@ -434,4 +466,6 @@ export const MonthlyRentPaymentService = {
   getMonthWiseMonthlyRentPayment,
   getFlatStatus,
   getAllFlat,
+  singleUserTotalRentAmount,
+  thisMonthTotalRents,
 }
