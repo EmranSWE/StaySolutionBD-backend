@@ -201,12 +201,23 @@ const deleteIssue = async (
   })
   return result
 }
+
+const getSingleRenterIssue = async (userId: any) => {
+  const allIssues = await prisma.issue.findMany({
+    where: {
+      renterId: userId.id,
+    },
+  })
+  if (!allIssues) {
+    throw new ApiError(404, 'Review not found')
+  }
+  return allIssues
+}
 export const IssueService = {
   addIssue,
   getProperties,
   getSingleIssue,
   updateIssue,
   deleteIssue,
-  // singleUserIssue,
-  // singlePropertiesRating,
+  getSingleRenterIssue,
 }

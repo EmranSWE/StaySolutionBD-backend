@@ -12,6 +12,8 @@ const FileUploadHelper_1 = require("../../../helpers/FileUploadHelper");
 const router = express_1.default.Router();
 //Post to create property
 router.post('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.OWNER), FileUploadHelper_1.FileUploadHelper.upload.single('file'), property_controller_1.PropertyController.addProperty);
+router.get('/available-property', property_controller_1.PropertyController.availableProperty);
+router.get('/booked-property/', property_controller_1.PropertyController.bookedProperty);
 router.get('/popular-category', property_controller_1.PropertyController.popularCategory);
 router.get('/', property_controller_1.PropertyController.getProperties);
 router.get('/featured-property', property_controller_1.PropertyController.getFeaturedProperties);

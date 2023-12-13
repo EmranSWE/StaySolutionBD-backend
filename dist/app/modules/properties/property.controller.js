@@ -19,6 +19,7 @@ const http_status_1 = __importDefault(require("http-status"));
 const pick_1 = __importDefault(require("../../../shared/pick"));
 const property_constant_1 = require("./property.constant");
 const property_service_1 = require("./property.service");
+//Add new property
 const addProperty = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.body.data) {
         req.body = JSON.parse(req.body.data);
@@ -36,6 +37,7 @@ const addProperty = (0, catchAsync_1.default)((req, res, next) => __awaiter(void
         data: result,
     });
 }));
+// Get Property
 const getProperties = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const filters = (0, pick_1.default)(req.query, property_constant_1.propertyFilterableFields);
     const options = (0, pick_1.default)(req.query, property_constant_1.IPropertyQueryOption);
@@ -48,6 +50,7 @@ const getProperties = (0, catchAsync_1.default)((req, res, next) => __awaiter(vo
         data: result.data,
     });
 }));
+// Get Featured Property
 const getFeaturedProperties = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield property_service_1.PropertyService.getFeaturedProperties();
     (0, sendResponse_1.default)(res, {
@@ -130,19 +133,26 @@ const popularCategory = (0, catchAsync_1.default)((req, res, next) => __awaiter(
         data: result,
     });
 }));
-// //Get a single Property
-// const singlePropertiesRating = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const propertyId = req.params.id
-//     const result = await PropertyService.singlePropertiesRating(propertyId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'Get a single property average rating',
-//       data: result,
-//     })
-//   },
-// )
+// Total Available Properties
+const availableProperty = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield property_service_1.PropertyService.availableProperty();
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Available property',
+        data: result,
+    });
+}));
+// Total Booked Properties
+const bookedProperty = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield property_service_1.PropertyService.bookedProperty();
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Booked property',
+        data: result,
+    });
+}));
 exports.PropertyController = {
     addProperty,
     getProperties,
@@ -153,5 +163,6 @@ exports.PropertyController = {
     singleUserProperty,
     singleRenterProperty,
     popularCategory,
-    // singlePropertiesRating,
+    availableProperty,
+    bookedProperty,
 };

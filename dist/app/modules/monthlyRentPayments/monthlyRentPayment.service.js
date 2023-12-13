@@ -173,6 +173,20 @@ const getSingleMonthlyRentPayment = (payload) => __awaiter(void 0, void 0, void 
     });
     return result;
 });
+//Get single MonthlyRentPayment details
+const thisMonthTotalRents = () => __awaiter(void 0, void 0, void 0, function* () {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const result = yield prisma_1.default.monthlyRentPayment.findMany({
+        where: {
+            month: currentMonth,
+            year: currentDate.getFullYear(),
+        },
+    });
+    // Calculate total amount
+    const totalAmount = result.reduce((acc, payment) => { var _a; return acc + ((_a = payment.amount) !== null && _a !== void 0 ? _a : 0); }, 0);
+    return totalAmount;
+});
 const getMonthWiseMonthlyRentPayment = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Retrieve all payments from the database
@@ -247,14 +261,9 @@ const getAllFlat = () => __awaiter(void 0, void 0, void 0, function* () {
                 id: true,
             },
             orderBy: {
-                flatNo: 'asc', // This will sort the results by flatNo in ascending order
+                flatNo: 'asc',
             },
         });
-        // // Transform the data to the desired format
-        // const flatStatus = properties.map(property => ({
-        //   flatNo: property.flatNo,
-        //   status: property.propertyStatus,
-        // }))
         return properties;
     }
     catch (error) {
@@ -299,6 +308,17 @@ const getSpecificPropertyTotalPayment = (propertyId) => __awaiter(void 0, void 0
         },
     });
     return totalRent._sum.amount || 0;
+});
+//Get Single User total MonthlyRentPayment details
+const singleUserTotalRentAmount = (renterId) => __awaiter(void 0, void 0, void 0, function* () {
+    const totalRent = yield prisma_1.default.monthlyRentPayment.findMany({
+        where: {
+            renterId: renterId,
+        },
+    });
+    // Calculate total amount
+    const totalAmount = totalRent.reduce((acc, payment) => { var _a; return acc + ((_a = payment.amount) !== null && _a !== void 0 ? _a : 0); }, 0);
+    return totalAmount;
 });
 // Get total details of payment for a specific property
 const getSpecificPropertyPaymentDetails = (propertyId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -380,4 +400,6 @@ exports.MonthlyRentPaymentService = {
     getMonthWiseMonthlyRentPayment,
     getFlatStatus,
     getAllFlat,
+    singleUserTotalRentAmount,
+    thisMonthTotalRents,
 };

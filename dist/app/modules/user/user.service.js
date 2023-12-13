@@ -234,7 +234,9 @@ const deleteUser = (authId, deletedId) => __awaiter(void 0, void 0, void 0, func
     if (!isSameUser) {
         throw new ApiError_1.default(404, 'User not found');
     }
-    if ((isSameUser === null || isSameUser === void 0 ? void 0 : isSameUser.id) !== authId.id && authId.role !== 'admin') {
+    if ((isSameUser === null || isSameUser === void 0 ? void 0 : isSameUser.id) !== authId.id &&
+        authId.role !== 'admin' &&
+        authId.role !== 'super_admin') {
         throw new ApiError_1.default(400, "You haven't permission to delete");
     }
     const result = yield prisma_1.default.user.delete({

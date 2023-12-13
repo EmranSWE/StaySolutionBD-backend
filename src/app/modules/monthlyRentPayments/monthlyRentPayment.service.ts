@@ -357,10 +357,8 @@ const singleUserTotalRentAmount = async (renterId: string) => {
   })
 
   // Calculate total amount
-  const totalAmount = totalRent.reduce(
-    (acc, payment) => acc + payment.amount,
-    0,
-  )
+  const totalAmount =
+    totalRent.reduce((acc, payment) => acc + (payment.amount ?? 0), 0) || 0
 
   return totalAmount
 }

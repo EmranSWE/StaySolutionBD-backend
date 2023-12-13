@@ -55,6 +55,21 @@ const getSingleIssue = catchAsync(
   },
 )
 
+// Getting a single Issue
+const getSingleRenterIssue = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const UserId = req.user
+
+    const result = await IssueService.getSingleRenterIssue(UserId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Single Properties fetched successfully',
+      data: result,
+    })
+  },
+)
+
 //Updating a single Issue
 const updateIssue = catchAsync(
   async (req, res: Response, next: NextFunction) => {
@@ -88,38 +103,13 @@ const deleteIssue = catchAsync(
   },
 )
 
-// //Get a single Issue
-// const singleUserIssue = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const userId = req.params.id
-//     const result = await IssueService.singleUserIssue(userId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: ' Get a single user all Issue',
-//       data: result,
-//     })
-//   },
-// )
-// //Get a single Issue
-// const singlePropertiesRating = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const IssueId = req.params.id
-//     const result = await IssueService.singlePropertiesRating(IssueId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'Get a single Issue average rating',
-//       data: result,
-//     })
-//   },
-// )
 export const IssueController = {
   addIssue,
   getIssues,
   getSingleIssue,
   updateIssue,
   deleteIssue,
+  getSingleRenterIssue,
   // singleUserIssue,
   // singlePropertiesRating,
 }

@@ -13,7 +13,13 @@ router.post(
   validateRequest(IssueValidation.CreateIssueZodSchema),
   IssueController.addIssue,
 )
+
 router.get('/', IssueController.getIssues)
+router.get(
+  '/single-renter-issue',
+  auth(ENUM_USER_ROLE.RENTER),
+  IssueController.getSingleRenterIssue,
+)
 
 router.get('/:id', IssueController.getSingleIssue)
 

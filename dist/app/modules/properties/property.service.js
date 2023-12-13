@@ -254,6 +254,22 @@ const singleRenterProperty = (renterId) => __awaiter(void 0, void 0, void 0, fun
     });
     return result;
 });
+const availableProperty = () => __awaiter(void 0, void 0, void 0, function* () {
+    const count = yield prisma_1.default.property.count({
+        where: {
+            propertyStatus: 'available',
+        },
+    });
+    return count;
+});
+const bookedProperty = () => __awaiter(void 0, void 0, void 0, function* () {
+    const count = yield prisma_1.default.property.count({
+        where: {
+            propertyStatus: 'booked',
+        },
+    });
+    return count;
+});
 exports.PropertyService = {
     addProperty,
     getProperties,
@@ -264,4 +280,6 @@ exports.PropertyService = {
     getFeaturedProperties,
     singleRenterProperty,
     popularCategory,
+    availableProperty,
+    bookedProperty,
 };
