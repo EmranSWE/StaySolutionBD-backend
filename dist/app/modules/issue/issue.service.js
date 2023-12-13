@@ -177,12 +177,22 @@ const deleteIssue = (authUser, deletedId) => __awaiter(void 0, void 0, void 0, f
     });
     return result;
 });
+const getSingleRenterIssue = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const allIssues = yield prisma_1.default.issue.findMany({
+        where: {
+            renterId: userId.id,
+        },
+    });
+    if (!allIssues) {
+        throw new ApiError_1.default(404, 'Review not found');
+    }
+    return allIssues;
+});
 exports.IssueService = {
     addIssue,
     getProperties,
     getSingleIssue,
     updateIssue,
     deleteIssue,
-    // singleUserIssue,
-    // singlePropertiesRating,
+    getSingleRenterIssue,
 };

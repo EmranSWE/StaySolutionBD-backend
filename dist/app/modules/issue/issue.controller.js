@@ -55,6 +55,17 @@ const getSingleIssue = (0, catchAsync_1.default)((req, res, next) => __awaiter(v
         data: result,
     });
 }));
+// Getting a single Issue
+const getSingleRenterIssue = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const UserId = req.user;
+    const result = yield issue_service_1.IssueService.getSingleRenterIssue(UserId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Single Properties fetched successfully',
+        data: result,
+    });
+}));
 //Updating a single Issue
 const updateIssue = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const payload = {
@@ -81,38 +92,13 @@ const deleteIssue = (0, catchAsync_1.default)((req, res, next) => __awaiter(void
         data: result,
     });
 }));
-// //Get a single Issue
-// const singleUserIssue = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const userId = req.params.id
-//     const result = await IssueService.singleUserIssue(userId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: ' Get a single user all Issue',
-//       data: result,
-//     })
-//   },
-// )
-// //Get a single Issue
-// const singlePropertiesRating = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const IssueId = req.params.id
-//     const result = await IssueService.singlePropertiesRating(IssueId)
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'Get a single Issue average rating',
-//       data: result,
-//     })
-//   },
-// )
 exports.IssueController = {
     addIssue,
     getIssues,
     getSingleIssue,
     updateIssue,
     deleteIssue,
+    getSingleRenterIssue,
     // singleUserIssue,
     // singlePropertiesRating,
 };

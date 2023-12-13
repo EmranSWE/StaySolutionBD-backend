@@ -14,6 +14,7 @@ const router = express_1.default.Router();
 //Post to create property
 router.post('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), (0, validateRequest_1.default)(issue_validation_1.IssueValidation.CreateIssueZodSchema), issue_controller_1.IssueController.addIssue);
 router.get('/', issue_controller_1.IssueController.getIssues);
+router.get('/single-renter-issue', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), issue_controller_1.IssueController.getSingleRenterIssue);
 router.get('/:id', issue_controller_1.IssueController.getSingleIssue);
 router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER, user_1.ENUM_USER_ROLE.ADMIN), (0, validateRequest_1.default)(issue_validation_1.IssueValidation.UpdateIssueZodSchema), issue_controller_1.IssueController.updateIssue);
 router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), issue_controller_1.IssueController.deleteIssue);
