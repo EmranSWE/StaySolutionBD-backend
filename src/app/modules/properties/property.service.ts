@@ -65,7 +65,6 @@ const getProperties = async (
   options: IPaginationOptions,
 ): Promise<IGenericResponse<Property[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options)
-
   const {
     searchTerm,
     numberOfRooms,
@@ -154,6 +153,7 @@ const getProperties = async (
     data: result,
   }
 }
+
 const getSingleProperty = async (payload: any) => {
   const model = prisma.property
   const result = await getUniqueRecord(model, payload)
@@ -301,11 +301,24 @@ const singleRenterProperty = async (renterId: any) => {
         },
       },
     },
-    include: {
-      bookings: true,
+    select: {
+      id: true,
+      flatNo: true,
     },
   })
+  return result
+}
 
+const singleOwnerProperty = async (ownerId: any) => {
+  const result = await prisma.property.findMany({
+    where: {
+      ownerId: ownerId,
+    },
+    select: {
+      id: true,
+      flatNo: true,
+    },
+  })
   return result
 }
 
@@ -337,6 +350,7 @@ export const PropertyService = {
   singleUserProperty,
   getFeaturedProperties,
   singleRenterProperty,
+  singleOwnerProperty,
   popularCategory,
   availableProperty,
   bookedProperty,

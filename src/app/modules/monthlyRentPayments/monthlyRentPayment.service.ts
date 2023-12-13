@@ -355,12 +355,57 @@ const singleUserTotalRentAmount = async (renterId: string) => {
       renterId: renterId,
     },
   })
-
-  // Calculate total amount
   const totalAmount =
     totalRent.reduce((acc, payment) => acc + (payment.amount ?? 0), 0) || 0
 
   return totalAmount
+}
+
+//Get Single User total MonthlyRentPayment details
+const singleOwnerTotalEarn = async (ownerId: string) => {
+  const properties = await prisma.property.findMany({
+    where: {
+      ownerId: ownerId,
+    },
+    include: {
+      monthlyRentPayments: true,
+    },
+  })
+
+  let totalAmount = 0
+
+  properties.forEach(property => {
+    const monthlyRentPayments = property.monthlyRentPayments || []
+
+    monthlyRentPayments.forEach(payment => {
+      totalAmount += payment.amount || 0
+    })
+  })
+
+  return totalAmount
+}
+
+//Get Single User total MonthlyRentPayment details
+const singleOwnerTotalProperty = async (ownerId: string) => {
+  const properties = await prisma.property.findMany({
+    where: {
+      ownerId: ownerId,
+    },
+  })
+
+  const totalFlat = properties.length
+  const totalBooked = properties.filter(
+    property => property.propertyStatus === 'booked',
+  ).length
+  const totalAvailable = properties.filter(
+    property => property.propertyStatus === 'available',
+  ).length
+
+  return {
+    totalFlat: totalFlat,
+    totalBooked: totalBooked,
+    totalAvailable: totalAvailable,
+  }
 }
 
 // Get total details of payment for a specific property
@@ -388,20 +433,20 @@ const deleteMonthlyRentPayment = async (
   authUser: string | any,
   deletedId: any,
 ): Promise<any> => {
-  const isSameUser = await prisma.monthlyRentPayment.findUnique({
+  const isSamePropertyPayment = await prisma.monthlyRentPayment.findUnique({
     where: {
       id: deletedId,
     },
   })
 
   // If the MonthlyRentPayment does not exist, throw an error.
-  if (!isSameUser) {
+  if (!isSamePropertyPayment) {
     throw new ApiError(404, 'MonthlyRentPayment not found')
   }
   const { role, id } = authUser
 
   if (
-    isSameUser.renterId !== id &&
+    isSamePropertyPayment.renterId !== id &&
     role !== 'admin' &&
     role !== 'super_admin'
   ) {
@@ -466,4 +511,6 @@ export const MonthlyRentPaymentService = {
   getAllFlat,
   singleUserTotalRentAmount,
   thisMonthTotalRents,
+  singleOwnerTotalEarn,
+  singleOwnerTotalProperty,
 }

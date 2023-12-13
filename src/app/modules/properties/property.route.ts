@@ -45,5 +45,10 @@ router.get(
   auth(ENUM_USER_ROLE.RENTER),
   PropertyController.singleRenterProperty,
 )
+router.get(
+  '/properties/:id/owner-property',
+  auth(ENUM_USER_ROLE.OWNER),
+  PropertyController.singleOwnerProperty,
+)
 
 export const PropertyRoutes = router

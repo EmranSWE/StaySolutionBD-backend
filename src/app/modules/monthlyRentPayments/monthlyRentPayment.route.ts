@@ -36,6 +36,7 @@ router.get(
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   MonthlyRentPaymentController.getMonthWiseMonthlyRentPayment,
 )
+
 router.get(
   '/rents/flat-status',
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
@@ -69,11 +70,24 @@ router.get(
 
 // This month total rents
 router.get(
-  '/rents/my-total-rents',
+  '/rents/my-total-rents/:id',
   auth(ENUM_USER_ROLE.RENTER),
   MonthlyRentPaymentController.singleUserTotalRentAmount,
 )
 
+// This month total rents
+router.get(
+  '/rents/my-total-earn/:id',
+  auth(ENUM_USER_ROLE.OWNER),
+  MonthlyRentPaymentController.singleOwnerTotalEarn,
+)
+
+// My total apartment
+router.get(
+  '/rents/my-total-property/:id',
+  auth(ENUM_USER_ROLE.OWNER),
+  MonthlyRentPaymentController.singleOwnerTotalProperty,
+)
 // // Fetch a summary of rent details
 // router.get(
 //   '/rents/summary',
@@ -131,7 +145,7 @@ router.get(
 //   MonthlyRentPaymentController.updateMonthlyRentPayment,
 // )
 
-// // Delete a MonthlyRentPayment entry by its ID
+// Delete a MonthlyRentPayment entry by its ID
 router.delete(
   '/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.OWNER),

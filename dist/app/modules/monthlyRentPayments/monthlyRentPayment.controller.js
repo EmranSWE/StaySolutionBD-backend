@@ -141,7 +141,7 @@ const thisMonthTotalRents = (0, catchAsync_1.default)((req, res, next) => __awai
 // Getting a This month total MonthlyRentPayment
 const singleUserTotalRentAmount = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
-    const renterId = (_c = req === null || req === void 0 ? void 0 : req.user) === null || _c === void 0 ? void 0 : _c.id;
+    const renterId = (_c = req === null || req === void 0 ? void 0 : req.params) === null || _c === void 0 ? void 0 : _c.id;
     const result = yield monthlyRentPayment_service_1.MonthlyRentPaymentService.singleUserTotalRentAmount(renterId);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,

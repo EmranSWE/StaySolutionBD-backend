@@ -145,6 +145,20 @@ const singleRenterProperty = catchAsync(
 )
 
 //Get a single Renter Property
+const singleOwnerProperty = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const ownerId = req.params.id
+    const result = await PropertyService.singleOwnerProperty(ownerId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Get my  all Property',
+      data: result,
+    })
+  },
+)
+
+//Get a single Renter Property
 const popularCategory = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await PropertyService.popularCategory()
@@ -190,6 +204,7 @@ export const PropertyController = {
   deleteProperty,
   singleUserProperty,
   singleRenterProperty,
+  singleOwnerProperty,
   popularCategory,
   availableProperty,
   bookedProperty,

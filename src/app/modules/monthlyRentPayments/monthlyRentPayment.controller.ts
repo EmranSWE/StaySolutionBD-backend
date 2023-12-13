@@ -177,9 +177,39 @@ const thisMonthTotalRents = catchAsync(
 // Getting a This month total MonthlyRentPayment
 const singleUserTotalRentAmount = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const renterId = req?.user?.id
+    const renterId = req?.params?.id
     const result =
       await MonthlyRentPaymentService.singleUserTotalRentAmount(renterId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Total Rent for this single successfully',
+      data: result,
+    })
+  },
+)
+
+// Getting a This month total MonthlyRentPayment
+const singleOwnerTotalEarn = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const renterId = req?.params?.id
+    const result =
+      await MonthlyRentPaymentService.singleOwnerTotalEarn(renterId)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Total Rent for this single successfully',
+      data: result,
+    })
+  },
+)
+
+// Getting a This month total MonthlyRentPayment
+const singleOwnerTotalProperty = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const ownerId = req?.params?.id
+    const result =
+      await MonthlyRentPaymentService.singleOwnerTotalProperty(ownerId)
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -221,29 +251,6 @@ const getSpecificPropertyPaymentDetails = catchAsync(
     })
   },
 )
-//Updating a single MonthlyRentPayment
-// const updateMonthlyRentPayment = catchAsync(
-//   async (req, res: Response, next: NextFunction) => {
-//     if (req.body.data) {
-//       req.body = JSON.parse(req.body.data)
-//     }
-
-//     const payload = {
-//       body: req.body,
-//       file: req.file,
-//       params: req.params,
-//       user: req.user,
-//     }
-
-//     const result =
-//       await MonthlyRentPaymentService.updateMonthlyRentPayment(payload)
-//     res.status(200).json({
-//       success: true,
-//       message: 'MonthlyRentPayment updated successfully',
-//       data: result,
-//     })
-//   },
-// )
 
 //Delete a single MonthlyRentPayment
 const deleteMonthlyRentPayment = catchAsync(
@@ -280,6 +287,6 @@ export const MonthlyRentPaymentController = {
   getSpecificPropertyPaymentDetails,
   thisMonthTotalRents,
   singleUserTotalRentAmount,
-  // singleUserMonthlyRentPayment,
-  // singlePropertiesRating,
+  singleOwnerTotalEarn,
+  singleOwnerTotalProperty,
 }

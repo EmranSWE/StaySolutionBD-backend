@@ -316,7 +316,6 @@ const singleUserTotalRentAmount = (renterId) => __awaiter(void 0, void 0, void 0
             renterId: renterId,
         },
     });
-    // Calculate total amount
     const totalAmount = totalRent.reduce((acc, payment) => { var _a; return acc + ((_a = payment.amount) !== null && _a !== void 0 ? _a : 0); }, 0) || 0;
     return totalAmount;
 });
