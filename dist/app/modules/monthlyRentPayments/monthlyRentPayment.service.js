@@ -319,6 +319,41 @@ const singleUserTotalRentAmount = (renterId) => __awaiter(void 0, void 0, void 0
     const totalAmount = totalRent.reduce((acc, payment) => { var _a; return acc + ((_a = payment.amount) !== null && _a !== void 0 ? _a : 0); }, 0) || 0;
     return totalAmount;
 });
+//Get Single User total MonthlyRentPayment details
+const singleOwnerTotalEarn = (ownerId) => __awaiter(void 0, void 0, void 0, function* () {
+    const properties = yield prisma_1.default.property.findMany({
+        where: {
+            ownerId: ownerId,
+        },
+        include: {
+            monthlyRentPayments: true,
+        },
+    });
+    let totalAmount = 0;
+    properties.forEach(property => {
+        const monthlyRentPayments = property.monthlyRentPayments || [];
+        monthlyRentPayments.forEach(payment => {
+            totalAmount += payment.amount || 0;
+        });
+    });
+    return totalAmount;
+});
+//Get Single User total MonthlyRentPayment details
+const singleOwnerTotalProperty = (ownerId) => __awaiter(void 0, void 0, void 0, function* () {
+    const properties = yield prisma_1.default.property.findMany({
+        where: {
+            ownerId: ownerId,
+        },
+    });
+    const totalFlat = properties.length;
+    const totalBooked = properties.filter(property => property.propertyStatus === 'booked').length;
+    const totalAvailable = properties.filter(property => property.propertyStatus === 'available').length;
+    return {
+        totalFlat: totalFlat,
+        totalBooked: totalBooked,
+        totalAvailable: totalAvailable,
+    };
+});
 // Get total details of payment for a specific property
 const getSpecificPropertyPaymentDetails = (propertyId) => __awaiter(void 0, void 0, void 0, function* () {
     if (!propertyId) {
@@ -339,17 +374,17 @@ const getSpecificPropertyPaymentDetails = (propertyId) => __awaiter(void 0, void
     return totalRent;
 });
 const deleteMonthlyRentPayment = (authUser, deletedId) => __awaiter(void 0, void 0, void 0, function* () {
-    const isSameUser = yield prisma_1.default.monthlyRentPayment.findUnique({
+    const isSamePropertyPayment = yield prisma_1.default.monthlyRentPayment.findUnique({
         where: {
             id: deletedId,
         },
     });
     // If the MonthlyRentPayment does not exist, throw an error.
-    if (!isSameUser) {
+    if (!isSamePropertyPayment) {
         throw new ApiError_1.default(404, 'MonthlyRentPayment not found');
     }
     const { role, id } = authUser;
-    if (isSameUser.renterId !== id &&
+    if (isSamePropertyPayment.renterId !== id &&
         role !== 'admin' &&
         role !== 'super_admin') {
         throw new ApiError_1.default(400, "You haven't permission to delete the MonthlyRentPayment");
@@ -401,4 +436,6 @@ exports.MonthlyRentPaymentService = {
     getAllFlat,
     singleUserTotalRentAmount,
     thisMonthTotalRents,
+    singleOwnerTotalEarn,
+    singleOwnerTotalProperty,
 };

@@ -20,7 +20,7 @@ router.get('/featured-property', property_controller_1.PropertyController.getFea
 router.get('/:id', property_controller_1.PropertyController.getSingleProperty);
 router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.OWNER, user_1.ENUM_USER_ROLE.ADMIN), FileUploadHelper_1.FileUploadHelper.upload.single('file'), property_controller_1.PropertyController.updateProperty);
 router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.OWNER), property_controller_1.PropertyController.deleteProperty);
-router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.OWNER), property_controller_1.PropertyController.deleteProperty);
 router.get('/my-property/:id/', property_controller_1.PropertyController.singleUserProperty);
 router.get('/properties/:id/my-property', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), property_controller_1.PropertyController.singleRenterProperty);
+router.get('/properties/:id/owner-property', (0, auth_1.default)(user_1.ENUM_USER_ROLE.OWNER), property_controller_1.PropertyController.singleOwnerProperty);
 exports.PropertyRoutes = router;

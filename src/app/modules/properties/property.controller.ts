@@ -124,7 +124,7 @@ const singleUserProperty = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Get a my user all Property',
+      message: 'Get a my user  Property',
       data: result,
     })
   },

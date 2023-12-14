@@ -29,6 +29,10 @@ router.get('/properties/all-flat', monthlyRentPayment_controller_1.MonthlyRentPa
 router.get('/rents/this-month', monthlyRentPayment_controller_1.MonthlyRentPaymentController.thisMonthTotalRents);
 // This month total rents
 router.get('/rents/my-total-rents/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.RENTER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.singleUserTotalRentAmount);
+// This month total rents
+router.get('/rents/my-total-earn/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.OWNER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.singleOwnerTotalEarn);
+// My total apartment
+router.get('/rents/my-total-property/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.OWNER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.singleOwnerTotalProperty);
 // // Fetch a summary of rent details
 // router.get(
 //   '/rents/summary',
@@ -77,7 +81,7 @@ router.get('/rents/my-total-rents/:id', (0, auth_1.default)(user_1.ENUM_USER_ROL
 //   auth(ENUM_USER_ROLE.OWNER, ENUM_USER_ROLE.ADMIN),
 //   MonthlyRentPaymentController.updateMonthlyRentPayment,
 // )
-// // Delete a MonthlyRentPayment entry by its ID
+// Delete a MonthlyRentPayment entry by its ID
 router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN, user_1.ENUM_USER_ROLE.OWNER), monthlyRentPayment_controller_1.MonthlyRentPaymentController.deleteMonthlyRentPayment);
 // // Delete a MonthlyRentPayment entry by its ID
 // router.delete(

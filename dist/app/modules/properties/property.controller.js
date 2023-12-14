@@ -108,7 +108,7 @@ const singleUserProperty = (0, catchAsync_1.default)((req, res, next) => __await
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Get a my user all Property',
+        message: 'Get a my user  Property',
         data: result,
     });
 }));
@@ -120,6 +120,17 @@ const singleRenterProperty = (0, catchAsync_1.default)((req, res, next) => __awa
         statusCode: http_status_1.default.OK,
         success: true,
         message: 'Get a my user all Property',
+        data: result,
+    });
+}));
+//Get a single Renter Property
+const singleOwnerProperty = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const ownerId = req.params.id;
+    const result = yield property_service_1.PropertyService.singleOwnerProperty(ownerId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Get my  all Property',
         data: result,
     });
 }));
@@ -162,6 +173,7 @@ exports.PropertyController = {
     deleteProperty,
     singleUserProperty,
     singleRenterProperty,
+    singleOwnerProperty,
     popularCategory,
     availableProperty,
     bookedProperty,

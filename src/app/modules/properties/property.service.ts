@@ -250,14 +250,6 @@ const deleteProperty = async (
   return result
 }
 
-const singleUserProperty = async (userId: any) => {
-  const result = await prisma.property.findMany({
-    where: { ownerId: userId },
-  })
-
-  return result
-}
-
 const popularCategory = async () => {
   const properties = await prisma.property.findMany()
 
@@ -281,14 +273,25 @@ const popularCategory = async () => {
     property.propertyTags.some(tag => popularTags.includes(tag)),
   )
 
-  // Map the popular properties to an array of objects with only the tag and image gallery
   const popularCategoriesWithImages = popularProperties.map(property => ({
     category: property.propertyTags.filter(tag => popularTags.includes(tag)),
     imageGallery: property.imageGallery,
   }))
 
-  // Return the popular categories with their images
   return popularCategoriesWithImages
+}
+const singleUserProperty = async (userId: any) => {
+  const result = await prisma.property.findMany({
+    where: {
+      bookings: {
+        some: {
+          renterId: userId,
+          bookingStatus: 'Confirmed',
+        },
+      },
+    },
+  })
+  return result
 }
 
 const singleRenterProperty = async (renterId: any) => {

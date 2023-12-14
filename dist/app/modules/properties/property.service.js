@@ -211,12 +211,6 @@ const deleteProperty = (authUser, deletedId) => __awaiter(void 0, void 0, void 0
     });
     return result;
 });
-const singleUserProperty = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.default.property.findMany({
-        where: { ownerId: userId },
-    });
-    return result;
-});
 const popularCategory = () => __awaiter(void 0, void 0, void 0, function* () {
     const properties = yield prisma_1.default.property.findMany();
     const tagFrequency = new Map();
@@ -230,13 +224,24 @@ const popularCategory = () => __awaiter(void 0, void 0, void 0, function* () {
     const popularTags = sortedTags.slice(0, 4).map(entry => entry[0]);
     // Filter the properties to those that include the popular tags
     const popularProperties = properties.filter(property => property.propertyTags.some(tag => popularTags.includes(tag)));
-    // Map the popular properties to an array of objects with only the tag and image gallery
     const popularCategoriesWithImages = popularProperties.map(property => ({
         category: property.propertyTags.filter(tag => popularTags.includes(tag)),
         imageGallery: property.imageGallery,
     }));
-    // Return the popular categories with their images
     return popularCategoriesWithImages;
+});
+const singleUserProperty = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.property.findMany({
+        where: {
+            bookings: {
+                some: {
+                    renterId: userId,
+                    bookingStatus: 'Confirmed',
+                },
+            },
+        },
+    });
+    return result;
 });
 const singleRenterProperty = (renterId) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma_1.default.property.findMany({
@@ -248,8 +253,21 @@ const singleRenterProperty = (renterId) => __awaiter(void 0, void 0, void 0, fun
                 },
             },
         },
-        include: {
-            bookings: true,
+        select: {
+            id: true,
+            flatNo: true,
+        },
+    });
+    return result;
+});
+const singleOwnerProperty = (ownerId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.property.findMany({
+        where: {
+            ownerId: ownerId,
+        },
+        select: {
+            id: true,
+            flatNo: true,
         },
     });
     return result;
@@ -279,6 +297,7 @@ exports.PropertyService = {
     singleUserProperty,
     getFeaturedProperties,
     singleRenterProperty,
+    singleOwnerProperty,
     popularCategory,
     availableProperty,
     bookedProperty,

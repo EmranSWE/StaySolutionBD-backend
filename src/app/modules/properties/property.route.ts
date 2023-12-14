@@ -33,11 +33,6 @@ router.delete(
   PropertyController.deleteProperty,
 )
 
-router.delete(
-  '/:id',
-  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.OWNER),
-  PropertyController.deleteProperty,
-)
 router.get('/my-property/:id/', PropertyController.singleUserProperty)
 
 router.get(

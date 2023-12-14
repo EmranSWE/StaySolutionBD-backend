@@ -150,6 +150,30 @@ const singleUserTotalRentAmount = (0, catchAsync_1.default)((req, res, next) => 
         data: result,
     });
 }));
+// Getting a This month total MonthlyRentPayment
+const singleOwnerTotalEarn = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _d;
+    const renterId = (_d = req === null || req === void 0 ? void 0 : req.params) === null || _d === void 0 ? void 0 : _d.id;
+    const result = yield monthlyRentPayment_service_1.MonthlyRentPaymentService.singleOwnerTotalEarn(renterId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Total Rent for this single successfully',
+        data: result,
+    });
+}));
+// Getting a This month total MonthlyRentPayment
+const singleOwnerTotalProperty = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _e;
+    const ownerId = (_e = req === null || req === void 0 ? void 0 : req.params) === null || _e === void 0 ? void 0 : _e.id;
+    const result = yield monthlyRentPayment_service_1.MonthlyRentPaymentService.singleOwnerTotalProperty(ownerId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Total Rent for this single successfully',
+        data: result,
+    });
+}));
 // Fetch specific a total rent
 const getSpecificPropertyTotalPayment = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const propertyId = req.params.propertyId;
@@ -172,27 +196,6 @@ const getSpecificPropertyPaymentDetails = (0, catchAsync_1.default)((req, res, n
         data: result,
     });
 }));
-//Updating a single MonthlyRentPayment
-// const updateMonthlyRentPayment = catchAsync(
-//   async (req, res: Response, next: NextFunction) => {
-//     if (req.body.data) {
-//       req.body = JSON.parse(req.body.data)
-//     }
-//     const payload = {
-//       body: req.body,
-//       file: req.file,
-//       params: req.params,
-//       user: req.user,
-//     }
-//     const result =
-//       await MonthlyRentPaymentService.updateMonthlyRentPayment(payload)
-//     res.status(200).json({
-//       success: true,
-//       message: 'MonthlyRentPayment updated successfully',
-//       data: result,
-//     })
-//   },
-// )
 //Delete a single MonthlyRentPayment
 const deleteMonthlyRentPayment = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const MonthlyRentPaymentId = req.params.id;
@@ -221,6 +224,6 @@ exports.MonthlyRentPaymentController = {
     getSpecificPropertyPaymentDetails,
     thisMonthTotalRents,
     singleUserTotalRentAmount,
-    // singleUserMonthlyRentPayment,
-    // singlePropertiesRating,
+    singleOwnerTotalEarn,
+    singleOwnerTotalProperty,
 };
