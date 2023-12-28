@@ -283,14 +283,10 @@ const popularCategory = async () => {
 const singleUserProperty = async (userId: any) => {
   const result = await prisma.property.findMany({
     where: {
-      bookings: {
-        some: {
-          renterId: userId,
-          bookingStatus: 'Confirmed',
-        },
-      },
+      ownerId: userId,
     },
   })
+
   return result
 }
 
