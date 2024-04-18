@@ -233,12 +233,7 @@ const popularCategory = () => __awaiter(void 0, void 0, void 0, function* () {
 const singleUserProperty = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma_1.default.property.findMany({
         where: {
-            bookings: {
-                some: {
-                    renterId: userId,
-                    bookingStatus: 'Confirmed',
-                },
-            },
+            ownerId: userId,
         },
     });
     return result;
